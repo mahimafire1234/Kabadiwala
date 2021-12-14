@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 
 void main() {
@@ -45,11 +46,19 @@ class _MainState extends State<Main> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 20),
             child: Center(
               child: TextField(
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(), hintText: "Email Address"),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black)),
+                    fillColor: Colors.black,
+                    prefixIcon: Icon(
+                      CupertinoIcons.envelope,
+                      color: Color(0xFF000000),
+                    ),
+                    hintText: "Email Address",
+                    contentPadding: EdgeInsets.only(left: 80.0)),
               ),
             ),
           )
