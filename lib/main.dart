@@ -61,6 +61,23 @@ class _MainState extends State<Main> {
                     contentPadding: EdgeInsets.only(left: 80.0)),
               ),
             ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 25),
+            child: Center(
+              child: TextField(
+                decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black)),
+                    prefixIcon: Icon(
+                      CupertinoIcons.lock,
+                      color: Color(0xFF000000),
+                    ),
+                    suffixIcon: Icon(Icons.visibility_off),
+                    hintText: "Enter Password",
+                    contentPadding: EdgeInsets.only(left: 80.0)),
+              ),
+            ),
           )
         ],
       ),
