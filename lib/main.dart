@@ -47,16 +47,16 @@ class _MainState extends State<Main> {
               child: Center(
                 child: TextField(
                   decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
+                      focusColor: Colors.black,
+                      border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                           borderSide:
-                              BorderSide(color: Colors.black, width: 2.0)),
-                      fillColor: Colors.black,
+                              BorderSide(color: Colors.orange, width: 2.0)),
                       prefixIcon: Icon(
                         CupertinoIcons.envelope,
                         color: Color(0xFF000000),
                       ),
-                      hintText: "Email Address",
+                      labelText: "Email Address",
                       contentPadding: EdgeInsets.only(left: 80.0)),
                 ),
               ),
@@ -66,7 +66,7 @@ class _MainState extends State<Main> {
               child: Center(
                 child: TextField(
                   decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
+                      border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                           borderSide:
                               BorderSide(color: Colors.black, width: 2.0)),
@@ -75,7 +75,7 @@ class _MainState extends State<Main> {
                         color: Color(0xFF000000),
                       ),
                       suffixIcon: Icon(Icons.visibility_off),
-                      hintText: "Enter Password",
+                      labelText: "Enter Password",
                       contentPadding: EdgeInsets.only(left: 80.0)),
                 ),
               ),
