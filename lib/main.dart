@@ -1,8 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
+import 'package:login_sprint1/pages/signup.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(
+      initialRoute: '/signup',
+      routes: {
+        '/signup': (context) => SignUp(),
+      }
+  ));
 }
 
 class MyApp extends StatelessWidget {
