@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -161,15 +161,26 @@ class _MainState extends State<Main> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ExtractWidged(),
-                  SizedBox(
-                    width: 20,
+                  ExtractWidget(
+                    icon: FontAwesomeIcons.facebook,
+                    colour: Colors.blue,
+                    onClick: () {},
                   ),
-                  ExtractWidged(),
                   SizedBox(
-                    width: 20,
+                    width: 8.0,
                   ),
-                  ExtractWidged(),
+                  ExtractWidget(
+                    icon: FontAwesomeIcons.google,
+                    colour: Colors.orangeAccent,
+                    onClick: () {},
+                  ),
+                  SizedBox(
+                    width: 8.0,
+                  ),
+                  ExtractWidget(
+                    icon: FontAwesomeIcons.apple,
+                    onClick: () {},
+                  ),
                 ],
               )
             ],
@@ -180,22 +191,25 @@ class _MainState extends State<Main> {
   }
 }
 
-class ExtractWidged extends StatelessWidget {
-  final path;
-  final press;
-  const ExtractWidged({Key? key, this.path, this.press}) : super(key: key);
+class ExtractWidget extends StatelessWidget {
+  final IconData? icon;
+  final Color? colour;
+  final VoidCallback? onClick;
+  const ExtractWidget({
+    Key? key,
+    required this.icon,
+    this.colour,
+    required this.onClick,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20.0),
-      child: SvgPicture.asset("assets/icons/facebook.svg"),
-      decoration: BoxDecoration(
-          border: Border.all(
-            width: 2,
-            color: Colors.deepPurple,
-          ),
-          shape: BoxShape.circle),
-    );
+    return IconButton(
+        // Use the FaIcon Widget + FontAwesomeIcons class for the IconData
+        icon: FaIcon(
+          icon,
+          color: colour,
+        ),
+        onPressed: onClick);
   }
 }
