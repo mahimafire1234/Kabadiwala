@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
   runApp(const MyApp());
@@ -154,10 +155,47 @@ class _MainState extends State<Main> {
                   "Login",
                 ),
               ),
+              SizedBox(
+                height: 14,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ExtractWidged(),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  ExtractWidged(),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  ExtractWidged(),
+                ],
+              )
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class ExtractWidged extends StatelessWidget {
+  final path;
+  final press;
+  const ExtractWidged({Key? key, this.path, this.press}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20.0),
+      child: SvgPicture.asset("assets/icons/facebook.svg"),
+      decoration: BoxDecoration(
+          border: Border.all(
+            width: 2,
+            color: Colors.deepPurple,
+          ),
+          shape: BoxShape.circle),
     );
   }
 }
