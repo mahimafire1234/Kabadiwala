@@ -28,12 +28,7 @@ class _ShowOneState extends State<ShowOne> {
           height: 25,
         ),
         Center(
-          child:
-        Image(
-          image: AssetImage("assets/company.jpg"),
-          width: 200,
-          height: 200,
-        )
+          child: Image.asset("company.jpg"),
         ),
         Center(
             child: Text("Company: XYZ Company",
