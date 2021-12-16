@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
-<<<<<<< HEAD
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-=======
 import 'package:login_sprint1/pages/signup.dart';
->>>>>>> 466c52b012d1c857ac62d63df842534bc01f04bd
 
 void main() {
   runApp(MaterialApp(
