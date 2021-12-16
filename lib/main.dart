@@ -145,7 +145,8 @@ class _MainState extends State<Main> {
               ElevatedButton(
                 style: ButtonStyle(
                     padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        EdgeInsets.symmetric(horizontal: 80.0, vertical: 12.0)),
+                        EdgeInsets.symmetric(
+                            horizontal: 120.0, vertical: 12.0)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16.0),
@@ -153,6 +154,36 @@ class _MainState extends State<Main> {
                 onPressed: () {},
                 child: Text(
                   "Login",
+                ),
+              ),
+              SizedBox(
+                height: 14,
+              ),
+              Center(
+                child: Text(
+                  "Forget Password?",
+                  style: TextStyle(fontSize: 18, color: Color(0xff0077B6)),
+                ),
+              ),
+              SizedBox(
+                height: 14,
+              ),
+              Center(
+                child: Text(
+                  "OR",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+              ),
+              SizedBox(
+                height: 14,
+              ),
+              Center(
+                child: Text(
+                  "Sign in using",
+                  style: TextStyle(fontSize: 18, color: Colors.black),
                 ),
               ),
               SizedBox(
@@ -182,7 +213,23 @@ class _MainState extends State<Main> {
                     onClick: () {},
                   ),
                 ],
-              )
+              ),
+              SizedBox(
+                height: 14,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Not a member?",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  Text(
+                    "Sign Up",
+                    style: TextStyle(color: Colors.blue, fontSize: 18),
+                  )
+                ],
+              ),
             ],
           ),
         ),
