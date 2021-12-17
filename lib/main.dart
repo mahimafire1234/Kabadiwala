@@ -61,7 +61,7 @@ class _MainState extends State<Main> {
                     style: TextStyle(
                         fontSize: 30,
                         color: Colors.blue,
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.bold,),
                     textAlign: TextAlign.center,
                   ),
                 ),
