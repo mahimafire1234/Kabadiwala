@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:login_sprint1/services/userservices.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -36,10 +35,9 @@ class _SignUpState extends State<SignUp> {
         "type": type,
         "password": password
       };
-
-      var userServices = UserServices();
-      var response = userServices.signup(body);
-      return response;
+      var response = await http
+          .post(Uri.parse("http://10.0.2.2:5000/user/register"), body: body);
+      return response.body;
     } catch (e) {
       print(e);
     }
