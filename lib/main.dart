@@ -3,12 +3,16 @@ import "package:flutter/material.dart";
 import 'package:login_sprint1/pages/login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:login_sprint1/pages/signup.dart';
+import 'package:login_sprint1/pages/viewcompany.dart';
 
 void main() {
-  runApp(MaterialApp(initialRoute: '/login', routes: {
-    '/signup': (context) => SignUp(),
-    '/login': (context) => LoginPage(),
-  }));
+  runApp(MaterialApp(
+      initialRoute: '/viewcompany',
+      routes: {
+        '/signup': (context) => SignUp(),
+        '/viewcompany': (context) => ViewCompany(),
+      }
+  ));
 }
 
 class MyApp extends StatelessWidget {
