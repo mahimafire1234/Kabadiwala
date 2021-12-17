@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:login_sprint1/pages/signup.dart';
 import 'package:login_sprint1/pages/viewcompany.dart';
 
@@ -63,7 +64,7 @@ class _MainState extends State<Main> {
                     style: TextStyle(
                         fontSize: 30,
                         color: Colors.blue,
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.bold,),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -152,7 +153,8 @@ class _MainState extends State<Main> {
               ElevatedButton(
                 style: ButtonStyle(
                     padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        EdgeInsets.symmetric(horizontal: 80.0, vertical: 12.0)),
+                        EdgeInsets.symmetric(
+                            horizontal: 120.0, vertical: 12.0)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16.0),
@@ -162,10 +164,107 @@ class _MainState extends State<Main> {
                   "Login",
                 ),
               ),
+              SizedBox(
+                height: 14,
+              ),
+              Center(
+                child: Text(
+                  "Forget Password?",
+                  style: TextStyle(fontSize: 18, color: Color(0xff0077B6)),
+                ),
+              ),
+              SizedBox(
+                height: 14,
+              ),
+              Center(
+                child: Text(
+                  "OR",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+              ),
+              SizedBox(
+                height: 14,
+              ),
+              Center(
+                child: Text(
+                  "Sign in using",
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                ),
+              ),
+              SizedBox(
+                height: 14,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ExtractWidget(
+                    icon: FontAwesomeIcons.facebook,
+                    colour: Colors.blue,
+                    onClick: () {},
+                  ),
+                  SizedBox(
+                    width: 8.0,
+                  ),
+                  ExtractWidget(
+                    icon: FontAwesomeIcons.google,
+                    colour: Colors.orangeAccent,
+                    onClick: () {},
+                  ),
+                  SizedBox(
+                    width: 8.0,
+                  ),
+                  ExtractWidget(
+                    icon: FontAwesomeIcons.apple,
+                    onClick: () {},
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 14,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Not a member?",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  Text(
+                    "Sign Up",
+                    style: TextStyle(color: Colors.blue, fontSize: 18),
+                  )
+                ],
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+}
+
+class ExtractWidget extends StatelessWidget {
+  final IconData? icon;
+  final Color? colour;
+  final VoidCallback? onClick;
+  const ExtractWidget({
+    Key? key,
+    required this.icon,
+    this.colour,
+    required this.onClick,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        // Use the FaIcon Widget + FontAwesomeIcons class for the IconData
+        icon: FaIcon(
+          icon,
+          color: colour,
+        ),
+        onPressed: onClick);
   }
 }
