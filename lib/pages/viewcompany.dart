@@ -154,19 +154,3 @@ class User{
   User(this.name, this.email, this.number);
 }
 
-// TextField(
-// obscureText: true,
-// onChanged: (val) {
-// },
-// decoration: InputDecoration(
-// border: OutlineInputBorder(
-// borderRadius: BorderRadius.all(Radius.circular(20)),
-// borderSide:
-// BorderSide(color: Colors.black, width: 2.0)),
-// prefixIcon: Icon(
-// CupertinoIcons.search,
-// color: Color(0xFF000000),
-// ),
-// labelText: "Search",
-// contentPadding: EdgeInsets.only(left: 80.0)),
-// ),
