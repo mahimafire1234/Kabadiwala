@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:login_sprint1/pages/signup.dart';
+import 'package:login_sprint1/pages/viewcompany.dart';
 
 void main() {
   runApp(MaterialApp(
-      initialRoute: '/signup',
+      initialRoute: '/viewcompany',
       routes: {
         '/signup': (context) => SignUp(),
+        '/viewcompany': (context) => ViewCompany(),
       }
   ));
 }
