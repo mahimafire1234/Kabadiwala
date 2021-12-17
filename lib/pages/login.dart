@@ -1,31 +1,26 @@
 import 'dart:convert';
 import 'dart:core';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
-
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
-  final myEmailKey = GlobalKey<FormState>();
-  final myPasswordKey = GlobalKey<FormState>();
   String email = "";
   String password = "";
   var token = "";
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+  LoginPage({Key? key}) : super(key: key);
 
-  login() async {
+  dynamic login(
+      {required String? loginEmail, required String? loginPassword}) async {
     try {
-      email = emailController.text;
-      password = passwordController.text;
-      Map<dynamic, dynamic> body = {"email": email, "password": password};
+      Map<dynamic, dynamic> body = {
+        "email": loginEmail,
+        "password": loginPassword
+      };
       var response = await http
           .post(Uri.parse("http://10.0.2.2:5000/user/login"), body: body);
       // print(response.body);
@@ -35,11 +30,21 @@ class _LoginPageState extends State<LoginPage> {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         print("login vayo");
+        print(response.statusCode);
       }
+      return response.statusCode;
     } catch (e) {
       print(e);
     }
   }
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final myEmailKey = GlobalKey<FormState>();
+  final myPasswordKey = GlobalKey<FormState>();
 
   bool hidePassword = true;
   bool checkValue = false;
@@ -70,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Center(
                   child: TextFormField(
                     key: myEmailKey,
-                    controller: emailController,
+                    controller: widget.emailController,
                     decoration: const InputDecoration(
                         focusColor: Colors.black,
                         border: OutlineInputBorder(
@@ -92,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Center(
                   child: TextFormField(
                     key: myPasswordKey,
-                    controller: passwordController,
+                    controller: widget.passwordController,
                     obscureText: hidePassword,
                     decoration: InputDecoration(
                         border: const OutlineInputBorder(
@@ -160,7 +165,11 @@ class _LoginPageState extends State<LoginPage> {
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16.0),
                             side: BorderSide(color: Colors.black)))),
-                onPressed: () => {login()},
+                onPressed: () => {
+                  widget.login(
+                      loginEmail: widget.emailController.text,
+                      loginPassword: widget.passwordController.text)
+                },
                 child: Text(
                   "Login",
                 ),
