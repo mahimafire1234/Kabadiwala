@@ -5,11 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   String email = "";
   String password = "";
-  var token = "";
+  var token;
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   LoginPage({Key? key}) : super(key: key);
@@ -26,6 +27,8 @@ class LoginPage extends StatefulWidget {
       // print(response.body);
       var data = json.decode(response.body);
       token = (data["token"]);
+      _save(token);
+      read();
       print(token);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -36,6 +39,23 @@ class LoginPage extends StatefulWidget {
     } catch (e) {
       print(e);
     }
+  }
+
+  _save(String token) async {
+    final pref = await SharedPreferences.getInstance();
+    const key = "token";
+    final value = token;
+    print("shared pref mah value aayo $value");
+    pref.setString(key, value);
+  }
+
+  read() async {
+    final pref = await SharedPreferences.getInstance();
+    const key = "token";
+
+    final value = pref.getString("token") ?? 0;
+
+    print("token is: $value");
   }
 
   @override
