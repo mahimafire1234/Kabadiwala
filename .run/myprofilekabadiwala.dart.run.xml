@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="myprofilekabadiwala.dart" type="FlutterRunConfigurationType" factoryName="Flutter" nameIsGenerated="true">
+    <option name="filePath" value="$PROJECT_DIR$/lib/pages/myprofilekabadiwala.dart" />
+    <method v="2">
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="" externalProjectPath="" vmOptions="" scriptParameters="" />
+    </method>
+  </configuration>
+</component>

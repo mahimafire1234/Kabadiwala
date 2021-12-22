@@ -4,10 +4,10 @@ class MyProfile extends StatefulWidget {
   const MyProfile({Key? key}) : super(key: key);
 
   @override
-  MyProfileState createState() => MyProfileState();
+  _MyProfileState createState() => _MyProfileState();
 }
 
-class MyProfileState extends State<MyProfile> {
+class _MyProfileState extends State<MyProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,12 +83,19 @@ class MyProfileState extends State<MyProfile> {
                             side: BorderSide(
                                 color: Color(0xff0077B6), width: 4.0)),
                         elevation: 5,
-                        child: Center(
-                            child: Text("My pricings",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold)))),
+                        child:new InkWell(
+                          onTap: (){
+                            print("hello");
+                          },
+                          child: Center(
+                            // onPressed:(){print("clicked");},
+                              child: Text("My pricings",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold))),
+                        )
+                    ),
                     Card(
                         color: Color(0xff92CAE8),
                         shape: RoundedRectangleBorder(
