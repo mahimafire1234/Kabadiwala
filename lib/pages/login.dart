@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:login_sprint1/shared_preference.dart';
 
 class LoginPage extends StatefulWidget {
   String email = "";
@@ -27,8 +27,11 @@ class LoginPage extends StatefulWidget {
       // print(response.body);
       var data = json.decode(response.body);
       token = (data["token"]);
-      _save(token);
-      read();
+      await MySharedPreferences.init();
+      await MySharedPreferences.setToken(token);
+      var mytoken = MySharedPreferences.getToken();
+
+      print("yo naya token ho haiii $mytoken");
       print(token);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -41,23 +44,6 @@ class LoginPage extends StatefulWidget {
     }
   }
 
-  _save(String token) async {
-    final pref = await SharedPreferences.getInstance();
-    const key = "token";
-    final value = token;
-    print("shared pref mah value aayo $value");
-    pref.setString(key, value);
-  }
-
-  read() async {
-    final pref = await SharedPreferences.getInstance();
-    const key = "token";
-
-    final value = pref.getString("token") ?? 0;
-
-    print("token is: $value");
-  }
-
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -65,6 +51,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final myEmailKey = GlobalKey<FormState>();
   final myPasswordKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
+  final _formKey1 = GlobalKey<FormState>();
 
   bool hidePassword = true;
   bool checkValue = false;
@@ -93,21 +81,31 @@ class _LoginPageState extends State<LoginPage> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
                 child: Center(
-                  child: TextFormField(
-                    key: myEmailKey,
-                    controller: widget.emailController,
-                    decoration: const InputDecoration(
-                        focusColor: Colors.black,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            borderSide:
-                                BorderSide(color: Colors.orange, width: 2.0)),
-                        prefixIcon: Icon(
-                          CupertinoIcons.envelope,
-                          color: Color(0xFF000000),
-                        ),
-                        labelText: "Email Address",
-                        contentPadding: EdgeInsets.only(left: 80.0)),
+                  child: Form(
+                    key: _formKey,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "enter some text";
+                        }
+                        return null;
+                      },
+                      key: myEmailKey,
+                      controller: widget.emailController,
+                      decoration: const InputDecoration(
+                          focusColor: Colors.black,
+                          border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                              borderSide:
+                                  BorderSide(color: Colors.orange, width: 2.0)),
+                          prefixIcon: Icon(
+                            CupertinoIcons.envelope,
+                            color: Color(0xFF000000),
+                          ),
+                          labelText: "Email Address",
+                          contentPadding: EdgeInsets.only(left: 80.0)),
+                    ),
                   ),
                 ),
               ),
@@ -115,35 +113,51 @@ class _LoginPageState extends State<LoginPage> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 25),
                 child: Center(
-                  child: TextFormField(
-                    key: myPasswordKey,
-                    controller: widget.passwordController,
-                    obscureText: hidePassword,
-                    decoration: InputDecoration(
-                        border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            borderSide:
-                                BorderSide(color: Colors.black, width: 2.0)),
-                        prefixIcon: Icon(
-                          CupertinoIcons.lock,
-                          color: Color(0xFF000000),
-                        ),
-                        suffixIcon: InkWell(
-                          onTap: () {
-                            setState(() {
-                              hidePassword = !hidePassword;
+                  child: Form(
+                    key: _formKey1,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "enter password";
+                        }
+                        if (value.length <= 3) {
+                          return "password cannot be less than 3 character";
+                        } else {
+                          () {
+                            return null;
+                          };
+                        }
+                      },
+                      key: myPasswordKey,
+                      controller: widget.passwordController,
+                      obscureText: hidePassword,
+                      decoration: InputDecoration(
+                          border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 2.0)),
+                          prefixIcon: Icon(
+                            CupertinoIcons.lock,
+                            color: Color(0xFF000000),
+                          ),
+                          suffixIcon: InkWell(
+                            onTap: () {
+                              setState(() {
+                                hidePassword = !hidePassword;
 
-                              // hidePassword == true
-                              //     ? hidePassword = false
-                              //     : hidePassword = true;
-                            });
-                          },
-                          child: hidePassword == true
-                              ? Icon(Icons.visibility_off)
-                              : Icon(Icons.visibility),
-                        ),
-                        labelText: "Enter Password",
-                        contentPadding: EdgeInsets.only(left: 80.0)),
+                                // hidePassword == true
+                                //     ? hidePassword = false
+                                //     : hidePassword = true;
+                              });
+                            },
+                            child: hidePassword == true
+                                ? Icon(Icons.visibility_off)
+                                : Icon(Icons.visibility),
+                          ),
+                          labelText: "Enter Password",
+                          contentPadding: EdgeInsets.only(left: 80.0)),
+                    ),
                   ),
                 ),
               ),
@@ -186,6 +200,18 @@ class _LoginPageState extends State<LoginPage> {
                             borderRadius: BorderRadius.circular(16.0),
                             side: BorderSide(color: Colors.black)))),
                 onPressed: () => {
+                  if (_formKey.currentState!.validate() &&
+                      _formKey1.currentState!
+                          .validate()) //form valid xa ki xaina check garxa
+                    {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("succesfully login in")))
+                    },
+                  // if (_formKey1.currentState!.validate())
+                  //   {
+                  //     ScaffoldMessenger.of(context).showSnackBar(
+                  //         SnackBar(content: Text("succesfully login")))
+                  //   },
                   widget.login(
                       loginEmail: widget.emailController.text,
                       loginPassword: widget.passwordController.text)
