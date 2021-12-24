@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
+import 'package:login_sprint1/pages/myprofilekab.dart';
 import 'package:login_sprint1/pages/login.dart';
 import 'package:login_sprint1/pages/signup.dart';
 import 'package:login_sprint1/pages/viewcompany.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         '/viewcompany': (context) => const ViewCompany(),
         '/insertrate': (context) => const InsertRate(),
         '/priceview': (context) => const PriceView(),
+        '/myprofilekab':(context) => const MyProfile(),
       },
     );
   }
