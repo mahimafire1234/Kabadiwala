@@ -1,0 +1,85 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import 'home.dart';
+import 'myprofilekab.dart';
+
+class Base extends StatefulWidget {
+  final index;
+  const Base({Key? key, required this.index}) : super(key: key);
+
+  @override
+  _BaseState createState() => _BaseState(index);
+}
+
+class _BaseState extends State<Base> {
+  int currentIndex;
+
+  _BaseState(this.currentIndex);
+
+  final screens = [
+    Home(),
+    MyProfile()
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Kabadiwala"), iconTheme: IconThemeData(color: Colors.white), elevation: 0.0),
+      drawer: Drawer(
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+             DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Column(
+                children: [
+                  Icon(CupertinoIcons.profile_circled, size: 100.0),
+                  SizedBox(height: 10.0),
+                  Text("User name", style: TextStyle(color: Colors.white),)
+                ]
+              ),
+            ),
+            ListTile(
+              leading: Icon(
+                CupertinoIcons.creditcard,
+                color: Color(0xFF000000)
+              ),
+              title: const Text('Payment History'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                CupertinoIcons.square_arrow_right,
+                color: Color(0xFF000000),
+              ),
+              title: const Text('Logout'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+          ],
+        ),
+      ),
+      body: IndexedStack(
+          index: currentIndex,
+          children: screens
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: (index) => setState(() => currentIndex = index ) ,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile")
+        ],
+      ),
+    );
+  }
+}
