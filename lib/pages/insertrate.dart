@@ -18,16 +18,23 @@ class _InsertRateState extends State<InsertRate> {
   String price = "";
   String category = "plastic";
   String userID ="1";
-  List<Map<String,String>> rate = [{"price":"200","category":"category"}];
+  var rate = [{"price":"200","category":"category"}, {"price":"200","category":"category"}];
 
   postData() async{
     try{
-      var body = {
-        "userID":userID,
-        rate:rate
+      var data ={
+        "userID": userID,
+        "category_rate": rate
       };
-
-      var response = await http.post(Uri.parse("http://10.0.2.2:5000/category/insertRate"),body:body);
+      var body = await json.encode(data);
+      print(body);
+      var response = await http.post(
+          Uri.parse("http://10.0.2.2:5000/category/insertRate"),
+          headers: {
+            'Content-type' : 'application/json',
+            "Accept": "application/json",
+          },
+          body: body);
       print(body);
       return response.body;
     }
@@ -122,9 +129,9 @@ class _InsertRateState extends State<InsertRate> {
                   child: ElevatedButton(
                     onPressed: () async {
                         var response = await postData();
-                        print("response is "+ response);
-                        var res = json.decode(response);
-                        print("inserted");
+                        print(response);
+                        // var res = json.decode(response);
+                        // print("inserted");
 
                     },
                     child: const Text("Set Rate", style: TextStyle(
