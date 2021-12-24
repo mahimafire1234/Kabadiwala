@@ -156,12 +156,9 @@ class _HomeState extends State<Home> {
                     )
                   ],
                 )),
-            ElevatedButton(onPressed: () {}, child: Text("Blog")),
-            ElevatedButton(onPressed: () {}, child: Text("Payment History")),
-            ElevatedButton(onPressed: () {}, child: Text("Contact us"))
           ],
         ),
-      ),
+      )
     ))
 
     );

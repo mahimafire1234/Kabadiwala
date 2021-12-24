@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
+import 'package:login_sprint1/pages/base.dart';
 import 'package:login_sprint1/pages/home.dart';
 import 'package:login_sprint1/pages/login.dart';
 import 'package:login_sprint1/pages/signup.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/signup': (context) => const SignUp(),
         '/login': (context) => LoginPage(),
-        '/home': (context) => Home(),
+        '/home': (context) => const Base(index: 0),
         '/viewcompany': (context) => const ViewCompany(),
       },
     );

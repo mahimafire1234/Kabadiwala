@@ -11,13 +11,6 @@ class MyProfileState extends State<MyProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.menu_rounded),
-            onPressed: () {},
-          ),
-          title: Center(child: Text("Kabadiwala")),
-          backgroundColor: Color(0xff0077B6)),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
