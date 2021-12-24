@@ -13,7 +13,33 @@ class InsertRate extends StatefulWidget {
 }
 
 class _InsertRateState extends State<InsertRate> {
-  final List<String> _list = ['Choose a category','Bottle','Plastic', 'Glass' ];
+  final List<String> _list = ['Bottle','Plastic', 'Glass' ];
+
+  String userID = "";
+  String price = "";
+  String category = "";
+  String holder = "";
+
+  void getDropDownItem(){
+    setState(() {
+      holder = category ;
+    });
+  }
+  postData() async {
+    try {
+      var body = {
+        "userID": userID,
+        "price": price,
+        "category": category
+      };
+      var response = await http
+          .post(Uri.parse("http://10.0.2.2:5000/category/insertRate"), body: body);
+      return response.body;
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,22 +69,21 @@ class _InsertRateState extends State<InsertRate> {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: AwesomeDropDown(
-                    dropDownList: _list,
-                    numOfListItemToShow: 3,
-                    elevation: 3,
-                    padding: 10,
-                    dropDownIcon: const Icon(Icons.arrow_drop_down_circle_outlined),
-                    dropDownListTextStyle: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-
-                    ),
-                    selectedItemTextStyle: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-
-                    ),
+                  dropDownList: _list,
+                  numOfListItemToShow: 3,
+                  elevation: 3,
+                  padding: 10,
+                  dropDownIcon: const Icon(Icons.arrow_drop_down_circle_outlined),
+                  dropDownListTextStyle: const TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
                   ),
+                  selectedItemTextStyle: const TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+
+                  ),
+                ),
               ),
 
               Padding(
