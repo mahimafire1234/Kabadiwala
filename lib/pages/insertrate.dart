@@ -13,6 +13,7 @@ class InsertRate extends StatefulWidget {
 }
 
 class _InsertRateState extends State<InsertRate> {
+<<<<<<< HEAD
   final List<String> _list = ['Bottle','Plastic', 'Glass' ];
 
   String userID = "";
@@ -37,6 +38,29 @@ class _InsertRateState extends State<InsertRate> {
       return response.body;
     } catch (e) {
       print(e);
+=======
+  final List<String> _list = ['Choose a category','Bottle','Plastic', 'Glass' ];
+  //backend ma insert ko lagi
+  String price = "";
+  String category = "plastic";
+  String userID ="1";
+  List<Map<String,String>> rate = [{"price":"200","category":"category"}];
+
+  postData() async{
+    try{
+      var body = {
+        "userID":userID,
+        rate:rate
+      };
+
+      var response = await http.post(Uri.parse("http://10.0.2.2:5000/category/insertRate"),body:body);
+      print(body);
+      return response.body;
+    }
+    catch(error){
+      print("error");
+      print(error);
+>>>>>>> d6c9b34d8982b2a82acef3b2d62e72063e56eb40
     }
   }
 
@@ -99,12 +123,19 @@ class _InsertRateState extends State<InsertRate> {
                           borderSide: BorderSide.none,
                       borderRadius: BorderRadius.all(Radius.circular(25)),
                       ),
+
                   prefixIcon: Icon(
                       CupertinoIcons.money_dollar,
                       color: Color(0xFF000000),
                   ),
                       labelText: "Enter the rate",
-                      contentPadding: EdgeInsets.only(left: 10.0))
+                      contentPadding: EdgeInsets.only(left: 10.0)),
+                    onChanged: (val){
+                        setState(() =>{
+                          price = val.toString()
+                        });
+
+                    },
                   ),
                 ),
               ),
@@ -115,7 +146,13 @@ class _InsertRateState extends State<InsertRate> {
                     width: 350,
                     height: 45,
                   child: ElevatedButton(
-                    onPressed: () {  },
+                    onPressed: () async {
+                        var response = await postData();
+                        print("response is "+ response);
+                        var res = json.decode(response);
+                        print("inserted");
+
+                    },
                     child: const Text("Set Rate", style: TextStyle(
                       fontSize: 20,
                       fontFamily: 'Rubik',
