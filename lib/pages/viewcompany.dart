@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:login_sprint1/pages/oneCompany.dart';
 
 class ViewCompany extends StatefulWidget {
   const ViewCompany({Key? key}) : super(key: key);
@@ -100,6 +101,9 @@ class _ViewCompanyState extends State<ViewCompany> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15.0),
                                     ),
+                                  onTap: (){
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>oneCompany()));
+                                  },
                                   title: Row(
                                     children: [
                                       Text("image"),
@@ -124,6 +128,7 @@ class _ViewCompanyState extends State<ViewCompany> {
                                             ),
                                             SizedBox(height: 10.0),
                                             Text("Rating: "),
+
 
                                           ],
                                         ),
