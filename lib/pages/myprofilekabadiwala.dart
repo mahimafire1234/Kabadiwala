@@ -1,13 +1,33 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class MyProfile extends StatefulWidget {
-  const MyProfile({Key? key}) : super(key: key);
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:login_sprint1/services/shared_preference.dart';
+
+class CompanyProfile extends StatefulWidget {
+  const CompanyProfile({Key? key}) : super(key: key);
 
   @override
-  _MyProfileState createState() => _MyProfileState();
+  _CompanyProfileState createState() => _CompanyProfileState();
 }
 
-class _MyProfileState extends State<MyProfile> {
+class _CompanyProfileState extends State<CompanyProfile> {
+  Future<String> getuserdata() async {
+    await MySharedPreferences.init();
+
+    final token = await MySharedPreferences.getToken();
+    print(token);
+    var response = await http
+        .get(Uri.parse("http://10.0.2.2:5000/user/login_company"), headers: {
+      "Authorization": "Bearer $token",
+    });
+
+    var data = await jsonDecode(response.body);
+    String company_name = await data["data"]["name"];
+    print(data);
+    return company_name;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +39,7 @@ class _MyProfileState extends State<MyProfile> {
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: const [
                     Image(
                       image: AssetImage("assets/images/cycling.png"),
                       width: 200,
@@ -30,12 +50,24 @@ class _MyProfileState extends State<MyProfile> {
               ),
               Padding(
                   padding: EdgeInsets.all(10),
-                  child: Text("Company name",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 15,
-                      ))),
+                  child: FutureBuilder<String>(
+                    future: getuserdata(),
+                    builder: (context, snapshot) {
+                      return (snapshot.hasData == true && snapshot.data != null)
+                          ? Text(snapshot.data!,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 15,
+                              ))
+                          : Text("empty",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 15,
+                              ));
+                    },
+                  )),
               Padding(
                   padding: EdgeInsets.all(10),
                   child: Text("Address name",
@@ -51,7 +83,9 @@ class _MyProfileState extends State<MyProfile> {
                       "Edit profile",
                       style: TextStyle(fontSize: 20),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      // getuserdata();
+                    },
                     style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(Color(0xff0077B6)),
@@ -76,19 +110,18 @@ class _MyProfileState extends State<MyProfile> {
                             side: BorderSide(
                                 color: Color(0xff0077B6), width: 4.0)),
                         elevation: 5,
-                        child:new InkWell(
-                          onTap: (){
+                        child: new InkWell(
+                          onTap: () {
                             print("hello");
                           },
                           child: Center(
-                            // onPressed:(){print("clicked");},
+                              // onPressed:(){print("clicked");},
                               child: Text("My pricings",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold))),
-                        )
-                    ),
+                        )),
                     Card(
                         color: Color(0xff92CAE8),
                         shape: RoundedRectangleBorder(
@@ -122,7 +155,7 @@ class _MyProfileState extends State<MyProfile> {
                             side: BorderSide(
                                 color: Color(0xff0077B6), width: 4.0)),
                         elevation: 5,
-                        child: Center(
+                        child: const Center(
                             child: Text("My Schedule",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
