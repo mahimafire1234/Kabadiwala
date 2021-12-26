@@ -17,7 +17,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+<<<<<<< HEAD
       initialRoute: "/login",
+=======
+      initialRoute: "/insertrate",
+>>>>>>> sanjila
       routes: {
         '/signup': (context) => const SignUp(),
         '/login': (context) => LoginPage(),
