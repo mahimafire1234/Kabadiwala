@@ -2,28 +2,34 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:login_sprint1/pages/oneCompany.dart';
 
 class ViewCompany extends StatefulWidget {
   const ViewCompany({Key? key}) : super(key: key);
+
+  Future<List<User>>? getUserData() async{
+    var response = await http.get(Uri.parse("http://127.0.0.1:5000/user/get_company"),
+      headers: {
+        'Content-type' : 'application/json',
+        "Accept": "application/json",
+      },
+    );
+    var jsonData = await jsonDecode(response.body);
+    List<User>users = [];
+    for(var u in jsonData["user"]){
+      User user = User(u["name"], u["email"], u["phone"]);
+      users.add(user);
+    }
+
+    return users;
+  }
 
   @override
   _ViewCompanyState createState() => _ViewCompanyState();
 }
 
 class _ViewCompanyState extends State<ViewCompany> {
-    Future<List<User>>? getUserData() async{
-      var response = await http.get(Uri.parse("http://10.0.2.2:5000/user/get_company"));
-      var jsonData = await jsonDecode(response.body);
-      List<User>users = [];
-      for(var u in jsonData["user"]){
-        User user = User(u["name"], u["email"], u["phone"]);
-        users.add(user);
-      }
 
-      return users;
-
-
-}
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +76,7 @@ class _ViewCompanyState extends State<ViewCompany> {
                         ),
                       ),
                       FutureBuilder<List<User>>(
-                        future:    getUserData() ,
+                        future:    widget.getUserData() ,
                         builder:  (context,  snapshot) {
                           if (snapshot.data == null) {
                             return Container(
@@ -95,6 +101,9 @@ class _ViewCompanyState extends State<ViewCompany> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15.0),
                                     ),
+                                  onTap: (){
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>oneCompany()));
+                                  },
                                   title: Row(
                                     children: [
                                       Text("image"),
@@ -119,6 +128,7 @@ class _ViewCompanyState extends State<ViewCompany> {
                                             ),
                                             SizedBox(height: 10.0),
                                             Text("Rating: "),
+
 
                                           ],
                                         ),

@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:login_sprint1/shared_preference.dart';
+import 'package:login_sprint1/services/shared_preference.dart';
 
 class LoginPage extends StatefulWidget {
   String email = "";
@@ -15,32 +15,31 @@ class LoginPage extends StatefulWidget {
   var passwordController = TextEditingController();
   LoginPage({Key? key}) : super(key: key);
 
+  dynamic isLogin = true;
+
   dynamic login(
       {required String? loginEmail, required String? loginPassword}) async {
+    Map<dynamic, dynamic> body = {
+      "email": loginEmail,
+      "password": loginPassword
+    };
     try {
-      Map<dynamic, dynamic> body = {
-        "email": loginEmail,
-        "password": loginPassword
-      };
       var response = await http
           .post(Uri.parse("http://10.0.2.2:5000/user/login"), body: body);
-      // print(response.body);
       var data = json.decode(response.body);
-      token = (data["token"]);
-      await MySharedPreferences.init();
-      await MySharedPreferences.setToken(token);
-      var mytoken = MySharedPreferences.getToken();
-
-      print("yo naya token ho haiii $mytoken");
-      print(token);
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        print("login vayo");
-        print(response.statusCode);
+      print(data["success"]);
+      if (data["success"] == true) {
+        token = (data["token"]);
+        await MySharedPreferences.init();
+        await MySharedPreferences.setToken(token);
+        print(token);
+        return isLogin;
+      } else {
+        isLogin = false;
+        return isLogin;
       }
-      return response.statusCode;
-    } catch (e) {
-      print(e);
+    } on Exception {
+      print(Exception("Error in network connection"));
     }
   }
 
@@ -82,11 +81,12 @@ class _LoginPageState extends State<LoginPage> {
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
                 child: Center(
                   child: Form(
-                    key: _formKey,
+                    key:
+                        _formKey, // yo form lai unique sanga chinna lai form key rakyeko ho
                     child: TextFormField(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "enter some text";
+                          return "enter email address ";
                         }
                         return null;
                       },
@@ -199,22 +199,27 @@ class _LoginPageState extends State<LoginPage> {
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16.0),
                             side: BorderSide(color: Colors.black)))),
-                onPressed: () => {
-                  if (_formKey.currentState!.validate() &&
-                      _formKey1.currentState!
-                          .validate()) //form valid xa ki xaina check garxa
+                onPressed: () async {
+                  dynamic data = await widget.login(
+                      loginEmail: widget.emailController.text,
+                      loginPassword: widget.passwordController.text);
+                  print("my data is :$data");
+                  if (data != true) {
+                    if (_formKey.currentState!.validate() &&
+                        _formKey1.currentState!
+                            .validate()) //form valid xa ki xaina check garxa
                     {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("succesfully login in")))
-                    },
-                  // if (_formKey1.currentState!.validate())
-                  //   {
-                  //     ScaffoldMessenger.of(context).showSnackBar(
-                  //         SnackBar(content: Text("succesfully login")))
-                  //   },
-                  widget.login(
-                      loginEmail: widget.emailController.text,
-                      loginPassword: widget.passwordController.text)
+                          const SnackBar(content: Text("Invalid login")));
+                    }
+                    // if (_formKey1.currentState!.validate())
+                    //   {
+                    //     ScaffoldMessenger.of(context).showSnackBar(
+                    //         SnackBar(content: Text("succesfully login")))
+                    //   },
+                  } else {
+                    Navigator.pushNamed(context, "/myprofilekabadiwala");
+                  }
                 },
                 child: Text(
                   "Login",
