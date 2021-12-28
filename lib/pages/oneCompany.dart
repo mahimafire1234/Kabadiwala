@@ -12,22 +12,25 @@ class oneCompany extends StatefulWidget {
 }
 
 class _ShowOneState extends State<oneCompany> {
-
-  getOneCompany() async {
-    var response = await http.get(Uri.parse("http://127.0.0.1:5000/user/showOne/:id"),
-      headers: {
-        'Content-type' : 'application/json',
-        "Accept": "application/json",
-      },
-    );
-    // var jsonData = await jsonDecode(response.body);
-    // for(var u in jsonData["user"]){
-    //   User user = User(u["name"], u["email"], u["phone"]);
-    // }
-  }
+  // getOneCompany() async {
+  //
+  //   var response = await http.get(Uri.parse("http://127.0.0.1:5000/user/showOne"),
+  //     headers: {
+  //       'Content-type' : 'application/json',
+  //       "Accept": "application/json",
+  //     },
+  //   );
+  //   var jsonData = await jsonDecode(response.body);
+  //   // for(var u in jsonData["user"]){
+  //   //   User user = User(u["name"], u["email"], u["phone"]);
+  //   // }
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final Object? company=ModalRoute.of(context)?.settings.arguments;
+    print(company);
+
     return Scaffold(
       body: Column(children: [
         SizedBox(
