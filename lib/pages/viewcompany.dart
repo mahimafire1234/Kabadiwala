@@ -8,7 +8,7 @@ class ViewCompany extends StatefulWidget {
   const ViewCompany({Key? key}) : super(key: key);
 
   Future<List<User>>? getUserData() async{
-    var response = await http.get(Uri.parse("http://127.0.0.1:5000/user/get_company"),
+    var response = await http.get(Uri.parse("http://10.0.2.2:5000/user/get_company"),
       headers: {
         'Content-type' : 'application/json',
         "Accept": "application/json",
