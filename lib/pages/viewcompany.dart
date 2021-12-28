@@ -102,7 +102,8 @@ class _ViewCompanyState extends State<ViewCompany> {
                                         borderRadius: BorderRadius.circular(15.0),
                                     ),
                                   onTap: (){
-                                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>oneCompany()));
+                                      Navigator.of(context).push(MaterialPageRoute
+                                        (builder: (context)=>oneCompany()));
                                   },
                                   title: Row(
                                     children: [
