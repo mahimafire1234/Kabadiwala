@@ -1,27 +1,36 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-void main() {
-  runApp(const oneCompany());
-}
-
-class oneCompany extends StatelessWidget {
+class oneCompany extends StatefulWidget {
   const oneCompany({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: ShowOne(), debugShowCheckedModeBanner: false);
-  }
-}
-
-class ShowOne extends StatefulWidget {
   @override
   _ShowOneState createState() => _ShowOneState();
 }
 
-class _ShowOneState extends State<ShowOne> {
+class _ShowOneState extends State<oneCompany> {
+  // getOneCompany() async {
+  //
+  //   var response = await http.get(Uri.parse("http://127.0.0.1:5000/user/showOne"),
+  //     headers: {
+  //       'Content-type' : 'application/json',
+  //       "Accept": "application/json",
+  //     },
+  //   );
+  //   var jsonData = await jsonDecode(response.body);
+  //   // for(var u in jsonData["user"]){
+  //   //   User user = User(u["name"], u["email"], u["phone"]);
+  //   // }
+  // }
+
   @override
   Widget build(BuildContext context) {
+    final Object? company=ModalRoute.of(context)?.settings.arguments;
+    print(company);
+
     return Scaffold(
       body: Column(children: [
         SizedBox(
@@ -33,16 +42,13 @@ class _ShowOneState extends State<ShowOne> {
         Center(
             child: Padding(
                 padding: EdgeInsets.all(8.0),
-                child: Text("Company: XYZ Company",
+                child: Text("Company: XYZ ",
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 25)))),
         Center(
             child: Text("Phone Number: +977-9876543210",
-                style: TextStyle(color: Colors.black, fontSize: 20))),
-        Center(
-            child: Text("Address: Dilibazar,Kathmandu",
                 style: TextStyle(color: Colors.black, fontSize: 20))),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           ElevatedButton(
@@ -106,3 +112,7 @@ class _ShowOneState extends State<ShowOne> {
     );
   }
 }
+// class User{
+//   final String name, email, number;
+//   User(this.name, this.email, this.number);
+// }
