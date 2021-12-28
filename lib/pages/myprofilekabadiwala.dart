@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/services/shared_preference.dart';
+import 'package:login_sprint1/pages/ratespage.dart';
 
 class CompanyProfile extends StatefulWidget {
   const CompanyProfile({Key? key}) : super(key: key);
@@ -112,7 +113,9 @@ class _CompanyProfileState extends State<CompanyProfile> {
                         elevation: 5,
                         child: new InkWell(
                           onTap: () {
-                            print("hello");
+                            Navigator.push(context,
+                                MaterialPageRoute(
+                                    builder: (context) => Rates()));
                           },
                           child: Center(
                               // onPressed:(){print("clicked");},
@@ -121,7 +124,9 @@ class _CompanyProfileState extends State<CompanyProfile> {
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold))),
-                        )),
+                        ),
+
+                    ),
                     Card(
                         color: Color(0xff92CAE8),
                         shape: RoundedRectangleBorder(

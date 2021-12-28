@@ -19,13 +19,14 @@ class _InsertRateState extends State<InsertRate> {
   String price = "";
   String category = "";
   String userID = "1";
-  var rate = [
-    {"price": "price", "category": "category"}
-  ];
+
 
   postData() async {
     try {
-      var data = {"userID": userID, "category_rate": rate};
+      var rate = [
+        {"price": price, "category": _selectedCategory}
+      ];
+      var data = {"userID": userID, "rate": rate};
       var body = await json.encode(data);
       print(body);
       var response =
@@ -139,6 +140,15 @@ class _InsertRateState extends State<InsertRate> {
                       print("response is " + response!);
                       var res = json.decode(response);
                       print("inserted");
+                      final snackB = SnackBar(
+                        duration: Duration(seconds: 5),
+                        content: Text(res["message"]),
+                        action: SnackBarAction(
+                          label: 'Dismiss',
+                          onPressed: () {},
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackB);
                     },
                     child: const Text(
                       "Set Rate",
