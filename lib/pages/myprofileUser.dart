@@ -81,7 +81,7 @@ class _UserProfileState extends State<UserProfile> {
                   )),
               Padding(
                   padding: EdgeInsets.all(10),
-                  child: Text("Address name",
+                  child: Text("Address name : ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.normal,
@@ -89,7 +89,7 @@ class _UserProfileState extends State<UserProfile> {
                       ))),
               Padding(
                   padding: EdgeInsets.all(10),
-                  child: Text("+977-987654322",
+                  child: Text("Phone Number : +977-987654322",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.normal,
