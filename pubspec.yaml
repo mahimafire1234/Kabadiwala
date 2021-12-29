@@ -40,6 +40,7 @@ dependencies:
   font_awesome_flutter:
   http: 0.13.4
   shared_preferences:
+  intl:
 
 dev_dependencies:
   flutter_test:

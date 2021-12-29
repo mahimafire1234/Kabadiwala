@@ -243,6 +243,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.8.1"
+  intl:
+    dependency: "direct main"
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.17.0"
   js:
     dependency: transitive
     description:
@@ -499,9 +506,6 @@ packages:
       name: vector_math
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
-    version: "2.1.1"
-=======
     version: "2.1.0"
   vm_service:
     dependency: transitive
@@ -510,7 +514,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.1.1"
->>>>>>> c5ba7b93fa1da9e19cb7bfb554b59f19e8252dcd
   watcher:
     dependency: transitive
     description:

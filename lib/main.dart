@@ -5,7 +5,6 @@ import 'package:login_sprint1/pages/insertrate.dart';
 import 'package:login_sprint1/pages/login.dart';
 import 'package:login_sprint1/pages/myprofilekabadiwala.dart';
 import 'package:login_sprint1/pages/priceview.dart';
-import 'package:login_sprint1/pages/set_information.dart';
 import 'package:login_sprint1/pages/signup.dart';
 import 'package:login_sprint1/pages/viewcompany.dart';
 
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: "/login",
+      initialRoute: "/setInfo",
       routes: {
         '/signup': (context) => const SignUp(),
         '/login': (context) => LoginPage(),
@@ -27,7 +26,7 @@ class MyApp extends StatelessWidget {
         '/insertrate': (context) => const InsertRate(),
         '/priceview': (context) => const PriceView(),
         '/myprofilekabadiwala': (context) => const CompanyProfile(),
-        "/setInfo": (context) => SetInformation()
+        "/setInfo": (context) => const Base(index: 0)
       },
     );
   }
