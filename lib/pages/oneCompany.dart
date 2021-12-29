@@ -28,8 +28,8 @@ class _ShowOneState extends State<oneCompany> {
 
   @override
   Widget build(BuildContext context) {
-    final Object? company = ModalRoute.of(context)?.settings.arguments;
-    print(company);
+    final Object? data = ModalRoute.of(context)?.settings.arguments;
+    print(data);
 
     return Scaffold(
         body: SafeArea(

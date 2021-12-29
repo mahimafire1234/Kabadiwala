@@ -101,13 +101,14 @@ class _ViewCompanyState extends State<ViewCompany> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15.0),
                                     ),
-                                  onTap: (){
+                                  onTap: () async{
+                                      final data = await widget.getUserData();
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute
                                         (builder: (context)=>oneCompany(),
                                             settings: RouteSettings(
-                                              arguments: snapshot.data![i],
+                                              arguments: data,
                                             )
                                           )
                                       );
