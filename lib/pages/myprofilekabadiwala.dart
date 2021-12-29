@@ -13,6 +13,7 @@ class CompanyProfile extends StatefulWidget {
 }
 
 class _CompanyProfileState extends State<CompanyProfile> {
+  String id ="";
   Future<String> getuserdata() async {
     await MySharedPreferences.init();
 
@@ -25,6 +26,11 @@ class _CompanyProfileState extends State<CompanyProfile> {
 
     var data = await jsonDecode(response.body);
     String company_name = await data["data"]["name"];
+    String company_id = await data["data"]["_id"];
+    //set variable
+    // setState(() {
+    //   id = company_id;
+    // });
     print(data);
     return company_name;
   }
@@ -113,9 +119,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
                         elevation: 5,
                         child: new InkWell(
                           onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(
-                                    builder: (context) => Rates()));
+                            Navigator.pushNamed(context,"/ratespage",arguments:id);
                           },
                           child: Center(
                               // onPressed:(){print("clicked");},

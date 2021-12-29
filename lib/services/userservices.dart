@@ -19,18 +19,6 @@ class UserServices{
     }
   }
 
-//  get rates
-  Future<Category?> getRate(id) async {
-    try{
-    //  url
-      final fetchUrl = "http://10.0.2.2:5000/category/getRate/${id}";
-      var response = await http.get(Uri.parse(fetchUrl));
-      var result = response.body;
-      return Category.fromJson(jsonDecode(result));
-    }
-    catch(error){
-      print(error);
-    }
-  }
+
 
 }

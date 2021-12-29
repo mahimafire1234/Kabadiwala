@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:http/http.dart' as http;
+import 'package:login_sprint1/pages/ratespage.dart';
 
 class InsertRate extends StatefulWidget {
   const InsertRate({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class _InsertRateState extends State<InsertRate> {
       var rate = [
         {"price": price, "category": _selectedCategory}
       ];
-      var data = {"userID": userID, "rate": rate};
+      var data = {"userID": userID, "category_rate": rate};
       var body = await json.encode(data);
       print(body);
       var response =
@@ -137,18 +138,20 @@ class _InsertRateState extends State<InsertRate> {
                 child: ElevatedButton(
                     onPressed: () async {
                       var response = await postData();
-                      print("response is " + response!);
                       var res = json.decode(response);
-                      print("inserted");
-                      final snackB = SnackBar(
-                        duration: Duration(seconds: 5),
-                        content: Text(res["message"]),
-                        action: SnackBarAction(
-                          label: 'Dismiss',
-                          onPressed: () {},
-                        ),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackB);
+                      print(res["success"]);
+                        final snackB = SnackBar(
+                          duration: Duration(seconds: 5),
+                          content: Text(res["message"]),
+                          action: SnackBarAction(
+                            label: 'Dismiss',
+                            onPressed: () {},
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackB);
+                        if(res["success"] == "true"){
+                          Navigator.pushNamed(context, "/ratespage");
+                        }
                     },
                     child: const Text(
                       "Set Rate",
