@@ -28,13 +28,14 @@ class _ShowOneState extends State<oneCompany> {
 
   @override
   Widget build(BuildContext context) {
-    final Object? company=ModalRoute.of(context)?.settings.arguments;
-    print(company);
+    final Object? data = ModalRoute.of(context)?.settings.arguments;
+    print(data);
 
     return Scaffold(
-      body: Column(children: [
+        body: SafeArea(
+      child: Column(children: [
         SizedBox(
-          height: 25,
+          height: 35,
         ),
         Center(
           child: Image.asset("company.jpg", height: 150, width: 150),
@@ -50,48 +51,66 @@ class _ShowOneState extends State<oneCompany> {
         Center(
             child: Text("Phone Number: +977-9876543210",
                 style: TextStyle(color: Colors.black, fontSize: 20))),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          ElevatedButton(
-              style: ButtonStyle(
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                      EdgeInsets.symmetric(horizontal: 60.0, vertical: 19.0)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          side: BorderSide(color: Colors.black)))),
-              onPressed: () {},
-              child: Text(
-                "Book",
-              )),
-          ElevatedButton(
-            style: ButtonStyle(
-                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                    EdgeInsets.symmetric(horizontal: 60.0, vertical: 15.0)),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        side: BorderSide(color: Colors.black)))),
-            onPressed: () {},
-            child: Icon(
-              CupertinoIcons.heart,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        Color.fromARGB(255, 0, 119, 182)),
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        EdgeInsets.symmetric(horizontal: 60.0, vertical: 19.0)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            side: BorderSide(
+                                color: Color.fromARGB(255, 0, 119, 182))))),
+                onPressed: () {},
+                child: Text(
+                  "Book Now",
+                )),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        Color.fromARGB(255, 0, 119, 182)),
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        EdgeInsets.symmetric(horizontal: 60.0, vertical: 15.0)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            side: BorderSide(
+                                color: Color.fromARGB(255, 0, 119, 182))))),
+                onPressed: () {},
+                child: Icon(
+                  CupertinoIcons.heart_solid,
+                  color: Colors.red,
+                ),
+              ),
             ),
-          ),
-        ]),
+          ]),
+        ),
         ElevatedButton(
           style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all(Color.fromARGB(255, 0, 119, 182)),
               padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                  EdgeInsets.symmetric(horizontal: 80.0, vertical: 19.0)),
+                  EdgeInsets.symmetric(horizontal: 118.0, vertical: 19.0)),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      side: BorderSide(color: Colors.black)))),
-          onPressed: () {},
+                      side: BorderSide(
+                          color: Color.fromARGB(255, 0, 119, 182))))),
+          onPressed: () {
+            Navigator.pushNamed(context, "/priceview");
+          },
           child: Text(
             "See Pricings",
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 120, vertical: 20),
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 20),
           child: Center(
             child: TextFormField(
               decoration: InputDecoration(
@@ -100,8 +119,12 @@ class _ShowOneState extends State<oneCompany> {
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       borderSide: BorderSide(color: Colors.orange, width: 2.0)),
                   prefixIcon: Icon(
+                    CupertinoIcons.square_pencil,
+                  ),
+                  suffixIcon: Icon(
                     CupertinoIcons.checkmark_alt,
-                    color: Color(0xFF000000),
+                    color: Colors.green,
+                    size: 35.0,
                   ),
                   labelText: "Write a Review...",
                   contentPadding: EdgeInsets.only(left: 80.0)),
@@ -109,7 +132,7 @@ class _ShowOneState extends State<oneCompany> {
           ),
         ),
       ]),
-    );
+    ));
   }
 }
 // class User{
