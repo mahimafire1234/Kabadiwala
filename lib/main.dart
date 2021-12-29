@@ -3,7 +3,6 @@ import "package:flutter/material.dart";
 import 'package:login_sprint1/pages/base.dart';
 import 'package:login_sprint1/pages/insertrate.dart';
 import 'package:login_sprint1/pages/login.dart';
-import 'package:login_sprint1/pages/myprofileUser.dart';
 import 'package:login_sprint1/pages/myprofilekabadiwala.dart';
 import 'package:login_sprint1/pages/oneCompany.dart';
 import 'package:login_sprint1/pages/priceview.dart';
@@ -21,19 +20,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: "/setInfo",
+      initialRoute: "/login",
       routes: {
         '/signup': (context) => const SignUp(),
         '/login': (context) => LoginPage(),
         '/home': (context) => const Base(index: 0),
         '/viewcompany': (context) => const ViewCompany(),
-        '/onecompany': (context) => const oneCompany(),
-        '/insertrate': (context) => InsertRate(company_id:'',),
-        '/priceview': (context) => const PriceView(),
+        // '/onecompany': (context) => const oneCompany(),
+        // '/insertrate': (context) => const InsertRate(),
+        // '/priceview': (context) => const PriceView(),
         '/myprofilekabadiwala': (context) => const CompanyProfile(),
-        '/myprofileuser': (context) => const UserProfile(),
         "/setInfo": (context) => SetInformation(),
-        "/ratespage": (context) => Rates(company_id: '',),
+        // "/ratespage": (context) => Rates(),
         "/setInfo": (context) => const Base(index: 0)
       },
     );
