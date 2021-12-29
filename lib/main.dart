@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:login_sprint1/pages/base.dart';
 import 'package:login_sprint1/pages/insertrate.dart';
+import 'package:login_sprint1/pages/items.dart';
 import 'package:login_sprint1/pages/login.dart';
 import 'package:login_sprint1/pages/myprofilekabadiwala.dart';
 import 'package:login_sprint1/pages/oneCompany.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: "/viewcompany",
+      initialRoute: "/itemsHire",
       routes: {
         '/signup': (context) => const SignUp(),
         '/login': (context) => LoginPage(),
@@ -29,7 +30,8 @@ class MyApp extends StatelessWidget {
         '/insertrate': (context) => const InsertRate(),
         '/priceview': (context) => const PriceView(),
         '/myprofilekabadiwala': (context) => const CompanyProfile(),
-        "/setInfo": (context) => SetInformation()
+        "/setInfo": (context) => SetInformation(),
+        "/itemsHire": (context) => const ItemsHire()
       },
     );
   }
