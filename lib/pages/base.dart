@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_sprint1/pages/myprofilekabadiwala.dart';
+import 'package:login_sprint1/pages/set_information.dart';
 
 import 'home.dart';
 
@@ -17,7 +18,7 @@ class _BaseState extends State<Base> {
 
   _BaseState(this.currentIndex);
 
-  final screens = [Home(), CompanyProfile()];
+  final screens = [Home(), CompanyProfile(), SetInformation()];
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +74,9 @@ class _BaseState extends State<Base> {
         onTap: (index) => setState(() => currentIndex = index),
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile")
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.three_g_mobiledata), label: "SetInformation")
         ],
       ),
     );
