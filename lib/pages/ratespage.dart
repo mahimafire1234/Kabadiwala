@@ -7,25 +7,29 @@ import 'package:login_sprint1/services/userservices.dart';
 import 'package:http/http.dart' as http;
 
 class Rates extends StatefulWidget{
-  const Rates({Key ? key}) : super(key:key);
+  String company_id;
+  Rates({required this.company_id});
+  // const Rates({Key ? key}) : super(key:key);
 
   @override
-  _RatesState createState()=> _RatesState();
+  _RatesState createState()=> _RatesState(company_id);
 }
 
 class _RatesState extends State<Rates>{
+  String company_id;
+  _RatesState(this.company_id);
 
   Widget buildNavigationButton () => FloatingActionButton(
     //onclick
     onPressed: (){
-      Navigator.push(context,MaterialPageRoute(builder:(context)=> InsertRate()));
+      Navigator.push(context,MaterialPageRoute(builder:(context)=> InsertRate(company_id:company_id)));
     },
     child: Text("+",style:TextStyle(fontWeight: FontWeight.w200)),
     backgroundColor: Color(0xff0077B6),
   );
 
   //variable for company id
-  var company_id = "9";
+  // var company_id = id;
 
   //get response
   Future<List<Category_Rate>?> getRate(id) async {

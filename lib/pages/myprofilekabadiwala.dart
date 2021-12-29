@@ -14,11 +14,11 @@ class CompanyProfile extends StatefulWidget {
 
 class _CompanyProfileState extends State<CompanyProfile> {
   String id ="";
-  Future<String> getuserdata() async {
+  Future<List<String>> getuserdata() async {
     await MySharedPreferences.init();
 
     final token = await MySharedPreferences.getToken();
-    print(token);
+    // print(token);
     var response = await http
         .get(Uri.parse("http://10.0.2.2:5000/user/login_company"), headers: {
       "Authorization": "Bearer $token",
@@ -27,13 +27,16 @@ class _CompanyProfileState extends State<CompanyProfile> {
     var data = await jsonDecode(response.body);
     String company_name = await data["data"]["name"];
     String company_id = await data["data"]["_id"];
+    //list
+    List<String> companyInfo = [company_id,company_name];
     //set variable
-    // setState(() {
-    //   id = company_id;
-    // });
-    print(data);
-    return company_name;
+    setState(() {
+      id = company_id;
+    });
+    return companyInfo;
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,23 +60,26 @@ class _CompanyProfileState extends State<CompanyProfile> {
               ),
               Padding(
                   padding: EdgeInsets.all(10),
-                  child: FutureBuilder<String>(
+                  child: FutureBuilder<List<String>>(
                     future: getuserdata(),
                     builder: (context, snapshot) {
                       return (snapshot.hasData == true && snapshot.data != null)
-                          ? Text(snapshot.data!,
+                          ? Text(snapshot.data![1],
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
                                 fontSize: 15,
                               ))
+
                           : Text("empty",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
                                 fontSize: 15,
-                              ));
+                              )
+                      );
                     },
+
                   )),
               Padding(
                   padding: EdgeInsets.all(10),
@@ -119,7 +125,8 @@ class _CompanyProfileState extends State<CompanyProfile> {
                         elevation: 5,
                         child: new InkWell(
                           onTap: () {
-                            Navigator.pushNamed(context,"/ratespage",arguments:id);
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => Rates(company_id: id)));
+                            print("id"+id);
                           },
                           child: Center(
                               // onPressed:(){print("clicked");},

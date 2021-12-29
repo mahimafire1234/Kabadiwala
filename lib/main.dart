@@ -27,11 +27,11 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const Base(index: 0),
         '/viewcompany': (context) => const ViewCompany(),
         '/onecompany': (context) => const oneCompany(),
-        '/insertrate': (context) => const InsertRate(),
+        // '/insertrate': (context) => const InsertRate(),
         '/priceview': (context) => const PriceView(),
         '/myprofilekabadiwala': (context) => const CompanyProfile(),
         "/setInfo": (context) => SetInformation(),
-        "/ratespage":(context) => Rates(),
+        // "/ratespage":(context) => Rates(),
       },
     );
   }

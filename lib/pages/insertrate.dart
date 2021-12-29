@@ -6,20 +6,25 @@ import 'package:http/http.dart' as http;
 import 'package:login_sprint1/pages/ratespage.dart';
 
 class InsertRate extends StatefulWidget {
-  const InsertRate({Key? key}) : super(key: key);
+  String company_id;
+  InsertRate({required this.company_id});
+  // const InsertRate({Key? key}) : super(key: key);
 
   @override
-  _InsertRateState createState() => _InsertRateState();
+  _InsertRateState createState() => _InsertRateState(company_id);
 }
 
 class _InsertRateState extends State<InsertRate> {
+  String company_id;
+  _InsertRateState(this.company_id);
+
   final List<String> category_list = ['Bottle', 'Plastic', 'Glass'];
   String? _selectedCategory;
 
   //backend ma insert ko lagi
   String price = "";
   String category = "";
-  String userID = "1";
+  // String userID = company_id;
 
 
   postData() async {
@@ -27,7 +32,7 @@ class _InsertRateState extends State<InsertRate> {
       var rate = [
         {"price": price, "category": _selectedCategory}
       ];
-      var data = {"userID": userID, "category_rate": rate};
+      var data = {"userID": company_id, "category_rate": rate};
       var body = await json.encode(data);
       print(body);
       var response =
@@ -150,7 +155,7 @@ class _InsertRateState extends State<InsertRate> {
                         );
                         ScaffoldMessenger.of(context).showSnackBar(snackB);
                         if(res["success"] == "true"){
-                          Navigator.pushNamed(context, "/ratespage");
+                          Navigator.push(context,MaterialPageRoute(builder:(context)=> Rates(company_id: company_id,)));
                         }
                     },
                     child: const Text(
