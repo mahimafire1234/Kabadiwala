@@ -5,14 +5,14 @@ import 'package:http/http.dart' as http;
 import 'package:login_sprint1/services/shared_preference.dart';
 import 'package:login_sprint1/pages/ratespage.dart';
 
-class CompanyProfile extends StatefulWidget {
-  const CompanyProfile({Key? key}) : super(key: key);
+class UserProfile extends StatefulWidget {
+  const UserProfile({Key? key}) : super(key: key);
 
   @override
-  _CompanyProfileState createState() => _CompanyProfileState();
+  _UserProfileState createState() => _UserProfileState();
 }
 
-class _CompanyProfileState extends State<CompanyProfile> {
+class _UserProfileState extends State<UserProfile> {
   String id ="";
   Future<List<String>> getuserdata() async {
     await MySharedPreferences.init();
@@ -25,15 +25,15 @@ class _CompanyProfileState extends State<CompanyProfile> {
     });
 
     var data = await jsonDecode(response.body);
-    String company_name = await data["data"]["name"];
-    String company_id = await data["data"]["_id"];
+    String user_name = await data["data"]["name"];
+    String user_id = await data["data"]["_id"];
     //list
-    List<String> companyInfo = [company_id,company_name];
+    List<String> userInfo = [user_name,user_id];
     //set variable
     setState(() {
-      id = company_id;
+      id = user_id;
     });
-    return companyInfo;
+    return userInfo;
   }
 
 
@@ -52,8 +52,8 @@ class _CompanyProfileState extends State<CompanyProfile> {
                   children: const [
                     Image(
                       image: AssetImage("assets/images/cycling.png"),
-                      width: 200,
-                      height: 200,
+                      width: 100,
+                      height: 100,
                     )
                   ],
                 ),
@@ -65,18 +65,18 @@ class _CompanyProfileState extends State<CompanyProfile> {
                     builder: (context, snapshot) {
                       return (snapshot.hasData == true && snapshot.data != null)
                           ? Text(snapshot.data![1],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 15,
-                              ))
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15,
+                          ))
 
-                          : Text("empty",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 15,
-                              )
+                          : Text("User",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15,
+                          )
                       );
                     },
 
@@ -90,6 +90,14 @@ class _CompanyProfileState extends State<CompanyProfile> {
                         fontSize: 15,
                       ))),
               Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text("+977-987654322",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 15,
+                      ))),
+              Padding(
                   padding: EdgeInsets.all(10.0),
                   child: ElevatedButton(
                     child: Text(
@@ -97,11 +105,25 @@ class _CompanyProfileState extends State<CompanyProfile> {
                       style: TextStyle(fontSize: 20),
                     ),
                     onPressed: () {
-                      // getuserdata();
                     },
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(Color(0xff0077B6)),
+                      MaterialStateProperty.all(Color(0xff0077B6)),
+                      fixedSize: MaterialStateProperty.all(Size(240.0, 50.0)),
+                    ),
+                  )),
+              Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: ElevatedButton(
+                    child: Text(
+                      "Deactivate my account",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    onPressed: () {
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                      MaterialStateProperty.all(Color(0xff0077B6)),
                       fixedSize: MaterialStateProperty.all(Size(240.0, 50.0)),
                     ),
                   )),
@@ -116,26 +138,25 @@ class _CompanyProfileState extends State<CompanyProfile> {
                   scrollDirection: Axis.vertical,
                   children: [
                     Card(
-                        semanticContainer: true,
-                        color: Color(0xff92CAE8),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            side: BorderSide(
-                                color: Color(0xff0077B6), width: 4.0)),
-                        elevation: 5,
-                        child: new InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => Rates(company_id: id)));
-                            print("id"+id);
-                          },
-                          child: Center(
-                              // onPressed:(){print("clicked");},
-                              child: Text("My pricings",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold))),
-                        ),
+                      semanticContainer: true,
+                      color: Color(0xff92CAE8),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                          side: BorderSide(
+                              color: Color(0xff0077B6), width: 4.0)),
+                      elevation: 5,
+                      child: new InkWell(
+                        onTap: () {
+                          // Navigator.of(context).push(MaterialPageRoute());
+                        },
+                        child: Center(
+                          // onPressed:(){print("clicked");},
+                            child: Text("My Blogs",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold))),
+                      ),
 
                     ),
                     Card(
@@ -172,7 +193,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
                                 color: Color(0xff0077B6), width: 4.0)),
                         elevation: 5,
                         child: const Center(
-                            child: Text("My Schedule",
+                            child: Text("My Appointments",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.white,
