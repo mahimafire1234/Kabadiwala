@@ -67,6 +67,7 @@ class ColumnStart extends StatefulWidget {
 
 class _ColumnStartState extends State<ColumnStart> {
   TextEditingController dateinput = TextEditingController();
+  TextEditingController timeinput = TextEditingController();
   void initState() {
     dateinput.text = "";
   }
@@ -113,7 +114,7 @@ class _ColumnStartState extends State<ColumnStart> {
                       dateinput.text = formateDate;
                     });
                   } else {
-                    print("dateis not selected");
+                    print("date is not selected");
                   }
                 },
               ),
@@ -148,6 +149,7 @@ class _ColumnStartState extends State<ColumnStart> {
               shadowColor: const Color(0xff2a2a2a),
               borderRadius: BorderRadius.circular(25),
               child: TextFormField(
+                controller: timeinput,
                 textAlign: TextAlign.center,
                 decoration: const InputDecoration(
 
@@ -160,6 +162,18 @@ class _ColumnStartState extends State<ColumnStart> {
                       CupertinoIcons.time,
                       color: Colors.black,
                     )),
+                readOnly: true,
+                onTap: () async {
+                  TimeOfDay? timepicker = await showTimePicker(
+                      context: context, initialTime: TimeOfDay.now());
+                  if (timepicker != null) {
+                    print(timepicker.format(context));
+                    String parseTime = timepicker.format(context);
+                    setState(() {
+                      timeinput.text = parseTime.toString();
+                    });
+                  }
+                },
               ),
             ),
           ),
