@@ -36,8 +36,6 @@ class _UserProfileState extends State<UserProfile> {
     return userInfo;
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
