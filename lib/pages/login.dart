@@ -218,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
                     //         SnackBar(content: Text("succesfully login")))
                     //   },
                   } else {
-                    Navigator.pushNamed(context, "/myprofilekabadiwala");
+                    Navigator.pushNamed(context, "/home");
                   }
                 },
                 child: Text(

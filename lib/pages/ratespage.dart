@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:login_sprint1/pages/insertrate.dart';
+import 'package:login_sprint1/pages/updateRate.dart';
 import 'package:login_sprint1/services/Category.dart';
 import 'package:login_sprint1/services/userservices.dart';
 import 'package:http/http.dart' as http;
@@ -45,7 +46,7 @@ class _RatesState extends State<Rates>{
       List<Category_Rate> category_rate = [];
 
       for(var item in result){
-        Category_Rate category_rates = Category_Rate(item["price"],item["category"]);
+        Category_Rate category_rates = Category_Rate(item["price"],item["category"],item["_id"]);
         category_rate.add(category_rates);
       }
       return category_rate;
@@ -144,7 +145,13 @@ class _RatesState extends State<Rates>{
                             shrinkWrap: true,
                             itemCount : snapshot.data?.length,
                             itemBuilder : (context, i){
-                              return Padding(
+                              return GestureDetector(
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                      UpdateRate(company_id: company_id,objectID:snapshot.data![i].objectID,priceOld:snapshot.data![i].price)));
+                                  },
+                              child:
+                                Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: PhysicalModel(
                                   borderRadius: BorderRadius.circular(5),
@@ -156,31 +163,31 @@ class _RatesState extends State<Rates>{
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         const SizedBox(height: 10.0),
-                                        Row(
-                                          children:[
-                                          Text(snapshot.data![i].category_rate,
-                                            style: TextStyle(
-                                                color: Color(0xFF000000),
-                                                fontSize: 18,
-                                                fontFamily: 'Rubik'),
-                                          ),
-                                          SizedBox(width: 10.0),
-                                          Padding(
-                                            padding: EdgeInsets.fromLTRB(150, 0, 0, 0),
-                                            child: Text(snapshot.data![i].price,
-                                              style: TextStyle(
-                                                  color: Color(0xFF000000),
-                                                  fontSize: 18,
-                                                  fontFamily: 'Rubik'),
-                                            ),
-                                          ),
-                                        ]),
+                                          Row(
+                                              children:[
+                                                Text(snapshot.data![i].category_rate,
+                                                  style: TextStyle(
+                                                      color: Color(0xFF000000),
+                                                      fontSize: 18,
+                                                      fontFamily: 'Rubik'),
+                                                ),
+                                                SizedBox(width: 10.0),
+                                                Padding(
+                                                  padding: EdgeInsets.fromLTRB(150, 0, 0, 0),
+                                                  child: Text(snapshot.data![i].price,
+                                                    style: TextStyle(
+                                                        color: Color(0xFF000000),
+                                                        fontSize: 18,
+                                                        fontFamily: 'Rubik'),
+                                                  ),
+                                                ),
+                                              ]),
                                         SizedBox(height: 10.0),
                                       ],
                                     ),
                                   ),
                                 ),
-                              );
+                              ))
                               ;
                             },
                           );
@@ -198,6 +205,6 @@ class _RatesState extends State<Rates>{
 
 //class Category rate for get response
 class Category_Rate{
-  final String price, category_rate;
-  Category_Rate(this.price, this.category_rate);
+  final String price, category_rate,objectID;
+  Category_Rate(this.price, this.category_rate,this.objectID);
 }

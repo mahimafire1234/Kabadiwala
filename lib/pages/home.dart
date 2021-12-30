@@ -124,20 +124,24 @@ class _HomeState extends State<Home> {
                         child: Option(
                             image: "assets/icons/list.png",
                             text: "Scoreboard")),
-                    Container(
-                        padding: EdgeInsets.only(left: 10.0),
-                        decoration: const BoxDecoration(
-                            border: Border(
-                              top: BorderSide(
-                                color: Colors.grey,
-                                width: 0.5,
-                              ),
-                              right: BorderSide(
-                                color: Colors.grey,
-                                width: 0.5,
-                              ),
-                            )),
-                        child: Option(image: "assets/icons/delivery.png", text: "Vendors"),
+                    GestureDetector(
+                        onTap: (){Navigator.pushNamed(context, "/viewcompany");},
+                      child: Container(
+                          padding: EdgeInsets.only(left: 10.0),
+                          decoration: const BoxDecoration(
+                              border: Border(
+                                top: BorderSide(
+                                  color: Colors.grey,
+                                  width: 0.5,
+                                ),
+                                right: BorderSide(
+                                  color: Colors.grey,
+                                  width: 0.5,
+                                ),
+                              )),
+                          child: Option(image: "assets/icons/delivery.png", text: "Vendors"),
+                    )
+
                     ),
                     Container(
                       padding: EdgeInsets.only(left: 20.0),
