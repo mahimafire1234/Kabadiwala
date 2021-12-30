@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:login_sprint1/LocalDataSave/SaveLocalData.dart';
 import 'package:login_sprint1/custom/ButtonAsWidgetr.dart';
 import 'package:login_sprint1/pages/Constraints.dart';
+import 'package:sweetalert/sweetalert.dart';
 
 class SetInformation extends StatelessWidget {
   const SetInformation({Key? key}) : super(key: key);
@@ -72,6 +74,11 @@ class _ColumnStartState extends State<ColumnStart> {
     dateinput.text = "";
   }
 
+  TextEditingController locationinput = TextEditingController();
+  // void initState() {
+  //   dateinput.text = "";
+  // }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -109,6 +116,7 @@ class _ColumnStartState extends State<ColumnStart> {
                     print(pickedDate);
                     String formateDate =
                         DateFormat("yyyy-MM-dd").format(pickedDate);
+                    SaveLocalData.savedData(formateDate);
                     print(formateDate);
                     setState(() {
                       dateinput.text = formateDate;
@@ -128,6 +136,7 @@ class _ColumnStartState extends State<ColumnStart> {
               shadowColor: const Color(0xff2a2a2a),
               borderRadius: BorderRadius.circular(25),
               child: TextFormField(
+                controller: locationinput,
                 textAlign: TextAlign.center,
                 decoration: const InputDecoration(
 
@@ -169,6 +178,7 @@ class _ColumnStartState extends State<ColumnStart> {
                   if (timepicker != null) {
                     print(timepicker.format(context));
                     String parseTime = timepicker.format(context);
+                    SaveLocalData.savedData(parseTime);
                     setState(() {
                       timeinput.text = parseTime.toString();
                     });
@@ -182,7 +192,25 @@ class _ColumnStartState extends State<ColumnStart> {
           ),
           ButtonAsWidget(
             buttonColor: Color(0xff0077B6),
-            onClick: () {},
+            onClick: () {
+              SweetAlert.show(context,
+                  title: "Are u sure u wanna book",
+                  style: SweetAlertStyle.confirm,
+                  showCancelButton: true, onPress: (bool isConfirm) {
+                if (isConfirm) {
+                  SweetAlert.show(context,
+                      style: SweetAlertStyle.success, title: "Success");
+                  List<String> myAllSavedData = SaveLocalData.getSavedData;
+                  print(myAllSavedData[0]);
+                  // for (var i in myAllSavedData) {
+                  //   print("Your saved data is --> $i");
+                  // }
+                  // return false to keep dialog
+                  return false;
+                }
+                return true;
+              });
+            },
             buttonText: "Confirm Booking",
           ),
         ],
