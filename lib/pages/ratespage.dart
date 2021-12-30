@@ -136,7 +136,7 @@ class _RatesState extends State<Rates>{
                         if (snapshot.data == null) {
                           return Container(
                             child: Center(
-                              child: Text("Add rates"),
+                              child: Text("You havenot added any price rates"),
                             ),
                           );
                         }else {

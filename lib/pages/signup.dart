@@ -256,7 +256,7 @@ class _SignUpState extends State<SignUp> {
                       var response = await postData();
                       var res = json.decode(response);
                       print(res);
-                      if(res["success"] == true){
+                      if (res["success"] == true) {
                         final snackB = SnackBar(
                           duration: Duration(seconds: 5),
                           content: Text(res["message"]),
@@ -267,8 +267,7 @@ class _SignUpState extends State<SignUp> {
                         );
                         ScaffoldMessenger.of(context).showSnackBar(snackB);
                         Navigator.pushNamed(context, "/login");
-                      }
-                      else{
+                      } else {
                         final snackB = SnackBar(
                           duration: Duration(seconds: 5),
                           content: Text(res["message"]),

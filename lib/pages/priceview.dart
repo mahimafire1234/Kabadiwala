@@ -101,6 +101,15 @@ class _PriceViewState extends State<PriceView> {
                                         fontFamily: 'Rubik'),
                                   ),
                                 ),
+                                // Padding(
+                                //   padding: EdgeInsets.fromLTRB(25.0, 0, 0, 0),
+                                //   child:IconButton(
+                                //     icon:Icon(Icons.edit),
+                                //     iconSize: 20.0,
+                                //     color: Colors.black,
+                                //     onPressed: (){},
+                                //   ),
+                                // )
                               ]),
                               SizedBox(height: 10.0),
                             ],
