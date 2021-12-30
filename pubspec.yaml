@@ -41,6 +41,7 @@ dependencies:
   http: 0.13.4
   shared_preferences:
   intl:
+  sweetalert:
 
 dev_dependencies:
   flutter_test:
