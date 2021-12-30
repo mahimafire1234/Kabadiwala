@@ -106,11 +106,7 @@ class _ViewCompanyState extends State<ViewCompany> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute
-                                        (builder: (context)=>oneCompany(),
-                                            settings: RouteSettings(
-                                              arguments: snapshot.data![i],
-                                            )
-                                          )
+                                        (builder: (context)=>oneCompany(id: snapshot.data![i]._id))
                                       );
                                   },
                                   title: Row(
