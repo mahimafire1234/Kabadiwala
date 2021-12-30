@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_sprint1/services/userservices.dart';
-import 'package:login_sprint1/pages/login.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -23,7 +22,7 @@ class _SignUpState extends State<SignUp> {
   String name = "";
   String email = "";
   String number = "";
-  String usertype = "user";
+  String usertype = "normal";
   String password = "";
   String confirmPassword = "";
 
@@ -91,7 +90,7 @@ class _SignUpState extends State<SignUp> {
                   Text("Company"),
                   Radio(
                       autofocus: true,
-                      value: "user",
+                      value: "normal",
                       groupValue: usertype,
                       onChanged: (value) {
                         setState(() {
@@ -255,29 +254,15 @@ class _SignUpState extends State<SignUp> {
                     if (_key.currentState!.validate()) {
                       var response = await postData();
                       var res = json.decode(response);
-                      print(res);
-                      if(res["success"] == true){
-                        final snackB = SnackBar(
-                          duration: Duration(seconds: 5),
-                          content: Text(res["message"]),
-                          action: SnackBarAction(
-                            label: 'Dismiss',
-                            onPressed: () {},
-                          ),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackB);
-                        Navigator.pushNamed(context, "/login");
-                      }
-                      else{
-                        final snackB = SnackBar(
-                          duration: Duration(seconds: 5),
-                          content: Text(res["message"]),
-                          action: SnackBarAction(
-                            label: 'Dismiss',
-                            onPressed: () {},
-                          ),
-                        );
-                      }
+                      final snackB = SnackBar(
+                        duration: Duration(seconds: 5),
+                        content: Text(res["message"]),
+                        action: SnackBarAction(
+                          label: 'Dismiss',
+                          onPressed: () {},
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackB);
                     }
                   },
                   child: Padding(

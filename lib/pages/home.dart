@@ -124,24 +124,22 @@ class _HomeState extends State<Home> {
                         child: Option(
                             image: "assets/icons/list.png",
                             text: "Scoreboard")),
-                    GestureDetector(
-                        onTap: (){Navigator.pushNamed(context, "/viewcompany");},
-                      child: Container(
-                          padding: EdgeInsets.only(left: 10.0),
-                          decoration: const BoxDecoration(
-                              border: Border(
-                                top: BorderSide(
-                                  color: Colors.grey,
-                                  width: 0.5,
-                                ),
-                                right: BorderSide(
-                                  color: Colors.grey,
-                                  width: 0.5,
-                                ),
-                              )),
-                          child: Option(image: "assets/icons/delivery.png", text: "Vendors"),
-                    )
-
+                    Container(
+                        padding: EdgeInsets.only(left: 10.0),
+                        decoration: const BoxDecoration(
+                            border: Border(
+                              top: BorderSide(
+                                color: Colors.grey,
+                                width: 0.5,
+                              ),
+                              right: BorderSide(
+                                color: Colors.grey,
+                                width: 0.5,
+                              ),
+                            )),
+                        child: Option(image: "assets/icons/delivery.png",
+                            text: "Vendors",
+                        link: "/viewcompany"),
                     ),
                     Container(
                       padding: EdgeInsets.only(left: 20.0),
@@ -172,28 +170,33 @@ class _HomeState extends State<Home> {
 class Option extends StatefulWidget {
   final String? image;
   final String? text;
+  final String? link;
 
-  const Option({Key? key, this.image, this.text}) : super(key: key);
+  const Option({Key? key, this.image, this.text, this.link}) : super(key: key);
 
   @override
   _OptionState createState() =>
-      _OptionState(image: this.image, text: this.text);
+      _OptionState(image: this.image, text: this.text, link: this.link);
 }
 
 class _OptionState extends State<Option> {
   String? image;
   String? text;
+  String? link;
 
-  _OptionState({this.image, this.text});
+  _OptionState({this.image, this.text, this.link});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-      Image.asset("${this.image}", width: 50),
-      SizedBox(width: 15.0),
-      Text("${this.text}", overflow: TextOverflow.clip)
-    ]);
+    return InkWell(
+      onTap: () {Navigator.pushNamed(context, link.toString());},
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+        Image.asset("${image}", width: 50),
+        SizedBox(width: 15.0),
+        Text("${text}", overflow: TextOverflow.clip)
+      ]),
+    );
   }
 }
