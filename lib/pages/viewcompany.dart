@@ -17,7 +17,8 @@ class ViewCompany extends StatefulWidget {
     var jsonData = await jsonDecode(response.body);
     List<User>users = [];
     for(var u in jsonData["user"]){
-      User user = User(u["name"], u["email"], u["phone"]);
+      print(u["_id"]);
+      User user = User(u["_id"], u["name"], u["email"], u["phone"]);
       users.add(user);
     }
 
@@ -101,8 +102,16 @@ class _ViewCompanyState extends State<ViewCompany> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15.0),
                                     ),
-                                  onTap: (){
-                                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>oneCompany()));
+                                  onTap: () async{
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute
+                                        (builder: (context)=>oneCompany(),
+                                            settings: RouteSettings(
+                                              arguments: snapshot.data![i],
+                                            )
+                                          )
+                                      );
                                   },
                                   title: Row(
                                     children: [
@@ -160,7 +169,12 @@ class _ViewCompanyState extends State<ViewCompany> {
 }
 
 class User{
-  final String name, email, number;
-  User(this.name, this.email, this.number);
+  final String _id, name, email, number;
+  User(this._id, this.name, this.email, this.number);
+
+  getId() {
+    return _id;
+  }
+
 }
 

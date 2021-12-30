@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/pages/oneCompany.dart';
+import 'package:login_sprint1/pages/viewcompany.dart';
+import 'package:login_sprint1/services/category_services.dart';
 
 class ItemsHire extends StatefulWidget {
   const ItemsHire({Key? key}) : super(key: key);
@@ -12,8 +14,25 @@ class ItemsHire extends StatefulWidget {
 }
 
 class _ItemsHireState extends State<ItemsHire> {
+  getRates(id) async {
+    try {
+      var categoryServices = CategoryServices();
+      var response = await categoryServices.getRates(id);
+      print(response);
+      return response;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    final User? user = ModalRoute.of(context)?.settings.arguments as User?;
+
+    var response = getRates(user!.getId());
+    response();
+
     return Scaffold(
       backgroundColor: Color(0xFF0077B6),
       body: SafeArea(
