@@ -159,7 +159,7 @@ class _InsertRateState extends State<InsertRate> {
                           ),
                         );
                         ScaffoldMessenger.of(context).showSnackBar(snackB);
-                        if(res["success"] == "true"){
+                        if(res["success"] == true){
                           Navigator.push(context,MaterialPageRoute(builder:(context)=> Rates(company_id: company_id,)));
                         }
                     },

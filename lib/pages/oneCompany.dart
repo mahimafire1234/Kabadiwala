@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:login_sprint1/pages/ratespage.dart';
+import 'package:login_sprint1/pages/priceview.dart';
 
 import 'items.dart';
 
@@ -147,8 +147,7 @@ class _ShowOneState extends State<oneCompany> {
                           side: BorderSide(
                               color: Color.fromARGB(255, 0, 119, 182))))),
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Rates(company_id: id,)));
-              },
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PriceView(company_id: id,)));              },
               child: Text(
                 "See Pricings",
               ),

@@ -20,11 +20,12 @@ class _CompanyProfileState extends State<CompanyProfile> {
     final token = await MySharedPreferences.getToken();
     // print(token);
     var response = await http
-        .get(Uri.parse("http://10.0.2.2:5000/user/loggedin_user"), headers: {
+        .get(Uri.parse("http://10.0.2.2:5000/user/loggedin_company"), headers: {
       "Authorization": "Bearer $token",
     });
 
     var data = await jsonDecode(response.body);
+    print(data);
     String company_name = await data["data"]["name"];
     String company_id = await data["data"]["_id"];
     //list
@@ -35,7 +36,6 @@ class _CompanyProfileState extends State<CompanyProfile> {
     });
     return companyInfo;
   }
-
 
 
   @override
