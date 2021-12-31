@@ -18,7 +18,7 @@ class _BaseState extends State<Base> {
 
   _BaseState(this.currentIndex);
 
-  final screens = [Home(), CompanyProfile(), SetInformation()];
+  final screens = [Home(), CompanyProfile()];
 
   @override
   Widget build(BuildContext context) {
@@ -74,9 +74,7 @@ class _BaseState extends State<Base> {
         onTap: (index) => setState(() => currentIndex = index),
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.three_g_mobiledata), label: "SetInformation")
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile")
         ],
       ),
     );

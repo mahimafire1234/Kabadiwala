@@ -82,7 +82,7 @@ class _ViewCompanyState extends State<ViewCompany> {
                           if (snapshot.data == null) {
                             return Container(
                               child: Center(
-                                child: Text("Loading.. 1"),
+                                child: Text("Loading.."),
                               ),
                             );
                           }else {

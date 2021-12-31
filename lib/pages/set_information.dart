@@ -6,11 +6,26 @@ import 'package:login_sprint1/custom/ButtonAsWidgetr.dart';
 import 'package:login_sprint1/pages/Constraints.dart';
 import 'package:sweetalert/sweetalert.dart';
 
-class SetInformation extends StatelessWidget {
-  const SetInformation({Key? key}) : super(key: key);
+class SetInformation extends StatefulWidget {
+  final String name;
+  final String id;
+  final Object body;
+  const SetInformation({Key? key, required this.name, required this.id,  required this.body}) : super(key: key);
+
+  @override
+  State<SetInformation> createState() => _SetInformationState(name: name, id: id, body: body);
+}
+
+class _SetInformationState extends State<SetInformation> {
+  String id;
+  String name;
+  var body;
+
+  _SetInformationState({ required this.name, required this.id, required this.body});
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(

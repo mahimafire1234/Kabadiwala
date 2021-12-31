@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/pages/priceview.dart';
 
+import 'items.dart';
+
 class oneCompany extends StatefulWidget {
   String id;
   oneCompany({required this.id});
@@ -16,6 +18,7 @@ class oneCompany extends StatefulWidget {
 
 class _ShowOneState extends State<oneCompany> {
   String id;
+  String name = "";
   _ShowOneState(this.id);
   //get wala for one company info
 
@@ -31,6 +34,8 @@ class _ShowOneState extends State<oneCompany> {
     List<OneCompany> onecompanyList =[];
     OneCompany onecompany = OneCompany(deriveData["name"], deriveData["email"], deriveData["id"]);
     onecompanyList.add(onecompany);
+
+    name = deriveData["name"];
     // // adding data to empty list
     return onecompanyList;
   }
@@ -99,7 +104,12 @@ class _ShowOneState extends State<oneCompany> {
                                 borderRadius: BorderRadius.circular(10.0),
                                 side: BorderSide(
                                     color: Color.fromARGB(255, 0, 119, 182))))),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => ItemsHire(id: this.id, name: this.name ),
+
+                      ));
+                    },
                     child: Text(
                       "Book Now",
                     )),

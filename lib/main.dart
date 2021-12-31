@@ -33,9 +33,9 @@ class MyApp extends StatelessWidget {
         '/priceview': (context) => PriceView(company_id: '',),
         '/myprofilekabadiwala': (context) => const CompanyProfile(),
         '/myprofileuser': (context) => const UserProfile(),
-        "/setInfo": (context) => SetInformation(),
+        "/setInfo": (context) => SetInformation(name: '', id: '', body: ''),
         "/ratespage": (context) => Rates(company_id: '',),
-        "/itemsHire": (context) => const ItemsHire()
+        "/itemsHire": (context) => const ItemsHire(id: '', name: '')
       },
     );
   }
