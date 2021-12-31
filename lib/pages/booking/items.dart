@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/pages/oneCompany.dart';
-import 'package:login_sprint1/pages/set_information.dart';
+import 'package:login_sprint1/pages/booking/set_information.dart';
 import 'package:login_sprint1/pages/viewcompany.dart';
 import 'package:login_sprint1/services/category_services.dart';
 
@@ -25,6 +25,7 @@ class _ItemsHireState extends State<ItemsHire> {
   int total = 0;
 
   List<int> previous = [];
+  var items = [];
   var body = {};
 
   TextEditingController locationinput = TextEditingController();
@@ -168,6 +169,11 @@ class _ItemsHireState extends State<ItemsHire> {
                                 previous = List<int>.filled(data.length, 0, growable: true);
                               }
 
+                              if(items.isEmpty){
+                                items = List<dynamic>.filled(data.length, {}, growable: true);
+
+                              }
+
                               return ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: snapshot.data?.length,
@@ -211,7 +217,15 @@ class _ItemsHireState extends State<ItemsHire> {
                                             setState(() => total = total - last + data);
                                             previous[i] = data;
 
-                                            body[snapshot.data![i].category] = data;
+                                            var itemData = {
+                                              "category": snapshot.data![i].category,
+                                              "amount": input.isNotEmpty ? input : "0",
+                                              "category_price": input.isNotEmpty ? data.toString() : "0"
+                                            };
+
+                                            items[i] = itemData;
+
+
                                           },
                                         )),
                                       ],
@@ -224,8 +238,6 @@ class _ItemsHireState extends State<ItemsHire> {
 
                           }
                       ),
-
-
                       const Padding(
                         padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
                         child: Divider(color: Colors.black),
@@ -261,6 +273,10 @@ class _ItemsHireState extends State<ItemsHire> {
                           width: 300,
                           child: ElevatedButton(
                               onPressed: () {
+                                body = {
+                                  "items": items,
+                                  "total_price": total
+                                };
                                 Navigator.push(context, MaterialPageRoute(
                                   builder: (context) => SetInformation(id: this.id, name: this.name, body: this.body ),
                                 ));

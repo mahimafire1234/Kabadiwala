@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:login_sprint1/pages/items.dart';
+import 'package:login_sprint1/pages/booking/items.dart';
 
 class CategoryServices{
   var baseUri = "http://10.0.2.2:5000/category";
