@@ -9,7 +9,7 @@ void main() async {
     var userServices = UserServices();
     var body = {
       "name": "test",
-      "email": "test1256@gmail.com",
+      "email": "test12567@gmail.com",
       "number": "2393939",
       "type": "normal",
       "password": "test"
