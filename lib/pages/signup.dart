@@ -22,7 +22,7 @@ class _SignUpState extends State<SignUp> {
   String name = "";
   String email = "";
   String number = "";
-  String usertype = "normal";
+  String usertype = "user";
   String password = "";
   String confirmPassword = "";
 

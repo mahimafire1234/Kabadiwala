@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:login_sprint1/LocalDataSave/SaveLocalData.dart';
 import 'package:login_sprint1/custom/ButtonAsWidgetr.dart';
 import 'package:login_sprint1/pages/Constraints.dart';
+import 'package:login_sprint1/pages/booking/confirm_booking.dart';
 import 'package:sweetalert/sweetalert.dart';
 
 class SetInformation extends StatefulWidget {
@@ -20,6 +21,7 @@ class _SetInformationState extends State<SetInformation> {
   String id;
   String name;
   var body;
+
 
   _SetInformationState({ required this.name, required this.id, required this.body});
 
@@ -39,9 +41,9 @@ class _SetInformationState extends State<SetInformation> {
               ),
               SizedBox(height: 40.0),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal: 80, vertical: 10),
                 child: Row(
-                  children: const [
+                  children:  [
                     Text(
                       "Company: ",
                       style: TextStyle(
@@ -51,7 +53,7 @@ class _SetInformationState extends State<SetInformation> {
                       width: 10.0,
                     ),
                     Text(
-                      "Rajiv karky",
+                      this.name,
                       style: TextStyle(
                           fontSize: 18.0,
                           color: Colors.redAccent,
@@ -66,7 +68,7 @@ class _SetInformationState extends State<SetInformation> {
               SizedBox(
                 height: 10.0,
               ),
-              ColumnStart(),
+              ColumnStart(id: id, data: body, name: name),
             ],
           ),
         ),
@@ -76,13 +78,25 @@ class _SetInformationState extends State<SetInformation> {
 }
 
 class ColumnStart extends StatefulWidget {
-  const ColumnStart({Key? key}) : super(key: key);
+  final String id;
+  final Object data;
+  final Object name;
+  const ColumnStart({Key? key, required this.id, required this.data, required this.name}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ColumnStartState();
+  State<StatefulWidget> createState() => _ColumnStartState(id: id, data: data, name: name);
 }
 
 class _ColumnStartState extends State<ColumnStart> {
+  String date = "";
+  String time = "";
+  String location = "";
+  String id;
+  var data;
+  var name;
+
+  var body = {};
+
   TextEditingController dateinput = TextEditingController();
   TextEditingController timeinput = TextEditingController();
   void initState() {
@@ -93,6 +107,8 @@ class _ColumnStartState extends State<ColumnStart> {
   // void initState() {
   //   dateinput.text = "";
   // }
+
+  _ColumnStartState({ required this.id, required this.data, required this.name });
 
   @override
   Widget build(BuildContext context) {
@@ -151,6 +167,9 @@ class _ColumnStartState extends State<ColumnStart> {
               shadowColor: const Color(0xff2a2a2a),
               borderRadius: BorderRadius.circular(25),
               child: TextFormField(
+                onChanged: (value) {
+                  setState(() => location = value);
+                },
                 controller: locationinput,
                 textAlign: TextAlign.center,
                 decoration: const InputDecoration(
@@ -213,8 +232,20 @@ class _ColumnStartState extends State<ColumnStart> {
                   style: SweetAlertStyle.confirm,
                   showCancelButton: true, onPress: (bool isConfirm) {
                 if (isConfirm) {
-                  SweetAlert.show(context,
-                      style: SweetAlertStyle.success, title: "Success");
+
+                  body = {
+                    "company" : id,
+                    "date" : dateinput.text.toString(),
+                    "time" : timeinput.text.toString(),
+                    "location" : location,
+                    "items": data["items"],
+                    "total_price": data["total_price"]
+                  };
+
+                  Navigator.push(context, MaterialPageRoute(builder: (builder) => ConfirmBooking(data: body, name: name)));
+
+                  // SweetAlert.show(context,
+                  //     style: SweetAlertStyle.success, title: "Success");
                   List<String> myAllSavedData = SaveLocalData.getSavedData;
                   print(myAllSavedData[0]);
                   // for (var i in myAllSavedData) {

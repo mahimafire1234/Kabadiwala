@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/pages/priceview.dart';
 
-import 'items.dart';
+import 'booking/items.dart';
 
 class oneCompany extends StatefulWidget {
   String id;
