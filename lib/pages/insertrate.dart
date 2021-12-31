@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/pages/ratespage.dart';
+import 'package:login_sprint1/services/userservices.dart';
 
 class InsertRate extends StatefulWidget {
   String company_id;
@@ -36,15 +37,18 @@ class _InsertRateState extends State<InsertRate> {
       var data = {"userID": company_id, "category_rate": rate};
       var body = await json.encode(data);
       print(body);
-      var response =
-          await http.post(Uri.parse("http://10.0.2.2:5000/category/insertRate"),
-              headers: {
-                'Content-type': 'application/json',
-                "Accept": "application/json",
-              },
-              body: body);
-      print(body);
-      return response.body;
+      var userServices = UserServices();
+      var response = await userServices.insertRate(body);
+
+      // var response =
+      //     await http.post(Uri.parse("http://10.0.2.2:5000/category/insertRate"),
+      //         headers: {
+      //           'Content-type': 'application/json',
+      //           "Accept": "application/json",
+      //         },
+      //         body: body);
+      // print(body);
+      return response;
     } catch (error) {
       print("error");
       print(error);

@@ -19,6 +19,19 @@ class UserServices{
     }
   }
 
-
+  Future<String?> insertRate(body) async {
+    try {
+      var response = await http
+          .post(Uri.parse("http://10.0.2.2:5000/category/insertRate"),
+          headers: {
+            'Content-type' : 'application/json',
+            "Accept": "application/json",
+          },
+          body: json.encode(body));
+      return response.body;
+    } catch (e) {
+      print(e);
+    }
+  }
 
 }
