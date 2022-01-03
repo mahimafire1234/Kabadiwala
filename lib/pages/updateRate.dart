@@ -6,38 +6,33 @@ import 'package:flutter/painting.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/pages/ratespage.dart';
 
-class InsertRate extends StatefulWidget {
+class UpdateRate extends StatefulWidget {
   String company_id;
-  InsertRate({required this.company_id});
+  String objectID;
+  String priceOld;
+  UpdateRate({required this.company_id,required this.objectID,required this.priceOld});
   // const InsertRate({Key? key}) : super(key: key);
 
   @override
-  _InsertRateState createState() => _InsertRateState(company_id);
+  _UpdateRateState createState() => _UpdateRateState(company_id,objectID,priceOld);
 }
 
-class _InsertRateState extends State<InsertRate> {
+class _UpdateRateState extends State<UpdateRate> {
   String company_id;
-  _InsertRateState(this.company_id);
-
-  final List<String> category_list = ['Bottle', 'Plastic', 'Glass'];
-  String? _selectedCategory;
+  String objectID;
+  String priceOld;
+  _UpdateRateState(this.company_id,this.objectID,this.priceOld);
 
   //backend ma insert ko lagi
   String price = "";
-  String category = "";
   // String userID = company_id;
-
-
   postData() async {
     try {
-      var rate = [
-        {"price": price, "category": _selectedCategory}
-      ];
-      var data = {"userID": company_id, "category_rate": rate};
+      var data = {"price":price};
       var body = await json.encode(data);
       print(body);
       var response =
-      await http.post(Uri.parse("http://10.0.2.2:5000/category/insertRate"),
+      await http.put(Uri.parse("http://10.0.2.2:5000/category/updateRate/${company_id}/${objectID}"),
           headers: {
             'Content-type': 'application/json',
             "Accept": "application/json",
@@ -46,13 +41,14 @@ class _InsertRateState extends State<InsertRate> {
       print(body);
       return response.body;
     } catch (error) {
-      print("error");
       print(error);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    print(company_id);
+    print(objectID);
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -60,7 +56,7 @@ class _InsertRateState extends State<InsertRate> {
             const Padding(
               padding: EdgeInsets.all(20.0),
               child: Text(
-                'Set Pricing',
+                'Update Pricing',
                 style: TextStyle(
                     color: Color(0xFF0077B6),
                     fontSize: 25,
@@ -77,40 +73,6 @@ class _InsertRateState extends State<InsertRate> {
                   fontFamily: 'Rubik'),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
-              child: PhysicalModel(
-                borderRadius: BorderRadius.circular(45),
-                color: Colors.white,
-                elevation: 5.0,
-                shadowColor: const Color(0xff2a2a2a),
-                child: DropdownButtonFormField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.all(Radius.circular(25)),
-                      ),
-                      contentPadding: EdgeInsets.only(left: 20.0)),
-                  hint: Text('Choose a category'),
-                  value: _selectedCategory,
-                  onChanged: (newValue) {
-                    setState(() {
-                      _selectedCategory = newValue as String;
-                      print("sc");
-                      print(_selectedCategory);
-                    });
-                  },
-                  items: category_list.map((String value1) {
-                    return DropdownMenuItem<String>(
-                      value: value1,
-                      child: new Text(value1),
-                    );
-                  }).toList(),
-                  isDense: true,
-                  isExpanded: true,
-                ),
-              ),
-            ),
-            Padding(
               padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
               child: PhysicalModel(
                 borderRadius: BorderRadius.circular(25),
@@ -118,6 +80,7 @@ class _InsertRateState extends State<InsertRate> {
                 elevation: 5.0,
                 shadowColor: const Color(0xff2a2a2a),
                 child: TextFormField(
+                  initialValue: priceOld,
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
@@ -155,7 +118,7 @@ class _InsertRateState extends State<InsertRate> {
                         ),
                       );
                       ScaffoldMessenger.of(context).showSnackBar(snackB);
-                      if(res["success"] == "true"){
+                      if(res["success"] == true){
                         Navigator.push(context,MaterialPageRoute(builder:(context)=> Rates(company_id: company_id,)));
                       }
                     },

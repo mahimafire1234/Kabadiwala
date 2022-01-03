@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:login_sprint1/pages/base.dart';
 import 'package:login_sprint1/pages/insertrate.dart';
+import 'package:login_sprint1/pages/booking/items.dart';
 import 'package:login_sprint1/pages/login.dart';
+import 'package:login_sprint1/pages/myprofileUser.dart';
 import 'package:login_sprint1/pages/myprofilekabadiwala.dart';
 import 'package:login_sprint1/pages/oneCompany.dart';
-import 'package:login_sprint1/pages/priceview.dart';
-import 'package:login_sprint1/pages/set_information.dart';
+import 'package:login_sprint1/pages/ratespage.dart';
+import 'package:login_sprint1/pages/booking/set_information.dart';
 import 'package:login_sprint1/pages/signup.dart';
 import 'package:login_sprint1/pages/viewcompany.dart';
 
@@ -25,11 +27,13 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginPage(),
         '/home': (context) => const Base(index: 0),
         '/viewcompany': (context) => const ViewCompany(),
-        '/onecompany': (context) => const oneCompany(),
-        '/insertrate': (context) => const InsertRate(),
-        '/priceview': (context) => const PriceView(),
+        '/onecompany': (context) => oneCompany(id: '',),
+        '/insertrate': (context) =>  InsertRate(company_id: '',),
         '/myprofilekabadiwala': (context) => const CompanyProfile(),
-        "/setInfo": (context) => SetInformation()
+        '/myprofileuser': (context) => const UserProfile(),
+        "/setInfo": (context) => SetInformation(name: '', id: '', body: ''),
+        "/ratespage": (context) => Rates(company_id: '',),
+        "/itemsHire": (context) => const ItemsHire(id: '', name: '')
       },
     );
   }

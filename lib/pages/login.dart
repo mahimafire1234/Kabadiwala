@@ -4,8 +4,8 @@ import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:http/http.dart' as http;
 import 'package:login_sprint1/services/shared_preference.dart';
+import 'package:login_sprint1/services/userservices.dart';
 
 class LoginPage extends StatefulWidget {
   String email = "";
@@ -24,9 +24,10 @@ class LoginPage extends StatefulWidget {
       "password": loginPassword
     };
     try {
-      var response = await http
-          .post(Uri.parse("http://10.0.2.2:5000/user/login"), body: body);
-      var data = json.decode(response.body);
+      var response = await UserServices.signin(
+          body); // signin fuction returns response.body
+
+      var data = json.decode(response);
       print(data["success"]);
       if (data["success"] == true) {
         token = (data["token"]);
@@ -218,7 +219,7 @@ class _LoginPageState extends State<LoginPage> {
                     //         SnackBar(content: Text("succesfully login")))
                     //   },
                   } else {
-                    Navigator.pushNamed(context, "/myprofilekabadiwala");
+                    Navigator.pushNamed(context, "/home");
                   }
                 },
                 child: Text(
