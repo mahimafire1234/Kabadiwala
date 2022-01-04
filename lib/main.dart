@@ -17,11 +17,13 @@ void main(){ AwesomeNotifications().initialize(
   'resource://drawable/notification.png',
   [
     NotificationChannel(
-      channelKey: 'basic_channel',  //shown when enabling permission in the setting
+      channelKey: 'schedule_reminder',  //shown when enabling permission in the setting
       channelName: 'Reminder',  //name shown in setting
       defaultColor: const Color(0xFF0077B6), //default color of the notification
       importance: NotificationImportance.High,  //display notification on screen
-      channelShowBadge: true,  // to show number of notification badge on app icon
+      //channelShowBadge: true, // to show number of notification badge on app icon
+      locked: true,
+      soundSource : 'resource://drawable/notification.mp3'
     ),
   ],
 );
