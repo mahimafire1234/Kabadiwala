@@ -14,6 +14,7 @@ class CompanyProfile extends StatefulWidget {
 
 class _CompanyProfileState extends State<CompanyProfile> {
   String id ="";
+
   Future<List<String>> getuserdata() async {
     await MySharedPreferences.init();
 
@@ -25,7 +26,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
     });
 
     var data = await jsonDecode(response.body);
-    print(data);
+    // print(data);
     String company_name = await data["data"]["name"];
     String company_id = await data["data"]["_id"];
     //list
