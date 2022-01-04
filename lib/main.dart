@@ -23,7 +23,7 @@ void main(){ AwesomeNotifications().initialize(
       importance: NotificationImportance.High,  //display notification on screen
       //channelShowBadge: true, // to show number of notification badge on app icon
       locked: true,
-      soundSource : 'resource://drawable/notification.mp3'
+      soundSource : 'resource://raw/notification.mp3'
     ),
   ],
 );
