@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,49 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  @override
+  void initState() {  //for notification permission
+    super.initState();
+    AwesomeNotifications().isNotificationAllowed().then(  
+          (isAllowed) {     
+        if (!isAllowed) {   //if notification permission not allowed show this pop up
+          showDialog(
+            context: context,
+            builder: (context) =>
+                AlertDialog(
+                  title: Text('Allow Notifications'),
+                  content: Text('Our app would like to send you notifications'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context); //when pressed the option close the popup
+                      },
+                      child: const Text(
+                        'Don\'t Allow',
+                        style: TextStyle(color: Colors.grey, fontSize: 18),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () =>
+                          AwesomeNotifications()
+                              .requestPermissionToSendNotifications()  //shows settings ko permission
+                              .then((_) => Navigator.pop(context)), // close popup
+                      child: const Text(
+                        'Allow',
+                        style: TextStyle(
+                          color:  Color(0xFF0077B6),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+          );
+        }
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -195,7 +239,7 @@ class _OptionState extends State<Option> {
           children: [
         Image.asset("${image}", width: 50),
         SizedBox(width: 15.0),
-        Text("${text}", overflow: TextOverflow.clip)
+        Text("${text}", overflow: TextOverflow.fade)
       ]),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:login_sprint1/pages/base.dart';
@@ -12,7 +13,20 @@ import 'package:login_sprint1/pages/booking/set_information.dart';
 import 'package:login_sprint1/pages/signup.dart';
 import 'package:login_sprint1/pages/viewcompany.dart';
 
-void main() => runApp(const MyApp());
+void main(){ AwesomeNotifications().initialize(
+  'resource://drawable/notification.png',
+  [
+    NotificationChannel(
+      channelKey: 'basic_channel',  //shown when enabling permission in the setting
+      channelName: 'Reminder',  //name shown in setting
+      defaultColor: const Color(0xFF0077B6), //default color of the notification
+      importance: NotificationImportance.High,  //display notification on screen
+      channelShowBadge: true,  // to show number of notification badge on app icon
+    ),
+  ],
+);
+runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -21,7 +35,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: "/viewcompany",
+      initialRoute: "/login",
       routes: {
         '/signup': (context) => const SignUp(),
         '/login': (context) => LoginPage(),
