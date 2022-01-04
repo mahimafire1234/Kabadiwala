@@ -28,6 +28,7 @@ class LoginPage extends StatefulWidget {
           body); // signin fuction returns response.body
 
       var data = json.decode(response);
+      print(data);
       print(data["success"]);
       if (data["success"] == true) {
         token = (data["token"]);
