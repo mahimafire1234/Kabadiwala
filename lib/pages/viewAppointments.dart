@@ -21,7 +21,7 @@ class _ViewAppointmentState extends State<ViewAppointments> {
 
   Future<List<Appointment>?> getAppointments(id) async {
     try {
-      final fetchUrl = "http://10.0.2.2:5000/booking/viewAppointments/${id}";
+      final fetchUrl = "http://192.168.100.252:5000/booking/viewAppointments/${id}";
       var response = await http.get(Uri.parse(fetchUrl));
       var jsonData = jsonDecode(response.body);
       

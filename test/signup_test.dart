@@ -11,7 +11,7 @@ void main() async {
       "name": "test",
       "email": "test12567@gmail.com",
       "number": "2393939",
-      "type": "normal",
+      "usertype": "user",
       "password": "test"
     };
     var response = await userServices.signup(body);

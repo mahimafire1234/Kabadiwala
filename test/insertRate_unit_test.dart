@@ -8,7 +8,8 @@ void main() async {
     bool expected = true;
     var userServices = UserServices();
 
-    var company_id = "1";
+    var company_id = "12";
+    InsertRate insertRate = InsertRate(company_id: company_id);
     var rate = [
       {"price": "12", "category": "Bottle"}
     ];
