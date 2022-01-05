@@ -95,6 +95,13 @@ class _ColumnStartState extends State<ColumnStart> {
   var data;
   var name;
 
+  int year = 0;
+  int month = 0;
+  int day = 0;
+  int hour = 0;
+  int minute = 0;
+
+
   var body = {};
 
   TextEditingController dateinput = TextEditingController();
@@ -127,15 +134,15 @@ class _ColumnStartState extends State<ColumnStart> {
                 textAlign: TextAlign.center,
                 decoration: const InputDecoration(
 
-                    // contentPadding: EdgeInsets.only(left: 80.0),
+                  // contentPadding: EdgeInsets.only(left: 80.0),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide.none),
                     hintText: "DD/MM/YYY",
                     prefixIcon:
-                        Icon(Icons.calendar_today, color: Colors.black)),
+                    Icon(Icons.calendar_today, color: Colors.black)),
                 readOnly:
-                    true, //set it true, so that user will not able to edit text
+                true, //set it true, so that user will not able to edit text
 
                 onTap: () async {
                   DateTime? pickedDate = await showDatePicker(
@@ -146,9 +153,14 @@ class _ColumnStartState extends State<ColumnStart> {
                   if (pickedDate != null) {
                     print(pickedDate);
                     String formateDate =
-                        DateFormat("yyyy-MM-dd").format(pickedDate);
+                    DateFormat("yyyy-MM-dd").format(pickedDate);
                     SaveLocalData.savedData(formateDate);
                     print(formateDate);
+
+                    this.year = pickedDate.year;
+                    this.month = pickedDate.month;
+                    this.day = pickedDate.day;
+
                     setState(() {
                       dateinput.text = formateDate;
                     });
@@ -174,13 +186,13 @@ class _ColumnStartState extends State<ColumnStart> {
                 textAlign: TextAlign.center,
                 decoration: const InputDecoration(
 
-                    // contentPadding: EdgeInsets.only(left: 80.0),
+                  // contentPadding: EdgeInsets.only(left: 80.0),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide.none),
                     hintText: "Location",
                     prefixIcon:
-                        Icon(CupertinoIcons.location, color: Colors.black)),
+                    Icon(CupertinoIcons.location, color: Colors.black)),
               ),
             ),
           ),
@@ -196,7 +208,7 @@ class _ColumnStartState extends State<ColumnStart> {
                 textAlign: TextAlign.center,
                 decoration: const InputDecoration(
 
-                    // contentPadding: EdgeInsets.only(left: 80.0),
+                  // contentPadding: EdgeInsets.only(left: 80.0),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide.none),
@@ -210,6 +222,9 @@ class _ColumnStartState extends State<ColumnStart> {
                   TimeOfDay? timepicker = await showTimePicker(
                       context: context, initialTime: TimeOfDay.now());
                   if (timepicker != null) {
+                    this.hour = timepicker.hour;
+                    this.minute = timepicker.minute;
+
                     print(timepicker.format(context));
                     String parseTime = timepicker.format(context);
                     SaveLocalData.savedData(parseTime);
@@ -231,31 +246,38 @@ class _ColumnStartState extends State<ColumnStart> {
                   title: "Are u sure u wanna book",
                   style: SweetAlertStyle.confirm,
                   showCancelButton: true, onPress: (bool isConfirm) {
-                if (isConfirm) {
+                    if (isConfirm) {
+                      var datetime = DateTime.utc(
+                          year,
+                          month,
+                          day,
+                          hour,
+                          minute
+                      ).toLocal();
+                      var dt = datetime.toString();
 
-                  body = {
-                    "company" : id,
-                    "date" : dateinput.text.toString(),
-                    "time" : timeinput.text.toString(),
-                    "location" : location,
-                    "items": data["items"],
-                    "total_price": data["total_price"]
-                  };
+                      body = {
+                        "company" : id,
+                        "datetime" : dt,
+                        "location" : location,
+                        "items": data["items"],
+                        "total_price": data["total_price"]
+                      };
 
-                  Navigator.push(context, MaterialPageRoute(builder: (builder) => ConfirmBooking(data: body, name: name)));
+                      Navigator.push(context, MaterialPageRoute(builder: (builder) => ConfirmBooking(data: body, name: name)));
 
-                  // SweetAlert.show(context,
-                  //     style: SweetAlertStyle.success, title: "Success");
-                  List<String> myAllSavedData = SaveLocalData.getSavedData;
-                  print(myAllSavedData[0]);
-                  // for (var i in myAllSavedData) {
-                  //   print("Your saved data is --> $i");
-                  // }
-                  // return false to keep dialog
-                  return false;
-                }
-                return true;
-              });
+                      // SweetAlert.show(context,
+                      //     style: SweetAlertStyle.success, title: "Success");
+                      List<String> myAllSavedData = SaveLocalData.getSavedData;
+                      print(myAllSavedData[0]);
+                      // for (var i in myAllSavedData) {
+                      //   print("Your saved data is --> $i");
+                      // }
+                      // return false to keep dialog
+                      return false;
+                    }
+                    return true;
+                  });
             },
             buttonText: "Confirm Booking",
           ),

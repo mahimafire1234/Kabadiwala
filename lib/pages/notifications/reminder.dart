@@ -19,7 +19,9 @@ Future<void> reminder(
       )
     ],
     schedule: NotificationCalendar(
-      weekday: notificationSchedule.day,
+      year: notificationSchedule.year,
+      month: notificationSchedule.month,
+      day: notificationSchedule.day,
       hour: notificationSchedule.hour,
       minute: notificationSchedule.minute,
       second: 0,
@@ -30,11 +32,13 @@ Future<void> reminder(
 }
 
 class NotificationWeekAndTime {
+  int year;
+  int month;
   int day;
   int hour;
   int minute;
 
-  NotificationWeekAndTime({required this.day, required this.hour, required this.minute});
+  NotificationWeekAndTime({required this.year, required this.month, required this.day, required this.hour, required this.minute});
 }
 
 createUniqueId() {
