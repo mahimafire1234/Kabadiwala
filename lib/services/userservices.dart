@@ -21,7 +21,13 @@ class UserServices {
 
   static Future<dynamic> signin(body) async {
     try {
-      var response = await http.post(Uri.parse("$baseUri/user/login"));
+      var response = await http.post(Uri.parse("$baseUri/user/login"),
+          headers: {
+            'Content-type': 'application/json',
+            "Accept": "application/json",
+          },
+          body: json.encode(body));
+
       return response.body;
     } on Exception {
       print("network connection problem");
