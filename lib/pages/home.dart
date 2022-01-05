@@ -1,15 +1,34 @@
+import 'dart:convert';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'notifications/reminder.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
+
 
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+
+  Future<List<dynamic>?> getSchedule() async{
+    var res =  await http.get(Uri.parse("http://10.0.2.2:5000/booking/reminder"),
+      headers: {
+        'Content-type' : 'application/json',
+        "Accept": "application/json",
+      },
+    );
+    print(res.body);
+    var jsonData = await json.decode(res.body);
+    print(jsonData);
+    return jsonData;
+  }
+
   @override
   void initState() {  //for notification permission
     super.initState();
@@ -52,12 +71,17 @@ class _HomeState extends State<Home> {
         }
       },
     );
+    getSchedule();
 
   }
 
 
   @override
   Widget build(BuildContext context) {
+    // NotificationWeekAndTime pickedSchedule = NotificationWeekAndTime(day: 3, hour: 11, minute: 48);
+    //
+    // reminder(pickedSchedule);
+    // widget.getSchedule();
     return Scaffold(
         body: SafeArea(
             child: SingleChildScrollView(

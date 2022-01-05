@@ -14,16 +14,15 @@ import 'package:login_sprint1/pages/signup.dart';
 import 'package:login_sprint1/pages/viewcompany.dart';
 
 void main(){ AwesomeNotifications().initialize(
-  'resource://drawable/notification.png',
+  'resource://drawable/notification',
   [
     NotificationChannel(
-      channelKey: 'schedule_reminder',  //shown when enabling permission in the setting
+      channelKey: 'scheduled_channel',  //shown when enabling permission in the setting
       channelName: 'Reminder',  //name shown in setting
       defaultColor: const Color(0xFF0077B6), //default color of the notification
       importance: NotificationImportance.High,  //display notification on screen
       //channelShowBadge: true, // to show number of notification badge on app icon
       locked: true,
-      soundSource : 'resource://raw/notification.mp3'
     ),
   ],
 );
