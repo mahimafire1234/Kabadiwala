@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:login_sprint1/pages/viewAppointments.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 import 'package:login_sprint1/pages/ratespage.dart';
 
@@ -20,7 +21,7 @@ class _UserProfileState extends State<UserProfile> {
     final token = await MySharedPreferences.getToken();
     // print(token);
     var response = await http
-        .get(Uri.parse("http://10.0.2.2:5000/user/loggedin_user"), headers: {
+        .get(Uri.parse("http://192.168.100.252:5000/user/loggedin_user"), headers: {
       "Authorization": "Bearer $token",
     });
 
@@ -62,14 +63,14 @@ class _UserProfileState extends State<UserProfile> {
                     future: getuserdata(),
                     builder: (context, snapshot) {
                       return (snapshot.hasData == true && snapshot.data != null)
-                          ? Text(snapshot.data![1],
+                          ? Text(snapshot.data![0],
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontWeight: FontWeight.normal,
                             fontSize: 15,
                           ))
 
-                          : Text("User",
+                          : Text("empty",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontWeight: FontWeight.normal,
@@ -79,22 +80,6 @@ class _UserProfileState extends State<UserProfile> {
                     },
 
                   )),
-              Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Text("Address name : ",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 15,
-                      ))),
-              Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Text("Phone Number : +977-987654322",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 15,
-                      ))),
               Padding(
                   padding: EdgeInsets.all(10.0),
                   child: ElevatedButton(
@@ -190,12 +175,17 @@ class _UserProfileState extends State<UserProfile> {
                             side: BorderSide(
                                 color: Color(0xff0077B6), width: 4.0)),
                         elevation: 5,
+                      child: new InkWell(
+                          onTap: (){
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewAppointments(user_id: id)));
+                            print("id"+id);
+                          },
                         child: const Center(
                             child: Text("My Appointments",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontWeight: FontWeight.bold)))),
+                                    fontWeight: FontWeight.bold))))),
                   ],
                 ),
               )

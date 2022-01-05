@@ -10,7 +10,7 @@ import 'package:login_sprint1/pages/oneCompany.dart';
 import 'package:login_sprint1/pages/ratespage.dart';
 import 'package:login_sprint1/pages/booking/set_information.dart';
 import 'package:login_sprint1/pages/signup.dart';
-import 'package:login_sprint1/pages/test.dart';
+import 'package:login_sprint1/pages/viewAppointments.dart';
 import 'package:login_sprint1/pages/viewcompany.dart';
 
 void main() => runApp(const MyApp());
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginPage(),
         '/home': (context) => const Base(index: 0),
         '/viewcompany': (context) => const ViewCompany(),
-        '/test': (context) => const ViewAppointment(),
+        '/viewappointment': (context) =>  ViewAppointments(user_id: ''),
         '/onecompany': (context) => oneCompany(id: '',),
         '/insertrate': (context) =>  InsertRate(company_id: '',),
         '/myprofilekabadiwala': (context) => const CompanyProfile(),

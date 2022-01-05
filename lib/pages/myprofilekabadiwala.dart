@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:login_sprint1/pages/viewAppointments.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 import 'package:login_sprint1/pages/ratespage.dart';
 
@@ -172,12 +173,14 @@ class _CompanyProfileState extends State<CompanyProfile> {
                             side: BorderSide(
                                 color: Color(0xff0077B6), width: 4.0)),
                         elevation: 5,
+
                         child: const Center(
-                            child: Text("My Schedule",
+                            child: Text("My Appointments",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold)))),
+
                   ],
                 ),
               )
