@@ -1,3 +1,5 @@
+//--no-sound-null-safety
+
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:login_sprint1/pages/base.dart';
@@ -11,7 +13,6 @@ import 'package:login_sprint1/pages/ratespage.dart';
 import 'package:login_sprint1/pages/booking/set_information.dart';
 import 'package:login_sprint1/pages/signup.dart';
 import 'package:login_sprint1/pages/viewcompany.dart';
-
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
