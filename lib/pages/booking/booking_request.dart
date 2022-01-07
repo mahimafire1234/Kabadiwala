@@ -1,18 +1,61 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:login_sprint1/LocalDataSave/SaveLocalData.dart';
+import 'package:login_sprint1/services/booking_services.dart';
+import 'package:login_sprint1/services/shared_preference.dart';
 
 class BookingRequest extends StatefulWidget {
-  const BookingRequest({Key? key}) : super(key: key);
+  String? startingValue;
+  String? approvedValue = "";
+  String? declinedValue = "rejected";
+  String? username;
+  // String? userType;
+  List<String> itemList = <String>["pending", "accepted", "rejected"];
+
+  BookingRequest({Key? key}) : super(key: key);
+
+  Future<List<String>> getBookingData() async {
+    List<String>? userList = [];
+
+    try {
+      var response =
+          await BookingServices.getAllBooking(MySharedPreferences.getToken());
+
+      var data = await json.decode(response);
+      if (data["success"] == true) {
+      } else {}
+      var items = data["data"];
+      for (dynamic i in items!) {
+        username = i["user"]["name"];
+        // userType = i["user"]["userType"];
+        String name = i["user"]["name"];
+        userList.add(name);
+      }
+    } on Exception {
+      Exception("invalid login");
+    }
+    return userList;
+  }
+
+  // getApproved() async {
+  //   var response =
+  //       await BookingServices.approved(id, status,MySharedPreferences.getToken());
+  // }
 
   @override
   _BookingRequestState createState() => _BookingRequestState();
 }
 
 class _BookingRequestState extends State<BookingRequest> {
-  String? _startingValue;
+  @override
+  void initState() {
+    widget.getBookingData();
+    print(SaveLocalData.getMySavedData.length);
+    super.initState();
+  }
 
-  List<String> itemList = <String>["pending", "accepted", "rejected"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,16 +85,24 @@ class _BookingRequestState extends State<BookingRequest> {
                       child: DropdownButton(
                         alignment: Alignment.center,
                         hint: Text("choose request"),
-                        value: _startingValue,
+                        value: widget.startingValue,
                         icon: const Icon(Icons.arrow_downward),
                         elevation: 16,
                         onChanged: (String? newValue) {
                           setState(() {
-                            _startingValue = newValue as String;
-                            print(_startingValue);
+                            widget.startingValue = newValue as String;
                           });
+                          print(widget.startingValue);
+                          var getSelectedValue = widget.startingValue;
+
+                          if (getSelectedValue == "rejected") {
+                            RequestHandler.getRejected();
+                          }
+                          if (getSelectedValue == "accepted") {
+                            RequestHandler.getApproved();
+                          }
                         },
-                        items: itemList.map((String value1) {
+                        items: widget.itemList.map((String value1) {
                           return DropdownMenuItem<String>(
                             value: value1,
                             child: Text(value1),
@@ -69,25 +120,126 @@ class _BookingRequestState extends State<BookingRequest> {
 
                 SizedBox(
                   height: 400,
-                  child: ListView.separated(
-                    scrollDirection: Axis.vertical,
-                    padding: const EdgeInsets.all(20),
-                    // shrinkWrap: true,
-                    itemCount: itemList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        height: 220,
-                        child: Card(
-                          shadowColor: Colors.black,
-                          semanticContainer: true,
-                          elevation: 2,
-                          margin: EdgeInsets.all(20.0),
-                          child: Text("Order from user"),
-                        ),
-                      );
+                  child: FutureBuilder<List<String>>(
+                    future: widget.getBookingData(),
+                    builder: (context, snapshot) {
+                      return (snapshot.hasData == true)
+                          ? ListView.separated(
+                              scrollDirection: Axis.vertical,
+                              padding: EdgeInsets.all(20),
+                              // shrinkWrap: true,
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0))),
+                                  height: 100.0,
+                                  child: Card(
+                                    shadowColor: Colors.black,
+                                    semanticContainer: true,
+                                    elevation: 2,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 30.0),
+                                          child: Text(
+                                            "Order Form ${snapshot.data![index]}",
+                                            style: TextStyle(
+                                                fontSize: 16.0,
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 5.0),
+                                              child: ElevatedButton(
+                                                  onPressed: () async {
+                                                    var approvedValue =
+                                                        "accepted";
+                                                    var response =
+                                                        await BookingServices.approved(
+                                                            MySharedPreferences
+                                                                .getId,
+                                                            approvedValue,
+                                                            MySharedPreferences
+                                                                .getToken());
+                                                    print(response);
+                                                  },
+                                                  child: Text("Approved"),
+                                                  style: ButtonStyle(
+                                                      fixedSize:
+                                                          MaterialStateProperty
+                                                              .all(Size(
+                                                                  150.0, 20.0)),
+                                                      backgroundColor:
+                                                          MaterialStateProperty
+                                                              .all(
+                                                                  Colors.green),
+                                                      shape: MaterialStateProperty.all<
+                                                              RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20.0),
+                                                      )))),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10.0),
+                                              child: ElevatedButton(
+                                                  onPressed: () async {
+                                                    var declinedValue =
+                                                        "reject";
+
+                                                    var response =
+                                                        await BookingServices.declined(
+                                                            MySharedPreferences
+                                                                .getId,
+                                                            declinedValue,
+                                                            MySharedPreferences
+                                                                .getToken());
+                                                    print(response);
+                                                  },
+                                                  child: Text("Declined"),
+                                                  style: ButtonStyle(
+                                                      fixedSize:
+                                                          MaterialStateProperty
+                                                              .all(Size(
+                                                                  150.0, 20.0)),
+                                                      backgroundColor:
+                                                          MaterialStateProperty
+                                                              .all(Colors.red),
+                                                      shape: MaterialStateProperty.all<
+                                                              RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20.0),
+                                                      )))),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      const Divider(),
+                            )
+                          : Text("null");
                     },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(),
                   ),
                 )
                 // items: Ritems.map((String value) {
@@ -102,5 +254,41 @@ class _BookingRequestState extends State<BookingRequest> {
         ),
       ),
     );
+  }
+}
+
+class RequestHandler extends StatefulWidget {
+  static getApproved() async {
+    try {
+      var response = await BookingServices.getApprovedOnly(
+          MySharedPreferences.getId, MySharedPreferences.getToken());
+      var data = jsonDecode(response);
+      print(data["data"]);
+    } on Exception {
+      Exception("didnot hit rejected route");
+    }
+  }
+
+  static getRejected() async {
+    try {
+      var response = await BookingServices.getDeclinedOnly(
+          MySharedPreferences.getId, MySharedPreferences.getToken());
+      var data = jsonDecode(response);
+      print(data["data"]);
+    } on Exception {
+      Exception("didnot hit rejected route");
+    }
+  }
+
+  const RequestHandler({Key? key}) : super(key: key);
+
+  @override
+  _RequestHandlerState createState() => _RequestHandlerState();
+}
+
+class _RequestHandlerState extends State<RequestHandler> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

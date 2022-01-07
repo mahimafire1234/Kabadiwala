@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: "/bookingRequest",
+      initialRoute: "/login",
       routes: {
         '/signup': (context) => const SignUp(),
         '/login': (context) => LoginPage(),
@@ -36,12 +36,12 @@ class MyApp extends StatelessWidget {
             ),
         '/myprofilekabadiwala': (context) => const CompanyProfile(),
         '/myprofileuser': (context) => const UserProfile(),
-        '/bookingRequest': (context) => const BookingRequest(),
+        '/bookingRequest': (context) => BookingRequest(),
         "/setInfo": (context) => SetInformation(name: '', id: '', body: ''),
         "/ratespage": (context) => Rates(
               company_id: '',
             ),
-        "/itemsHire": (context) => const ItemsHire(id: '', name: '')
+        "/itemsHire": (context) => const ItemsHire(id: '', name: ''),
       },
     );
   }
