@@ -4,6 +4,7 @@ import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:login_sprint1/pages/Constraints.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 import 'package:login_sprint1/services/userservices.dart';
 
@@ -33,7 +34,7 @@ class LoginPage extends StatefulWidget {
       if (data["success"] == true) {
         token = (data["token"]);
         await MySharedPreferences.init();
-        await MySharedPreferences.setToken(token);
+        await MySharedPreferences.setTokenWithType(token, data["usertype"]);
         print(token);
         return isLogin;
       } else {
@@ -202,25 +203,45 @@ class _LoginPageState extends State<LoginPage> {
                             borderRadius: BorderRadius.circular(16.0),
                             side: BorderSide(color: Colors.black)))),
                 onPressed: () async {
-                  dynamic data = await widget.login(
+                  dynamic Data = await widget.login(
                       loginEmail: widget.emailController.text,
                       loginPassword: widget.passwordController.text);
-                  print("my data is :$data");
-                  if (data != true) {
-                    if (_formKey.currentState!.validate() &&
-                        _formKey1.currentState!
-                            .validate()) //form valid xa ki xaina check garxa
-                    {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Invalid login")));
+
+                  var loginEmail = widget.emailController.text;
+                  var loginPassword = widget.passwordController.text;
+                  Map<dynamic, dynamic> body = {
+                    "email": loginEmail,
+                    "password": loginPassword
+                  };
+
+                  var response = await UserServices.signin(
+                      body); // signin fuction returns response.body
+                  var data = jsonDecode(response);
+
+                  print(data["data"]["usertype"]);
+                  var usertype = (data["data"]["usertype"]);
+                  print("my Data is :$Data");
+                  print(data["data"]["userType"]);
+
+                  if (_formKey.currentState!.validate() &&
+                      _formKey1.currentState!.validate()) {
+                    if (Data != true) {
+                      //form valid xa ki xaina check garxa
+                      {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Invalid login")));
+                      }
+                    } else {
+                      if (usertype == UserType.COMPANY) {
+                        // Usertype.company mah ==> "company" ko value xa
+                        Navigator.pushNamed(context, "/bookingRequest");
+                      } else {
+                        Navigator.pushNamed(context, "/home");
+                      }
                     }
-                    // if (_formKey1.currentState!.validate())
-                    //   {
-                    //     ScaffoldMessenger.of(context).showSnackBar(
-                    //         SnackBar(content: Text("succesfully login")))
-                    //   },
                   } else {
-                    Navigator.pushNamed(context, "/home");
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("please validate form first login")));
                   }
                 },
                 child: Text(

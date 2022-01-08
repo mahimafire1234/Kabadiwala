@@ -7,20 +7,22 @@ import 'package:login_sprint1/services/shared_preference.dart';
 class ConfirmBooking extends StatefulWidget {
   final Object data;
   final String name;
+  final id;
 
-  const ConfirmBooking({Key? key, required this.data, required this.name})
+  const ConfirmBooking(
+      {Key? key, required this.data, required this.name, this.id})
       : super(key: key);
 
   @override
   _ConfirmBookingState createState() =>
-      _ConfirmBookingState(data: data, name: name);
+      _ConfirmBookingState(data: data, name: name, id: id);
 }
 
 class _ConfirmBookingState extends State<ConfirmBooking> {
   var name;
   var data;
 
-  _ConfirmBookingState({required this.data, required this.name });
+  _ConfirmBookingState({required this.data, required this.name, id});
 
   book() async {
     try {
@@ -29,6 +31,11 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
 
       var bookingServices = BookingServices();
       var response = await bookingServices.book(data, token);
+      var decodedData = jsonDecode(response!);
+      var bookinId = decodedData["data"]["_id"];
+      await MySharedPreferences.setId(bookinId);
+      print(bookinId);
+
       return response;
     } catch (err) {
       print(err);
@@ -44,29 +51,31 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
           child: Padding(
             padding: const EdgeInsets.all(25.0),
             child: SizedBox(
-                width: 400,
-                height: 800,
-                child: PhysicalModel(
-                  borderRadius: BorderRadius.circular(19),
-                  color: Colors.white,
-                  child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                      child: Column(
-                          children: [
-                          Row(
+              width: 400,
+              height: 800,
+              child: PhysicalModel(
+                borderRadius: BorderRadius.circular(19),
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  child: Column(
+                    children: [
+                      Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: [ TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text("< Edit", style: TextStyle(
-                                  color: Color(0xFF9E9E9E),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Rubik'),
-                              ))
-                          ]
-                      ),
+                          children: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  "< Edit",
+                                  style: TextStyle(
+                                      color: Color(0xFF9E9E9E),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Rubik'),
+                                ))
+                          ]),
                       Padding(
                         padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
                         child: Text(
@@ -81,10 +90,10 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
                       ),
                       CustomRow(text1: "Company", text2: name),
                       CustomRow(text1: "Date", text2: data["date"].toString()),
-                      CustomRow(text1: "Location",
+                      CustomRow(
+                          text1: "Location",
                           text2: data["location"].toString()),
                       CustomRow(text1: "Time", text2: data["time"].toString()),
-
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                         child: Row(
@@ -140,119 +149,112 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
                         padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
                         child: Divider(color: Colors.black),
                       ),
-                      Column(
-                          children : [
-                              for(var item in data["items"]) Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    "${item["category"]}",
+                      Column(children: [
+                        for (var item in data["items"])
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  "${item["category"]}",
+                                  style: TextStyle(
+                                      color: Color(0xFF000000),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: 'Rubik'),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(35, 0, 90, 0),
+                                  child: Text(
+                                    (int.parse(item["category_price"]) /
+                                            int.parse(item["amount"]))
+                                        .floor()
+                                        .toString(),
                                     style: TextStyle(
                                         color: Color(0xFF000000),
                                         fontSize: 14,
                                         fontWeight: FontWeight.normal,
                                         fontFamily: 'Rubik'),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(35, 0, 90, 0),
-                                    child: Text(
-                                      (int.parse(item["category_price"]) /
-                                          int.parse(item["amount"]))
-                                          .floor()
-                                          .toString(),
-                                      style: TextStyle(
-                                          color: Color(0xFF000000),
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.normal,
-                                          fontFamily: 'Rubik'),
-                                    ),
-                                  ),
-                                  Text(item["amount"])
-
-                                ],
-                              ),
-                        )
-
-                    ]
-            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                              child: Divider(color: Colors.black),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  'Total: ',
-                                  style: TextStyle(
-                                      color: Color(0xFF000000),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Rubik'),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                  child: Text(
-                                    data["total_price"].toString(),
-                                    style: TextStyle(
-                                        color: Color(0xFF000000),
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'Rubik'),
-                                  ),
-                                ),
-
+                                Text(item["amount"])
                               ],
                             ),
-                            SizedBox(height: 20.0),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(context, "/viewcompany");
-                                    },
-                                    child: Text("Cancel"),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Color(0xFFFFFFFF),
-                                      onPrimary: Color(0xFF0077B6),
-                                    )
-                                  ),
-                                  SizedBox(width: 10.0),
-                                  ElevatedButton(onPressed: () async {
-                                    var res =  await book();
-                                    var response = json.decode(res);
-                                    if(response['success']){
-                                      final snackB = SnackBar(
-                                        duration: Duration(seconds: 5),
-                                        content: Text(response["message"]),
-                                        action: SnackBarAction(
-                                          label: 'Dismiss',
-                                          onPressed: () {},
-                                        ),
-                                      );
-                                      ScaffoldMessenger.of(context).showSnackBar(snackB);
+                          )
+                      ]),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                        child: Divider(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Total: ',
+                            style: TextStyle(
+                                color: Color(0xFF000000),
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Rubik'),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                            child: Text(
+                              data["total_price"].toString(),
+                              style: TextStyle(
+                                  color: Color(0xFF000000),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Rubik'),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20.0),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(context, "/viewcompany");
+                                },
+                                child: Text("Cancel"),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Color(0xFFFFFFFF),
+                                  onPrimary: Color(0xFF0077B6),
+                                )),
+                            SizedBox(width: 10.0),
+                            ElevatedButton(
+                              onPressed: () async {
+                                var res = await book();
+                                var response = json.decode(res);
+                                if (response['success']) {
+                                  final snackB = SnackBar(
+                                    duration: Duration(seconds: 5),
+                                    content: Text(response["message"]),
+                                    action: SnackBarAction(
+                                      label: 'Dismiss',
+                                      onPressed: () {},
+                                    ),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackB);
 
-                                      Navigator.pushNamed(context, "/home");
-                                    }
-                                  },
-                                    child: Text("Confirm Booking"),)
-                                ]
+                                  Navigator.pushNamed(context, "/home");
+                                }
+                              },
+                              child: Text("Confirm Booking"),
                             )
-
-            ],
+                          ])
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ),
-
-
-
         ),
       ),
-    ),
-    ),
-    ),
-    ),
     );
   }
 }

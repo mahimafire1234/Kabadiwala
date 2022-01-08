@@ -11,10 +11,13 @@ class SetInformation extends StatefulWidget {
   final String name;
   final String id;
   final Object body;
-  const SetInformation({Key? key, required this.name, required this.id,  required this.body}) : super(key: key);
+  const SetInformation(
+      {Key? key, required this.name, required this.id, required this.body})
+      : super(key: key);
 
   @override
-  State<SetInformation> createState() => _SetInformationState(name: name, id: id, body: body);
+  State<SetInformation> createState() =>
+      _SetInformationState(name: name, id: id, body: body);
 }
 
 class _SetInformationState extends State<SetInformation> {
@@ -22,12 +25,11 @@ class _SetInformationState extends State<SetInformation> {
   String name;
   var body;
 
-
-  _SetInformationState({ required this.name, required this.id, required this.body});
+  _SetInformationState(
+      {required this.name, required this.id, required this.body});
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -43,7 +45,7 @@ class _SetInformationState extends State<SetInformation> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 80, vertical: 10),
                 child: Row(
-                  children:  [
+                  children: [
                     Text(
                       "Company: ",
                       style: TextStyle(
@@ -81,10 +83,13 @@ class ColumnStart extends StatefulWidget {
   final String id;
   final Object data;
   final Object name;
-  const ColumnStart({Key? key, required this.id, required this.data, required this.name}) : super(key: key);
+  const ColumnStart(
+      {Key? key, required this.id, required this.data, required this.name})
+      : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ColumnStartState(id: id, data: data, name: name);
+  State<StatefulWidget> createState() =>
+      _ColumnStartState(id: id, data: data, name: name);
 }
 
 class _ColumnStartState extends State<ColumnStart> {
@@ -108,7 +113,7 @@ class _ColumnStartState extends State<ColumnStart> {
   //   dateinput.text = "";
   // }
 
-  _ColumnStartState({ required this.id, required this.data, required this.name });
+  _ColumnStartState({required this.id, required this.data, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -232,17 +237,20 @@ class _ColumnStartState extends State<ColumnStart> {
                   style: SweetAlertStyle.confirm,
                   showCancelButton: true, onPress: (bool isConfirm) {
                 if (isConfirm) {
-
                   body = {
-                    "company" : id,
-                    "date" : dateinput.text.toString(),
-                    "time" : timeinput.text.toString(),
-                    "location" : location,
+                    "company": id,
+                    "date": dateinput.text.toString(),
+                    "time": timeinput.text.toString(),
+                    "location": location,
                     "items": data["items"],
                     "total_price": data["total_price"]
                   };
 
-                  Navigator.push(context, MaterialPageRoute(builder: (builder) => ConfirmBooking(data: body, name: name)));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (builder) =>
+                              ConfirmBooking(data: body, name: name, id: id)));
 
                   // SweetAlert.show(context,
                   //     style: SweetAlertStyle.success, title: "Success");
