@@ -40,7 +40,7 @@ class BookingServices {
   static Future<dynamic> approved(id, status, token) async {
     try {
       var response = await http.put(
-        Uri.parse(baseUri + "approved/$id"),
+        Uri.parse(baseUri + "approved/$id/$status"),
         headers: {
           'Content-type': 'application/json',
           "Accept": "application/json",
@@ -56,7 +56,7 @@ class BookingServices {
   static Future<dynamic> declined(id, status, token) async {
     try {
       var response = await http.put(
-        Uri.parse(baseUri + "declined/$id"),
+        Uri.parse(baseUri + "declined/$id/$status"),
         headers: {
           'Content-type': 'application/json',
           "Accept": "application/json",
