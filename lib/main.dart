@@ -7,6 +7,7 @@ import 'package:login_sprint1/pages/login.dart';
 import 'package:login_sprint1/pages/myprofileUser.dart';
 import 'package:login_sprint1/pages/myprofilekabadiwala.dart';
 import 'package:login_sprint1/pages/oneCompany.dart';
+import 'package:login_sprint1/pages/order_pickup/order_pickup.dart';
 import 'package:login_sprint1/pages/ratespage.dart';
 import 'package:login_sprint1/pages/booking/set_information.dart';
 import 'package:login_sprint1/pages/signup.dart';
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
         '/myprofileuser': (context) => const UserProfile(),
         "/setInfo": (context) => SetInformation(name: '', id: '', body: ''),
         "/ratespage": (context) => Rates(company_id: '',),
-        "/itemsHire": (context) => const ItemsHire(id: '', name: '')
+        "/itemsHire": (context) => const ItemsHire(id: '', name: ''),
+        "/orderpickup": (context) => const OrderPickup()
       },
     );
   }

@@ -5,8 +5,8 @@ import 'package:login_sprint1/services/Category.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 
 class BookingServices{
-  // var baseUri = "http://10.0.2.2:5000/booking/";
-  var baseUri = "http://127.0.0.1:5000/booking/";
+  var baseUri = "http://10.0.2.2:5000/booking/";
+  // var baseUri = "http://127.0.0.1:5000/booking/";
 
   Future<String?> book(body, token) async {
     try {

@@ -106,7 +106,9 @@ class _HomeState extends State<Home> {
                       )),
                       child: const Option(
                           image: "assets/icons/garbage-truck.png",
-                          text: "Order a \n pickup"),
+                          text: "Order a \n pickup",
+                        link: "/orderpickup",
+                      ),
                     ),
                     Container(
                         padding: EdgeInsets.only(left: 20.0),
