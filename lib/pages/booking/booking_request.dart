@@ -16,29 +16,6 @@ class BookingRequest extends StatefulWidget {
 
   BookingRequest({Key? key}) : super(key: key);
 
-  Future<List<String>> getBookingData() async {
-    List<String>? userList = [];
-    try {
-      var response =
-          await BookingServices.getAllBooking(MySharedPreferences.getToken());
-      var data = await json.decode(response);
-      if (data["success"] == true) {
-        var items = data["data"];
-        for (dynamic i in items!) {
-          username = i["user"]["name"];
-          // userType = i["user"]["userType"];
-          String name = i["user"]["name"];
-          userList.add(name);
-        }
-      } else {
-        print("there is error");
-      }
-    } on Exception {
-      Exception("invalid login");
-    }
-    return userList;
-  }
-
   Future<List<dynamic>> getApproved() async {
     List<dynamic>? approvedList = [];
     try {
@@ -81,6 +58,26 @@ class BookingRequest extends StatefulWidget {
     return rejectedList;
   }
 
+  Future<List<dynamic>> getPending() async {
+    List<dynamic>? pendingList = [];
+    try {
+      var response = await BookingServices.getPendingOnly(
+          MySharedPreferences.getId, MySharedPreferences.getToken());
+      var data = jsonDecode(response);
+      if (data["success"] == true) {
+        var items = data["data"];
+        for (dynamic i in items!) {
+          pendingList.add(i);
+        }
+      } else {
+        print("there is error");
+      }
+    } on Exception {
+      Exception("didnot hit rejected route");
+    }
+    return pendingList;
+  }
+
   @override
   _BookingRequestState createState() => _BookingRequestState();
 }
@@ -91,17 +88,17 @@ class _BookingRequestState extends State<BookingRequest> {
     if (setValue == "rejected") {
       return widget.getRejected();
     } else if (setValue == "pending") {
-      return widget.getBookingData();
+      return widget.getPending();
     } else if (setValue == "accepted") {
       return widget.getApproved();
     } else {
-      return widget.getBookingData();
+      return widget.getPending();
     }
   }
 
   @override
   void initState() {
-    widget.getBookingData();
+    widget.getPending();
     print(SaveLocalData.getMySavedData.length);
     super.initState();
   }
@@ -170,7 +167,7 @@ class _BookingRequestState extends State<BookingRequest> {
   }
 }
 
-class RenderMyCustomWidget extends StatelessWidget {
+class RenderMyCustomWidget extends StatefulWidget {
   final String selectedValue;
   final Future<List<dynamic>>? setFunction;
   const RenderMyCustomWidget(
@@ -178,126 +175,20 @@ class RenderMyCustomWidget extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<RenderMyCustomWidget> createState() => _RenderMyCustomWidgetState();
+}
+
+class _RenderMyCustomWidgetState extends State<RenderMyCustomWidget> {
+  @override
   Widget build(BuildContext context) {
-    if (selectedValue == "rejected") {
+    if (widget.selectedValue == "rejected") {
       return AcceptedRejectedWidget(
-          setFunction: setFunction,
+          setFunction: widget.setFunction,
           statusColor: Colors.red,
           status: "Rejected");
-    } else if (selectedValue == "pending") {
-      return SizedBox(
-        height: 400,
-        child: FutureBuilder<List<dynamic>>(
-          future: setFunction,
-          builder: (context, snapshot) {
-            return (snapshot.hasData == true)
-                ? ListView.separated(
-                    scrollDirection: Axis.vertical,
-                    padding: EdgeInsets.all(20),
-                    // shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0))),
-                        height: 100.0,
-                        child: Card(
-                          shadowColor: Colors.black,
-                          semanticContainer: true,
-                          elevation: 2,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(left: 30.0),
-                                child: Text(
-                                  "Order Form ${snapshot.data![index]}",
-                                  style: TextStyle(
-                                      fontSize: 16.0, color: Colors.black),
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 5.0),
-                                    child: ElevatedButton(
-                                        onPressed: () async {
-                                          var approvedValue = "accepted";
-                                          var response =
-                                              await BookingServices.approved(
-                                                  MySharedPreferences.getId,
-                                                  approvedValue,
-                                                  MySharedPreferences
-                                                      .getToken());
-                                          print(response);
-                                        },
-                                        child: Text("Approved"),
-                                        style: ButtonStyle(
-                                            fixedSize:
-                                                MaterialStateProperty.all(
-                                                    Size(150.0, 20.0)),
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Colors.green),
-                                            shape: MaterialStateProperty.all<
-                                                    RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0),
-                                            )))),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10.0),
-                                    child: ElevatedButton(
-                                        onPressed: () async {
-                                          var declinedValue = "rejected";
-
-                                          var response =
-                                              await BookingServices.declined(
-                                                  MySharedPreferences.getId,
-                                                  declinedValue,
-                                                  MySharedPreferences
-                                                      .getToken());
-                                          print(response);
-                                        },
-                                        child: Text("Declined"),
-                                        style: ButtonStyle(
-                                            fixedSize:
-                                                MaterialStateProperty.all(
-                                                    Size(150.0, 20.0)),
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Colors.red),
-                                            shape: MaterialStateProperty.all<
-                                                    RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0),
-                                            )))),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(),
-                  )
-                : Text("null");
-          },
-        ),
-      );
-    } else if (selectedValue == "accepted") {
+    } else if (widget.selectedValue == "accepted") {
       return AcceptedRejectedWidget(
-        setFunction: setFunction,
+        setFunction: widget.setFunction,
         statusColor: Colors.green,
         status: "Accepted",
       );
@@ -305,7 +196,7 @@ class RenderMyCustomWidget extends StatelessWidget {
       return SizedBox(
         height: 400,
         child: FutureBuilder<List<dynamic>>(
-          future: setFunction,
+          future: widget.setFunction,
           builder: (context, snapshot) {
             return (snapshot.hasData == true)
                 ? ListView.separated(
@@ -331,7 +222,7 @@ class RenderMyCustomWidget extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.only(left: 30.0),
                                 child: Text(
-                                  "Order Form ${snapshot.data![index]}",
+                                  "Order Form ${snapshot.data![index]["user"]["name"]}",
                                   style: TextStyle(
                                       fontSize: 16.0, color: Colors.black),
                                 ),
@@ -344,14 +235,12 @@ class RenderMyCustomWidget extends StatelessWidget {
                                         EdgeInsets.symmetric(horizontal: 5.0),
                                     child: ElevatedButton(
                                         onPressed: () async {
-                                          var approvedValue = "accepted";
-                                          var response =
-                                              await BookingServices.approved(
-                                                  MySharedPreferences.getId,
-                                                  approvedValue,
-                                                  MySharedPreferences
-                                                      .getToken());
-                                          print(response);
+                                          await BookingServices.approved(
+                                              snapshot.data![index]["_id"],
+                                              MySharedPreferences.getToken());
+                                          setState(() {
+                                            snapshot.data!.removeAt(index);
+                                          });
                                         },
                                         child: Text("Approved"),
                                         style: ButtonStyle(
@@ -373,15 +262,12 @@ class RenderMyCustomWidget extends StatelessWidget {
                                         EdgeInsets.symmetric(horizontal: 10.0),
                                     child: ElevatedButton(
                                         onPressed: () async {
-                                          var declinedValue = "reject";
-
-                                          var response =
-                                              await BookingServices.declined(
-                                                  MySharedPreferences.getId,
-                                                  declinedValue,
-                                                  MySharedPreferences
-                                                      .getToken());
-                                          print(response);
+                                          await BookingServices.declined(
+                                              snapshot.data![index]["_id"],
+                                              MySharedPreferences.getToken());
+                                          setState(() {
+                                            snapshot.data!.removeAt(index);
+                                          });
                                         },
                                         child: Text("Declined"),
                                         style: ButtonStyle(
