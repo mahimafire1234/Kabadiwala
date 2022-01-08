@@ -21,26 +21,10 @@ class BookingServices {
     }
   }
 
-  static Future<dynamic> getAllBooking(token) async {
-    try {
-      var response = await http.get(
-        Uri.parse(baseUri + "getAllBooks"),
-        headers: {
-          'Content-type': 'application/json',
-          "Accept": "application/json",
-          "Authorization": "Bearer $token"
-        },
-      );
-      return response.body;
-    } on Exception {
-      Exception("invalid login");
-    }
-  }
-
-  static Future<dynamic> approved(id, status, token) async {
+  static Future<dynamic> approved(id, token) async {
     try {
       var response = await http.put(
-        Uri.parse(baseUri + "approved/$id/$status"),
+        Uri.parse(baseUri + "approved/$id"),
         headers: {
           'Content-type': 'application/json',
           "Accept": "application/json",
@@ -53,10 +37,10 @@ class BookingServices {
     }
   }
 
-  static Future<dynamic> declined(id, status, token) async {
+  static Future<dynamic> declined(id, token) async {
     try {
       var response = await http.put(
-        Uri.parse(baseUri + "declined/$id/$status"),
+        Uri.parse(baseUri + "declined/$id"),
         headers: {
           'Content-type': 'application/json',
           "Accept": "application/json",
@@ -89,6 +73,22 @@ class BookingServices {
     try {
       var response = await http.get(
         Uri.parse(baseUri + "get_decline"),
+        headers: {
+          'Content-type': 'application/json',
+          "Accept": "application/json",
+          "Authorization": "Bearer $token"
+        },
+      );
+      return response.body;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static Future<dynamic> getPendingOnly(id, token) async {
+    try {
+      var response = await http.get(
+        Uri.parse(baseUri + "get_pending"),
         headers: {
           'Content-type': 'application/json',
           "Accept": "application/json",
