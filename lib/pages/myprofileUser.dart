@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/services/shared_preference.dart';
-import 'package:login_sprint1/pages/ratespage.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
@@ -13,7 +12,7 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  String id ="";
+  String id = "";
   Future<List<String>> getuserdata() async {
     await MySharedPreferences.init();
 
@@ -28,7 +27,7 @@ class _UserProfileState extends State<UserProfile> {
     String user_name = await data["data"]["name"];
     String user_id = await data["data"]["_id"];
     //list
-    List<String> userInfo = [user_name,user_id];
+    List<String> userInfo = [user_name, user_id];
     //set variable
     setState(() {
       id = user_id;
@@ -63,21 +62,18 @@ class _UserProfileState extends State<UserProfile> {
                     builder: (context, snapshot) {
                       return (snapshot.hasData == true && snapshot.data != null)
                           ? Text(snapshot.data![1],
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15,
-                          ))
-
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 15,
+                              ))
                           : Text("User",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15,
-                          )
-                      );
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 15,
+                              ));
                     },
-
                   )),
               Padding(
                   padding: EdgeInsets.all(10),
@@ -102,11 +98,10 @@ class _UserProfileState extends State<UserProfile> {
                       "Edit profile",
                       style: TextStyle(fontSize: 20),
                     ),
-                    onPressed: () {
-                    },
+                    onPressed: () {},
                     style: ButtonStyle(
                       backgroundColor:
-                      MaterialStateProperty.all(Color(0xff0077B6)),
+                          MaterialStateProperty.all(Color(0xff0077B6)),
                       fixedSize: MaterialStateProperty.all(Size(240.0, 50.0)),
                     ),
                   )),
@@ -117,11 +112,10 @@ class _UserProfileState extends State<UserProfile> {
                       "Deactivate my account",
                       style: TextStyle(fontSize: 20),
                     ),
-                    onPressed: () {
-                    },
+                    onPressed: () {},
                     style: ButtonStyle(
                       backgroundColor:
-                      MaterialStateProperty.all(Color(0xff0077B6)),
+                          MaterialStateProperty.all(Color(0xff0077B6)),
                       fixedSize: MaterialStateProperty.all(Size(240.0, 50.0)),
                     ),
                   )),
@@ -140,22 +134,21 @@ class _UserProfileState extends State<UserProfile> {
                       color: Color(0xff92CAE8),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
-                          side: BorderSide(
-                              color: Color(0xff0077B6), width: 4.0)),
+                          side:
+                              BorderSide(color: Color(0xff0077B6), width: 4.0)),
                       elevation: 5,
                       child: new InkWell(
                         onTap: () {
                           // Navigator.of(context).push(MaterialPageRoute());
                         },
                         child: Center(
-                          // onPressed:(){print("clicked");},
+                            // onPressed:(){print("clicked");},
                             child: Text("My Blogs",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold))),
                       ),
-
                     ),
                     Card(
                         color: Color(0xff92CAE8),

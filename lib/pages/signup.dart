@@ -90,7 +90,7 @@ class _SignUpState extends State<SignUp> {
                   Text("Company"),
                   Radio(
                       autofocus: true,
-                      value: "normal",
+                      value: "user",
                       groupValue: usertype,
                       onChanged: (value) {
                         setState(() {
