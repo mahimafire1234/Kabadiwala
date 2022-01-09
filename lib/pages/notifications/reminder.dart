@@ -3,13 +3,16 @@ import 'dart:math';
 import 'package:awesome_notifications/awesome_notifications.dart';
 
 Future<void> reminder(
-    NotificationWeekAndTime notificationSchedule) async {
+    NotificationWeekAndTime notificationSchedule,
+    String title,
+    String body
+    ) async {
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
       id: createUniqueId(),
       channelKey: 'scheduled_channel',
-      title: 'reminder',
-      body: 'You order in on its way',
+      title: title,
+      body: body,
       notificationLayout: NotificationLayout.Default,
     ),
     actionButtons: [
@@ -30,6 +33,8 @@ Future<void> reminder(
   );
 
 }
+
+
 
 class NotificationWeekAndTime {
   int year;

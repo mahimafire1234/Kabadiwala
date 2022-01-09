@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
     await MySharedPreferences.init();
     final token = await MySharedPreferences.getToken();
 
-    var res =  await http.get(Uri.parse("http://10.0.2.2:5000/booking/reminder"),
+    var res = await http.get(Uri.parse("http://10.0.2.2:5000/booking/reminder"),
       headers: {
         'Content-type' : 'application/json',
         "Accept": "application/json",
@@ -39,14 +39,22 @@ class _HomeState extends State<Home> {
       var hour = jsonData["result"][i]["datetime"].toString().substring(11, 13);
       var minute = jsonData["result"][i]["datetime"].toString().substring(14, 16);
 
-
       NotificationWeekAndTime pickedSchedule = NotificationWeekAndTime(
           year: int.parse(year),
           month: int.parse(month),
           day: int.parse(day),
           hour: int.parse(hour),
           minute: int.parse(minute));
-      reminder(pickedSchedule);
+
+      NotificationWeekAndTime pickedScheduleHourBefore = NotificationWeekAndTime(
+          year: int.parse(year),
+          month: int.parse(month),
+          day: int.parse(day),
+          hour: int.parse(hour)-1,
+          minute: int.parse(minute));
+
+      reminder(pickedSchedule, "Pickup time!", "Your pickup order time has come");
+      reminder(pickedScheduleHourBefore, "Pickup time arriving soon", "Your pickup order's time is in 1 hour");
 
     }
 
