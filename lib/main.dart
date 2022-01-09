@@ -1,6 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
+import 'package:login_sprint1/pages/appointment/viewAppointment.dart';
 import 'package:login_sprint1/pages/base.dart';
 import 'package:login_sprint1/pages/booking/booking_request.dart';
 import 'package:login_sprint1/pages/booking/items.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginPage(),
         '/home': (context) => const Base(index: 0),
         '/viewcompany': (context) => const ViewCompany(),
+        '/viewappointment': (context) =>  ViewAppointment(),
         '/onecompany': (context) => oneCompany(
               id: '',
             ),

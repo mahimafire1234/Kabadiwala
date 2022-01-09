@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:login_sprint1/pages/appointment/viewAppointment.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 
 class UserProfile extends StatefulWidget {
@@ -19,7 +20,7 @@ class _UserProfileState extends State<UserProfile> {
     final token = await MySharedPreferences.getToken();
     // print(token);
     var response = await http
-        .get(Uri.parse("http://10.0.2.2:5000/user/loggedin_user"), headers: {
+        .get(Uri.parse("http://192.168.100.252:5000/user/loggedin_user"), headers: {
       "Authorization": "Bearer $token",
     });
 
@@ -85,7 +86,7 @@ class _UserProfileState extends State<UserProfile> {
                       ))),
               Padding(
                   padding: EdgeInsets.all(10),
-                  child: Text("Phone Number : +977-987654322",
+                  child: Text("Phone Number : ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.normal,
@@ -183,12 +184,16 @@ class _UserProfileState extends State<UserProfile> {
                             side: BorderSide(
                                 color: Color(0xff0077B6), width: 4.0)),
                         elevation: 5,
-                        child: const Center(
-                            child: Text("My Appointments",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold)))),
+                        child: new InkWell(
+                            onTap: (){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewAppointment()));
+                            },
+                            child: const Center(
+                                child: Text("My Appointments",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold))))),
                   ],
                 ),
               )

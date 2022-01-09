@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 
 class BookingServices {
-  static var baseUri = "http://10.0.2.2:5000/booking/";
+  static var baseUri = "http://127.0.0.1.252:5000/booking/";
   // var baseUri = "http://127.0.0.1:5000/booking/";
 
   Future<String?> book(body, token) async {
@@ -101,4 +101,57 @@ class BookingServices {
       print(e);
     }
   }
+
+  //client side view appointments
+  //view approved
+  static Future<dynamic> viewApprovedOnly(id, token) async {
+    try {
+      var response = await http.get(
+        Uri.parse(baseUri + "view_approved"),
+        headers: {
+          'Content-type': 'application/json',
+          "Accept": "application/json",
+          "Authorization": "Bearer $token"
+        },
+      );
+      return response.body;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  //view declined
+  static Future<dynamic> viewDeclinedOnly(id, token) async {
+    try {
+      var response = await http.get(
+        Uri.parse(baseUri + "view_declined"),
+        headers: {
+          'Content-type': 'application/json',
+          "Accept": "application/json",
+          "Authorization": "Bearer $token"
+        },
+      );
+      return response.body;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  //view pending
+  static Future<dynamic> viewPendingOnly(id, token) async {
+    try {
+      var response = await http.get(
+        Uri.parse(baseUri + "view_pending"),
+        headers: {
+          'Content-type': 'application/json',
+          "Accept": "application/json",
+          "Authorization": "Bearer $token"
+        },
+      );
+      return response.body;
+    } catch (e) {
+      print(e);
+    }
+  }
+
 }
