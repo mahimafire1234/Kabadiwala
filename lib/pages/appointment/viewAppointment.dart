@@ -198,6 +198,16 @@ class RenderMyCustomWidget extends StatefulWidget {
 class _RenderMyCustomWidgetState extends State<RenderMyCustomWidget> {
   @override
   Widget build(BuildContext context) {
+    if (widget.selectedValue == "Accepted") {
+      return AcceptedWidget(
+          setFunction: widget.setFunction,
+          status: 'Accepted',);
+    } else if (widget.selectedValue == "Pending") {
+      return PendingWidget(
+        setFunction: widget.setFunction,
+        status: "Pending",
+      );
+    } else {
     return SizedBox(
         height:900,
         child:FutureBuilder<List<dynamic>>(
@@ -206,7 +216,486 @@ class _RenderMyCustomWidgetState extends State<RenderMyCustomWidget> {
               if (snapshot.data == null) {
                 return Container(
                   child: Padding(
-                    padding: const EdgeInsets.all(80.0),
+                    padding: const EdgeInsets.all(10.0),
+                    child: Center(
+                      child: Text("You have no appointments"),
+                    ),
+                  ),
+                );
+              } else {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data?.length,
+                  itemBuilder: (context, i) {
+                    return Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: PhysicalModel(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.white,
+                          elevation: 10.0,
+                          shadowColor: Color(0xff000f61),
+                          child: ListTile(
+                            tileColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.circular(15.0),
+                            ),
+                            title: Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                  const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Row(children: [
+                                        Text(
+                                          "Status : ",
+                                          style: TextStyle(
+                                              fontWeight:
+                                              FontWeight.bold,
+                                              fontSize: 18,
+                                              color: Colors.black),
+                                        ),
+                                        if (snapshot
+                                            .data![i]["status"] == "pending")
+                                          Text(
+                                            snapshot.data![i]["status"]
+                                                .toUpperCase(),
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 18,
+                                                color: Colors.grey),
+                                          ),
+                                        if (snapshot.data![i]["status"] == "accepted")
+                                          Text(
+                                            snapshot.data![i]["status"]
+                                                .toUpperCase(),
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 18,
+                                                color:
+                                                Colors.green),
+                                          ),
+                                        if (snapshot
+                                            .data![i]["status"] == "rejected")
+                                          Text(
+                                            snapshot.data![i]["status"]
+                                                .toUpperCase(),
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 18,
+                                                color: Colors.red),
+                                          ),
+                                      ]),
+                                      SizedBox(height: 10.0),
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets.all(
+                                            4.0),
+                                        child: Row(children: [
+                                          Text(
+                                            "User : ",
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 18,
+                                                color:
+                                                Colors.black),
+                                          ),
+                                          Text(
+                                            snapshot.data![i]["user"],
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color:
+                                                Colors.black),
+                                          )
+                                        ]),
+                                      ),
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets.all(
+                                            4.0),
+                                        child: Row(children: [
+                                          Text(
+                                            "Date : ",
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 18,
+                                                color:
+                                                Colors.black),
+                                          ),
+                                          Text(
+                                            snapshot.data![i]["date"],
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color:
+                                                Colors.black),
+                                          )
+                                        ]),
+                                      ),
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets.all(
+                                            4.0),
+                                        child: Row(children: [
+                                          Text(
+                                            "Time : ",
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 18,
+                                                color:
+                                                Colors.black),
+                                          ),
+                                          Text(
+                                            snapshot.data![i]["time"],
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color:
+                                                Colors.black),
+                                          )
+                                        ]),
+                                      ),
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets.all(
+                                            4.0),
+                                        child: Row(children: [
+                                          Text(
+                                            "Location : ",
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 18,
+                                                color:
+                                                Colors.black),
+                                          ),
+                                          Text(
+                                            snapshot
+                                                .data![i]["location"],
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color:
+                                                Colors.black),
+                                          )
+                                        ]),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets
+                                            .fromLTRB(
+                                            80, 10, 0, 10),
+                                        child: Row(children: [
+                                          Text(
+                                            "Total Price : ",
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 18,
+                                                color:
+                                                Colors.black),
+                                          ),
+                                          Text(
+                                            snapshot.data![i]
+                                            ["total_price"].toString(),
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color:
+                                                Colors.black),
+                                          )
+                                        ]),
+                                      ),
+                                      SizedBox(height: 10.0)
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ));
+                  },
+                );
+              }
+            }
+        )
+    );
+  }
+}
+}
+
+class PendingWidget extends StatelessWidget{
+  final Future<List<dynamic>>? setFunction;
+  final String status;
+  const PendingWidget(
+      {Key? key,
+        required this.setFunction,
+        required this.status})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        height:900,
+        child:FutureBuilder<List<dynamic>>(
+            future:setFunction,
+            builder: (context, snapshot) {
+              if (snapshot.data == null) {
+                return Container(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Center(
+                      child: Text("You have no appointments"),
+                    ),
+                  ),
+                );
+              } else {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data?.length,
+                  itemBuilder: (context, i) {
+                    return Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: PhysicalModel(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.white,
+                          elevation: 10.0,
+                          shadowColor: Color(0xff000f61),
+                          child: ListTile(
+                            tileColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.circular(15.0),
+                            ),
+                            title: Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                  const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Row(children: [
+                                        Text(
+                                          "Status : ",
+                                          style: TextStyle(
+                                              fontWeight:
+                                              FontWeight.bold,
+                                              fontSize: 18,
+                                              color: Colors.black),
+                                        ),
+                                        if (snapshot
+                                            .data![i]["status"] == "pending")
+                                          Text(
+                                            snapshot.data![i]["status"]
+                                                .toUpperCase(),
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 18,
+                                                color: Colors.grey),
+                                          ),
+                                        if (snapshot.data![i]["status"] == "accepted")
+                                          Text(
+                                            snapshot.data![i]["status"]
+                                                .toUpperCase(),
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 18,
+                                                color:
+                                                Colors.green),
+                                          ),
+                                        if (snapshot
+                                            .data![i]["status"] == "rejected")
+                                          Text(
+                                            snapshot.data![i]["status"]
+                                                .toUpperCase(),
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 18,
+                                                color: Colors.red),
+                                          ),
+                                      ]),
+                                      SizedBox(height: 10.0),
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets.all(
+                                            4.0),
+                                        child: Row(children: [
+                                          Text(
+                                            "User : ",
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 18,
+                                                color:
+                                                Colors.black),
+                                          ),
+                                          Text(
+                                            snapshot.data![i]["user"],
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color:
+                                                Colors.black),
+                                          )
+                                        ]),
+                                      ),
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets.all(
+                                            4.0),
+                                        child: Row(children: [
+                                          Text(
+                                            "Date : ",
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 18,
+                                                color:
+                                                Colors.black),
+                                          ),
+                                          Text(
+                                            snapshot.data![i]["date"],
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color:
+                                                Colors.black),
+                                          )
+                                        ]),
+                                      ),
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets.all(
+                                            4.0),
+                                        child: Row(children: [
+                                          Text(
+                                            "Time : ",
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 18,
+                                                color:
+                                                Colors.black),
+                                          ),
+                                          Text(
+                                            snapshot.data![i]["time"],
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color:
+                                                Colors.black),
+                                          )
+                                        ]),
+                                      ),
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets.all(
+                                            4.0),
+                                        child: Row(children: [
+                                          Text(
+                                            "Location : ",
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 18,
+                                                color:
+                                                Colors.black),
+                                          ),
+                                          Text(
+                                            snapshot
+                                                .data![i]["location"],
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color:
+                                                Colors.black),
+                                          )
+                                        ]),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets
+                                            .fromLTRB(
+                                            80, 10, 0, 10),
+                                        child: Row(children: [
+                                          Text(
+                                            "Total Price : ",
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 18,
+                                                color:
+                                                Colors.black),
+                                          ),
+                                          Text(
+                                            snapshot.data![i]
+                                            ["total_price"].toString(),
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color:
+                                                Colors.black),
+                                          )
+                                        ]),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(60, 0, 30, 0),
+                                        child: Row (children:[
+                                          IconButton(
+                                              icon: const Icon(Icons.delete_forever),
+                                              onPressed: (){},
+                                            ),
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(20,0,0,0),
+                                            child: IconButton(
+                                              icon: const Icon(Icons.edit),
+                                              onPressed: (){},
+                                            ),
+                                          ),
+                                        ]
+                                        )
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ));
+                  },
+                );
+              }
+            }
+        )
+    );
+
+
+  }
+}
+
+class AcceptedWidget extends StatelessWidget{
+  final Future<List<dynamic>>? setFunction;
+  final String status;
+  const AcceptedWidget(
+      {Key? key,
+        required this.setFunction,
+        required this.status})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        height:900,
+        child:FutureBuilder<List<dynamic>>(
+            future:setFunction,
+            builder: (context, snapshot) {
+              if (snapshot.data == null) {
+                return Container(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
                     child: Center(
                       child: Text("You have no appointments"),
                     ),
@@ -401,6 +890,33 @@ class _RenderMyCustomWidgetState extends State<RenderMyCustomWidget> {
                                         ]),
                                       ),
                                       SizedBox(height: 10.0),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
+                                        child: SizedBox(
+                                          width: 200,
+                                          height: 35,
+                                          child: ElevatedButton(
+                                              onPressed: (){},
+                                              child: const Text(
+                                                "Cancel Appointment",
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontFamily: 'Rubik',
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              style: ButtonStyle(
+                                                  shadowColor: MaterialStateProperty.all(
+                                                      const Color.fromARGB(255, 2, 7, 153)),
+                                                  backgroundColor: MaterialStateProperty.all(
+                                                      Color.fromARGB(255, 0, 119, 182)),
+                                                  shape:
+                                                  MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                      RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(25.0))))),
+                                        ),
+                                      )
                                     ],
                                   ),
                                 ),
