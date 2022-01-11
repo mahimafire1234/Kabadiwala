@@ -8,7 +8,6 @@ import 'package:login_sprint1/services/booking_services.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 
 class ViewAppointment extends StatefulWidget {
-
   String? startingValue;
   String? approvedValue = "Accepted";
   String? declinedValue = "Rejected";
@@ -119,70 +118,68 @@ class _ViewAppointmentState extends State<ViewAppointment> {
             title: Center(child: Text("Kabadiwala")),
             backgroundColor: Color.fromARGB(255, 0, 119, 182)),
         body: SafeArea(
-            child:SingleChildScrollView(
+            child: SingleChildScrollView(
                 child: Container(
                   child: Card(
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Column(
+                      child: Column(children: [
+                        Text(
+                          "My appointments",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 26.0,
+                              color: Color(0xFF0077B6)),
+                        ),
+                        Column(
                           children: [
-                            Text(
-                              "My appointments",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 26.0,
-                                  color: Color(0xFF0077B6)),
-                            ),
-                            Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: PhysicalModel(
-                                    borderRadius: BorderRadius.circular(25),
-                                    color: Colors.white,
-                                    elevation: 5.0,
-                                    shadowColor: const Color(0xff2a2a2a),
-                                    child: DropdownButtonFormField(
-                                      decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                                          ),
-                                          contentPadding: EdgeInsets.only(left: 20.0)),
-                                      value: selectedValue,
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          selectedValue = newValue! as String;
-                                          print(selectedValue);
-                                        });
-                                      },
-                                      items: widget.statusList.map((String value1) {
-                                        return DropdownMenuItem<String>(
-                                          value: value1,
-                                          child: new Text(value1),
-                                        );
-                                      }).toList(),
-                                      isDense: true,
-                                      isExpanded: true,
-                                    ),
-                                  ),
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: PhysicalModel(
+                                borderRadius: BorderRadius.circular(25),
+                                color: Colors.white,
+                                elevation: 5.0,
+                                shadowColor: const Color(0xff2a2a2a),
+                                child: DropdownButtonFormField(
+                                  decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(15)),
+                                      ),
+                                      contentPadding: EdgeInsets.only(
+                                          left: 20.0)),
+                                  value: selectedValue,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      selectedValue = newValue! as String;
+                                      print(selectedValue);
+                                    });
+                                  },
+                                  items: widget.statusList.map((String value1) {
+                                    return DropdownMenuItem<String>(
+                                      value: value1,
+                                      child: new Text(value1),
+                                    );
+                                  }).toList(),
+                                  isDense: true,
+                                  isExpanded: true,
                                 ),
-                                RenderMyCustomWidget(
-                                  selectedValue: selectedValue!,
-                                  setFunction: getSelectedFunction(),
-                                ),
-                              ],
+                              ),
                             ),
-                          ]
-                      ),
+                            RenderMyCustomWidget(
+                              selectedValue: selectedValue!,
+                              setFunction: getSelectedFunction(),
+                            ),
+                          ],
+                        ),
+                      ]),
                     ),
                   ),
-                )
-            )
-        )
-    );
+                ))));
   }
 }
+
 class RenderMyCustomWidget extends StatefulWidget {
   final String selectedValue;
   final Future<List<dynamic>>? setFunction;
@@ -200,257 +197,220 @@ class _RenderMyCustomWidgetState extends State<RenderMyCustomWidget> {
   Widget build(BuildContext context) {
     if (widget.selectedValue == "Accepted") {
       return AcceptedWidget(
-          setFunction: widget.setFunction,
-          status: 'Accepted',);
+        setFunction: widget.setFunction,
+        status: 'Accepted',
+      );
     } else if (widget.selectedValue == "Pending") {
       return PendingWidget(
         setFunction: widget.setFunction,
         status: "Pending",
       );
     } else {
-    return SizedBox(
-        height:900,
-        child:FutureBuilder<List<dynamic>>(
-            future:widget.setFunction,
-            builder: (context, snapshot) {
-              if (snapshot.data == null) {
-                return Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Center(
+      return SizedBox(
+          height: 900,
+          child: FutureBuilder<List<dynamic>>(
+              future: widget.setFunction,
+              builder: (context, snapshot) {
+                if (snapshot.data == null) {
+                  return Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
                       child: Text("You have no appointments"),
                     ),
-                  ),
-                );
-              } else {
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: snapshot.data?.length,
-                  itemBuilder: (context, i) {
-                    return Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: PhysicalModel(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.white,
-                          elevation: 10.0,
-                          shadowColor: Color(0xff000f61),
-                          child: ListTile(
-                            tileColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.circular(15.0),
-                            ),
-                            title: Row(
-                              children: [
-                                Padding(
-                                  padding:
-                                  const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Row(children: [
-                                        Text(
-                                          "Status : ",
-                                          style: TextStyle(
-                                              fontWeight:
-                                              FontWeight.bold,
-                                              fontSize: 18,
-                                              color: Colors.black),
+                  );
+                } else {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data?.length,
+                    itemBuilder: (context, i) {
+                      return Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: PhysicalModel(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.white,
+                            elevation: 10.0,
+                            shadowColor: Color(0xff000f61),
+                            child: ListTile(
+                              tileColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              title: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Row(children: [
+                                          Text(
+                                            "Status : ",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                                color: Colors.black),
+                                          ),
+                                          if (snapshot.data![i]["status"] ==
+                                              "pending")
+                                            Text(
+                                              snapshot.data![i]["status"]
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: Colors.grey),
+                                            ),
+                                          if (snapshot.data![i]["status"] ==
+                                              "accepted")
+                                            Text(
+                                              snapshot.data![i]["status"]
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: Colors.green),
+                                            ),
+                                          if (snapshot.data![i]["status"] ==
+                                              "rejected")
+                                            Text(
+                                              snapshot.data![i]["status"]
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: Colors.red),
+                                            ),
+                                        ]),
+                                        SizedBox(height: 10.0),
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Row(children: [
+                                            Text(
+                                              "User : ",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: Colors.black),
+                                            ),
+                                            Text(
+                                              snapshot.data![i]["user"],
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.black),
+                                            )
+                                          ]),
                                         ),
-                                        if (snapshot
-                                            .data![i]["status"] == "pending")
-                                          Text(
-                                            snapshot.data![i]["status"]
-                                                .toUpperCase(),
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 18,
-                                                color: Colors.grey),
-                                          ),
-                                        if (snapshot.data![i]["status"] == "accepted")
-                                          Text(
-                                            snapshot.data![i]["status"]
-                                                .toUpperCase(),
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 18,
-                                                color:
-                                                Colors.green),
-                                          ),
-                                        if (snapshot
-                                            .data![i]["status"] == "rejected")
-                                          Text(
-                                            snapshot.data![i]["status"]
-                                                .toUpperCase(),
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 18,
-                                                color: Colors.red),
-                                          ),
-                                      ]),
-                                      SizedBox(height: 10.0),
-                                      Padding(
-                                        padding:
-                                        const EdgeInsets.all(
-                                            4.0),
-                                        child: Row(children: [
-                                          Text(
-                                            "User : ",
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 18,
-                                                color:
-                                                Colors.black),
-                                          ),
-                                          Text(
-                                            snapshot.data![i]["user"],
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color:
-                                                Colors.black),
-                                          )
-                                        ]),
-                                      ),
-                                      Padding(
-                                        padding:
-                                        const EdgeInsets.all(
-                                            4.0),
-                                        child: Row(children: [
-                                          Text(
-                                            "Date : ",
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 18,
-                                                color:
-                                                Colors.black),
-                                          ),
-                                          Text(
-                                            snapshot.data![i]["date"],
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color:
-                                                Colors.black),
-                                          )
-                                        ]),
-                                      ),
-                                      Padding(
-                                        padding:
-                                        const EdgeInsets.all(
-                                            4.0),
-                                        child: Row(children: [
-                                          Text(
-                                            "Time : ",
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 18,
-                                                color:
-                                                Colors.black),
-                                          ),
-                                          Text(
-                                            snapshot.data![i]["time"],
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color:
-                                                Colors.black),
-                                          )
-                                        ]),
-                                      ),
-                                      Padding(
-                                        padding:
-                                        const EdgeInsets.all(
-                                            4.0),
-                                        child: Row(children: [
-                                          Text(
-                                            "Location : ",
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 18,
-                                                color:
-                                                Colors.black),
-                                          ),
-                                          Text(
-                                            snapshot
-                                                .data![i]["location"],
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color:
-                                                Colors.black),
-                                          )
-                                        ]),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets
-                                            .fromLTRB(
-                                            80, 10, 0, 10),
-                                        child: Row(children: [
-                                          Text(
-                                            "Total Price : ",
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 18,
-                                                color:
-                                                Colors.black),
-                                          ),
-                                          Text(
-                                            snapshot.data![i]
-                                            ["total_price"].toString(),
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color:
-                                                Colors.black),
-                                          )
-                                        ]),
-                                      ),
-                                      SizedBox(height: 10.0)
-                                    ],
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Row(children: [
+                                            Text(
+                                              "Date : ",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: Colors.black),
+                                            ),
+                                            Text(
+                                              snapshot.data![i]["date"],
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.black),
+                                            )
+                                          ]),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Row(children: [
+                                            Text(
+                                              "Time : ",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: Colors.black),
+                                            ),
+                                            Text(
+                                              snapshot.data![i]["time"],
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.black),
+                                            )
+                                          ]),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Row(children: [
+                                            Text(
+                                              "Location : ",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: Colors.black),
+                                            ),
+                                            Text(
+                                              snapshot.data![i]["location"],
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.black),
+                                            )
+                                          ]),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              80, 10, 0, 10),
+                                          child: Row(children: [
+                                            Text(
+                                              "Total Price : ",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: Colors.black),
+                                            ),
+                                            Text(
+                                              snapshot.data![i]["total_price"]
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.black),
+                                            )
+                                          ]),
+                                        ),
+                                        SizedBox(height: 10.0)
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ));
-                  },
-                );
-              }
-            }
-        )
-    );
+                          ));
+                    },
+                  );
+                }
+              }));
+    }
   }
 }
-}
 
-class PendingWidget extends StatelessWidget{
+class PendingWidget extends StatelessWidget {
   final Future<List<dynamic>>? setFunction;
   final String status;
+
   const PendingWidget(
-      {Key? key,
-        required this.setFunction,
-        required this.status})
+      {Key? key, required this.setFunction, required this.status})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height:900,
-        child:FutureBuilder<List<dynamic>>(
-            future:setFunction,
+        height: 900,
+        child: FutureBuilder<List<dynamic>>(
+            future: setFunction,
             builder: (context, snapshot) {
               if (snapshot.data == null) {
                 return Container(
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Center(
-                      child: Text("You have no appointments"),
-                    ),
+                    child: Text("You have no appointments"),
                   ),
                 );
               } else {
@@ -459,246 +419,298 @@ class PendingWidget extends StatelessWidget{
                   itemCount: snapshot.data?.length,
                   itemBuilder: (context, i) {
                     return Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: PhysicalModel(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.white,
-                          elevation: 10.0,
-                          shadowColor: Color(0xff000f61),
-                          child: ListTile(
-                            tileColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.circular(15.0),
-                            ),
-                            title: Row(
-                              children: [
-                                Padding(
-                                  padding:
-                                  const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Row(children: [
-                                        Text(
-                                          "Status : ",
-                                          style: TextStyle(
-                                              fontWeight:
-                                              FontWeight.bold,
-                                              fontSize: 18,
-                                              color: Colors.black),
-                                        ),
-                                        if (snapshot
-                                            .data![i]["status"] == "pending")
-                                          Text(
-                                            snapshot.data![i]["status"]
-                                                .toUpperCase(),
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 18,
-                                                color: Colors.grey),
-                                          ),
-                                        if (snapshot.data![i]["status"] == "accepted")
-                                          Text(
-                                            snapshot.data![i]["status"]
-                                                .toUpperCase(),
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 18,
-                                                color:
-                                                Colors.green),
-                                          ),
-                                        if (snapshot
-                                            .data![i]["status"] == "rejected")
-                                          Text(
-                                            snapshot.data![i]["status"]
-                                                .toUpperCase(),
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 18,
-                                                color: Colors.red),
-                                          ),
-                                      ]),
-                                      SizedBox(height: 10.0),
-                                      Padding(
-                                        padding:
-                                        const EdgeInsets.all(
-                                            4.0),
-                                        child: Row(children: [
-                                          Text(
-                                            "User : ",
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 18,
-                                                color:
-                                                Colors.black),
-                                          ),
-                                          Text(
-                                            snapshot.data![i]["user"],
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color:
-                                                Colors.black),
-                                          )
-                                        ]),
-                                      ),
-                                      Padding(
-                                        padding:
-                                        const EdgeInsets.all(
-                                            4.0),
-                                        child: Row(children: [
-                                          Text(
-                                            "Date : ",
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 18,
-                                                color:
-                                                Colors.black),
-                                          ),
-                                          Text(
-                                            snapshot.data![i]["date"],
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color:
-                                                Colors.black),
-                                          )
-                                        ]),
-                                      ),
-                                      Padding(
-                                        padding:
-                                        const EdgeInsets.all(
-                                            4.0),
-                                        child: Row(children: [
-                                          Text(
-                                            "Time : ",
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 18,
-                                                color:
-                                                Colors.black),
-                                          ),
-                                          Text(
-                                            snapshot.data![i]["time"],
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color:
-                                                Colors.black),
-                                          )
-                                        ]),
-                                      ),
-                                      Padding(
-                                        padding:
-                                        const EdgeInsets.all(
-                                            4.0),
-                                        child: Row(children: [
-                                          Text(
-                                            "Location : ",
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 18,
-                                                color:
-                                                Colors.black),
-                                          ),
-                                          Text(
-                                            snapshot
-                                                .data![i]["location"],
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color:
-                                                Colors.black),
-                                          )
-                                        ]),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets
-                                            .fromLTRB(
-                                            80, 10, 0, 10),
-                                        child: Row(children: [
-                                          Text(
-                                            "Total Price : ",
-                                            style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 18,
-                                                color:
-                                                Colors.black),
-                                          ),
-                                          Text(
-                                            snapshot.data![i]
-                                            ["total_price"].toString(),
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color:
-                                                Colors.black),
-                                          )
-                                        ]),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(60, 0, 30, 0),
-                                        child: Row (children:[
-                                          IconButton(
-                                              icon: const Icon(Icons.delete_forever),
-                                              onPressed: (){},
-                                            ),
-                                          Padding(
-                                            padding: const EdgeInsets.fromLTRB(20,0,0,0),
-                                            child: IconButton(
-                                              icon: const Icon(Icons.edit),
-                                              onPressed: (){},
-                                            ),
-                                          ),
-                                        ]
-                                        )
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                      padding: const EdgeInsets.all(10.0),
+                      child: PhysicalModel(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Colors.white,
+                        elevation: 10.0,
+                        shadowColor: Color(0xff000f61),
+                        child: ListTile(
+                          tileColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
-                        ));
+                          title: Row(
+                            children: [
+                              Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Row(children: [
+                                          Text(
+                                            "Status : ",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                                color: Colors.black),
+                                          ),
+                                          if (snapshot.data![i]["status"] ==
+                                              "pending")
+                                            Text(
+                                              snapshot.data![i]["status"]
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: Colors.grey),
+                                            ),
+                                          if (snapshot.data![i]["status"] ==
+                                              "accepted")
+                                            Text(
+                                              snapshot.data![i]["status"]
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: Colors.green),
+                                            ),
+                                          if (snapshot.data![i]["status"] ==
+                                              "rejected")
+                                            Text(
+                                              snapshot.data![i]["status"]
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: Colors.red),
+                                            ),
+                                        ]),
+                                        SizedBox(height: 10.0),
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Row(children: [
+                                            Text(
+                                              "User : ",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: Colors.black),
+                                            ),
+                                            Text(
+                                              snapshot.data![i]["user"],
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.black),
+                                            )
+                                          ]),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Row(children: [
+                                            Text(
+                                              "Date : ",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: Colors.black),
+                                            ),
+                                            Text(
+                                              snapshot.data![i]["date"],
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.black),
+                                            )
+                                          ]),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Row(children: [
+                                            Text(
+                                              "Time : ",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: Colors.black),
+                                            ),
+                                            Text(
+                                              snapshot.data![i]["time"],
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.black),
+                                            )
+                                          ]),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Row(children: [
+                                            Text(
+                                              "Location : ",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: Colors.black),
+                                            ),
+                                            Text(
+                                              snapshot.data![i]["location"],
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.black),
+                                            )
+                                          ]),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              80, 10, 0, 10),
+                                          child: Row(children: [
+                                            Text(
+                                              "Total Price : ",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: Colors.black),
+                                            ),
+                                            Text(
+                                              snapshot.data![i]["total_price"]
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.black),
+                                            )
+                                          ]),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              40, 0, 30, 10),
+                                          child: SizedBox(
+                                            width: 205,
+                                            height: 35,
+                                            child: ElevatedButton(
+                                                onPressed: () {},
+                                                child: Row(children: <Widget>[
+                                                  Text(
+                                                    "Cancel Appointment",
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontFamily: 'Rubik',
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.black),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(10, 0, 0, 0),
+                                                    child: Icon(
+                                                      Icons.cancel,
+                                                      color: Colors.red,
+                                                    ),
+                                                  )
+                                                ]),
+                                                style: ButtonStyle(
+                                                    shadowColor:
+                                                    MaterialStateProperty.all(
+                                                        const Color.fromARGB(
+                                                            255,
+                                                            2,
+                                                            7,
+                                                            153)),
+                                                    backgroundColor:
+                                                    MaterialStateProperty
+                                                        .all(Color.fromARGB(
+                                                        255,
+                                                        255,
+                                                        255,
+                                                        255)),
+                                                    shape: MaterialStateProperty
+                                                        .all<
+                                                        RoundedRectangleBorder>(
+                                                        RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              25.0),
+                                                            side: BorderSide(color:Color.fromARGB(255, 0, 119, 182))
+
+                                                        )))),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              40,0, 30, 10),
+                                          child: SizedBox(
+                                            width: 205,
+                                            height: 35,
+                                            child: ElevatedButton(
+                                                onPressed: () {},
+                                                child: Row(children: <Widget>[
+                                                  Text(
+                                                    "Update Appointment",
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontFamily: 'Rubik',
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.black),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(10, 0, 0, 0),
+                                                    child: Icon(
+                                                      Icons.edit,
+                                                      color: Colors.black,
+                                                    ),
+                                                  )
+                                                ]),
+                                                style: ButtonStyle(
+                                                    shadowColor:
+                                                    MaterialStateProperty.all(
+                                                        const Color.fromARGB(
+                                                            255,
+                                                            2,
+                                                            7,
+                                                            153)),
+                                                    backgroundColor:
+                                                    MaterialStateProperty
+                                                        .all(Color.fromARGB(
+                                                        255,
+                                                        255,
+                                                        255,
+                                                        255)),
+                                                    shape: MaterialStateProperty
+                                                        .all<
+                                                        RoundedRectangleBorder>(
+                                                        RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              25.0),
+                                                            side: BorderSide(color:Color.fromARGB(255, 0, 119, 182))
+
+                                                        )))),
+                                          ),
+                                        )
+                                      ])),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
                   },
                 );
               }
-            }
-        )
-    );
-
-
+            }));
   }
 }
 
-class AcceptedWidget extends StatelessWidget{
+class AcceptedWidget extends StatelessWidget {
   final Future<List<dynamic>>? setFunction;
   final String status;
+
   const AcceptedWidget(
-      {Key? key,
-        required this.setFunction,
-        required this.status})
+      {Key? key, required this.setFunction, required this.status})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height:900,
-        child:FutureBuilder<List<dynamic>>(
-            future:setFunction,
+        height: 900,
+        child: FutureBuilder<List<dynamic>>(
+            future: setFunction,
             builder: (context, snapshot) {
               if (snapshot.data == null) {
                 return Container(
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Center(
-                      child: Text("You have no appointments"),
-                    ),
+                    child: Text("You have no appointments"),
                   ),
                 );
               } else {
@@ -716,14 +728,12 @@ class AcceptedWidget extends StatelessWidget{
                           child: ListTile(
                             tileColor: Colors.white,
                             shape: RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.circular(15.0),
+                              borderRadius: BorderRadius.circular(15.0),
                             ),
                             title: Row(
                               children: [
                                 Padding(
-                                  padding:
-                                  const EdgeInsets.all(10.0),
+                                  padding: const EdgeInsets.all(10.0),
                                   child: Column(
                                     crossAxisAlignment:
                                     CrossAxisAlignment.start,
@@ -732,189 +742,184 @@ class AcceptedWidget extends StatelessWidget{
                                         Text(
                                           "Status : ",
                                           style: TextStyle(
-                                              fontWeight:
-                                              FontWeight.bold,
+                                              fontWeight: FontWeight.bold,
                                               fontSize: 18,
                                               color: Colors.black),
                                         ),
-                                        if (snapshot
-                                            .data![i]["status"] == "pending")
+                                        if (snapshot.data![i]["status"] ==
+                                            "pending")
                                           Text(
                                             snapshot.data![i]["status"]
                                                 .toUpperCase(),
                                             style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
+                                                fontWeight: FontWeight.bold,
                                                 fontSize: 18,
                                                 color: Colors.grey),
                                           ),
-                                        if (snapshot.data![i]["status"] == "accepted")
+                                        if (snapshot.data![i]["status"] ==
+                                            "accepted")
                                           Text(
                                             snapshot.data![i]["status"]
                                                 .toUpperCase(),
                                             style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
+                                                fontWeight: FontWeight.bold,
                                                 fontSize: 18,
-                                                color:
-                                                Colors.green),
+                                                color: Colors.green),
                                           ),
-                                        if (snapshot
-                                            .data![i]["status"] == "rejected")
+                                        if (snapshot.data![i]["status"] ==
+                                            "rejected")
                                           Text(
                                             snapshot.data![i]["status"]
                                                 .toUpperCase(),
                                             style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
+                                                fontWeight: FontWeight.bold,
                                                 fontSize: 18,
                                                 color: Colors.red),
                                           ),
                                       ]),
                                       SizedBox(height: 10.0),
                                       Padding(
-                                        padding:
-                                        const EdgeInsets.all(
-                                            4.0),
+                                        padding: const EdgeInsets.all(4.0),
                                         child: Row(children: [
                                           Text(
                                             "User : ",
                                             style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
+                                                fontWeight: FontWeight.bold,
                                                 fontSize: 18,
-                                                color:
-                                                Colors.black),
+                                                color: Colors.black),
                                           ),
                                           Text(
                                             snapshot.data![i]["user"],
                                             style: TextStyle(
                                                 fontSize: 15,
-                                                color:
-                                                Colors.black),
+                                                color: Colors.black),
                                           )
                                         ]),
                                       ),
                                       Padding(
-                                        padding:
-                                        const EdgeInsets.all(
-                                            4.0),
+                                        padding: const EdgeInsets.all(4.0),
                                         child: Row(children: [
                                           Text(
                                             "Date : ",
                                             style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
+                                                fontWeight: FontWeight.bold,
                                                 fontSize: 18,
-                                                color:
-                                                Colors.black),
+                                                color: Colors.black),
                                           ),
                                           Text(
                                             snapshot.data![i]["date"],
                                             style: TextStyle(
                                                 fontSize: 15,
-                                                color:
-                                                Colors.black),
+                                                color: Colors.black),
                                           )
                                         ]),
                                       ),
                                       Padding(
-                                        padding:
-                                        const EdgeInsets.all(
-                                            4.0),
+                                        padding: const EdgeInsets.all(4.0),
                                         child: Row(children: [
                                           Text(
                                             "Time : ",
                                             style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
+                                                fontWeight: FontWeight.bold,
                                                 fontSize: 18,
-                                                color:
-                                                Colors.black),
+                                                color: Colors.black),
                                           ),
                                           Text(
                                             snapshot.data![i]["time"],
                                             style: TextStyle(
                                                 fontSize: 15,
-                                                color:
-                                                Colors.black),
+                                                color: Colors.black),
                                           )
                                         ]),
                                       ),
                                       Padding(
-                                        padding:
-                                        const EdgeInsets.all(
-                                            4.0),
+                                        padding: const EdgeInsets.all(4.0),
                                         child: Row(children: [
                                           Text(
                                             "Location : ",
                                             style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
+                                                fontWeight: FontWeight.bold,
                                                 fontSize: 18,
-                                                color:
-                                                Colors.black),
+                                                color: Colors.black),
                                           ),
                                           Text(
-                                            snapshot
-                                                .data![i]["location"],
+                                            snapshot.data![i]["location"],
                                             style: TextStyle(
                                                 fontSize: 15,
-                                                color:
-                                                Colors.black),
+                                                color: Colors.black),
                                           )
                                         ]),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets
-                                            .fromLTRB(
+                                        padding: const EdgeInsets.fromLTRB(
                                             80, 10, 0, 10),
                                         child: Row(children: [
                                           Text(
                                             "Total Price : ",
                                             style: TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
+                                                fontWeight: FontWeight.bold,
                                                 fontSize: 18,
-                                                color:
-                                                Colors.black),
+                                                color: Colors.black),
                                           ),
                                           Text(
-                                            snapshot.data![i]
-                                            ["total_price"].toString(),
+                                            snapshot.data![i]["total_price"]
+                                                .toString(),
                                             style: TextStyle(
                                                 fontSize: 15,
-                                                color:
-                                                Colors.black),
+                                                color: Colors.black),
                                           )
                                         ]),
                                       ),
                                       SizedBox(height: 10.0),
                                       Padding(
-                                        padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            40, 0, 30, 10),
                                         child: SizedBox(
-                                          width: 200,
+                                          width: 205,
                                           height: 35,
                                           child: ElevatedButton(
-                                              onPressed: (){},
-                                              child: const Text(
-                                                "Cancel Appointment",
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontFamily: 'Rubik',
-                                                  fontWeight: FontWeight.bold,
+                                              onPressed: () {},
+                                              child: Row(children: <Widget>[
+                                                Text(
+                                                  "Cancel Appointment",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontFamily: 'Rubik',
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      color: Colors.black),
                                                 ),
-                                              ),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .fromLTRB(10, 0, 0, 0),
+                                                  child: Icon(
+                                                    Icons.cancel,
+                                                    color: Colors.red,
+                                                  ),
+                                                )
+                                              ]),
                                               style: ButtonStyle(
-                                                  shadowColor: MaterialStateProperty.all(
-                                                      const Color.fromARGB(255, 2, 7, 153)),
-                                                  backgroundColor: MaterialStateProperty.all(
-                                                      Color.fromARGB(255, 0, 119, 182)),
-                                                  shape:
-                                                  MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                  shadowColor:
+                                                  MaterialStateProperty.all(
+                                                      const Color.fromARGB(
+                                                          255, 2, 7, 153)),
+                                                  backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Color.fromARGB(255,
+                                                          255, 255, 255)),
+                                                  shape: MaterialStateProperty
+                                                      .all<
+                                                      RoundedRectangleBorder>(
                                                       RoundedRectangleBorder(
                                                           borderRadius:
-                                                          BorderRadius.circular(25.0))))),
+                                                          BorderRadius.circular(
+                                                              25.0),
+                                                          side: BorderSide(
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                  255, 0, 119,
+                                                                  182))
+                                                      )))),
                                         ),
                                       )
                                     ],
@@ -927,8 +932,6 @@ class AcceptedWidget extends StatelessWidget{
                   },
                 );
               }
-            }
-        )
-    );
+            }));
   }
 }
