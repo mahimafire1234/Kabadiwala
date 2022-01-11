@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
+import 'package:login_sprint1/pages/Ratings.dart';
 import 'package:login_sprint1/pages/base.dart';
 import 'package:login_sprint1/pages/insertrate.dart';
 import 'package:login_sprint1/pages/booking/items.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: "/login",
+      initialRoute: "/rateComapny",
       routes: {
         '/signup': (context) => const SignUp(),
         '/login': (context) => LoginPage(),
@@ -34,7 +35,8 @@ class MyApp extends StatelessWidget {
         '/myprofileuser': (context) => const UserProfile(),
         "/setInfo": (context) => SetInformation(name: '', id: '', body: ''),
         "/ratespage": (context) => Rates(company_id: '',),
-        "/itemsHire": (context) => const ItemsHire(id: '', name: '')
+        "/itemsHire": (context) => const ItemsHire(id: '', name: ''),
+        "/rateComapny" : (context) => const RatingCompany()
       },
     );
   }

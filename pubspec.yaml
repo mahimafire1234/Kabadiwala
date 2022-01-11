@@ -30,7 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   awesome_dropdown: ^0.0.4
-
+  flutter_simple_rating_bar:
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -42,6 +42,7 @@ dependencies:
   shared_preferences:
   intl:
   sweetalert:
+  flutter_rating_bar: ^4.0.0
 
 dev_dependencies:
   flutter_test:
