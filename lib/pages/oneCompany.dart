@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/pages/priceview.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'booking/items.dart';
 
@@ -38,6 +39,20 @@ class _ShowOneState extends State<oneCompany> {
     name = deriveData["name"];
     // // adding data to empty list
     return onecompanyList;
+  }
+
+  //get rating for company
+  Future<num>? getRate() async {
+    var response = await http.get(Uri.parse("http://10.0.2.2:5000/rate/getRate/${id}"),
+      headers: {
+        'Content-type' : 'application/json',
+        "Accept": "application/json",
+      },
+    );
+    var jsonData = await jsonDecode(response.body);
+    var deriveData = jsonData["data"]["rating"];
+    // // adding data to empty list
+    return deriveData;
   }
 
 
@@ -90,6 +105,25 @@ class _ShowOneState extends State<oneCompany> {
                 }
               },
             ),
+            FutureBuilder<num>(
+              future: getRate() ,
+              builder:  (context,  snapshot) {
+                if (snapshot.data == null) {
+                  return RatingBar.builder(
+                      initialRating: 0.0,
+                      itemBuilder: (context,_) => Icon(Icons.star,color: Colors.amber,),
+                      onRatingUpdate: (rating) {}
+                  );
+                }else {
+                  return RatingBar.builder(
+                      initialRating: snapshot.data!.toDouble(),
+                      itemBuilder: (context,_) => Icon(Icons.star,color: Colors.amber,),
+                      onRatingUpdate: (rating) {}
+                  );
+                }
+              },
+            ),
+
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -181,4 +215,9 @@ class _ShowOneState extends State<oneCompany> {
 class OneCompany{
   final String name, email,id;
   OneCompany(this.name, this.email,this.id);
+}
+class Ratings{
+  final double ratings;
+  final String id;
+  Ratings(this.ratings, this.id);
 }

@@ -4,6 +4,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:login_sprint1/pages/viewcompany.dart';
+
 class RatingCompany extends StatefulWidget {
   const RatingCompany({Key? key}) :super(key: key);
 
@@ -43,7 +45,7 @@ class _RatingCompanyState extends State<RatingCompany>{
       body: Center(
         child: Container(
           width: 400,
-          height: 400,
+          height: 500,
           padding: new EdgeInsets.all(10.0),
           child: Card(
             shape: RoundedRectangleBorder(
@@ -61,6 +63,13 @@ class _RatingCompanyState extends State<RatingCompany>{
                       textAlign: TextAlign.center,
                   ),
                 ),
+                Center(
+                  child: Image(
+                    image: AssetImage("assets/images/cycling.png"),
+                    width: 200,
+                    height: 100,
+                  ),
+                ),
                 ListTile(
                   title: Text(
                     "Company name",
@@ -69,12 +78,14 @@ class _RatingCompanyState extends State<RatingCompany>{
                   ),
                 ),
                 RatingBar.builder(
+                  initialRating: this.rating.toDouble(),
                     itemBuilder: (context,_) => Icon(Icons.star,color: Colors.amber,),
+                    minRating: 0,
+                    updateOnDrag: true,
                     onRatingUpdate: (rating) {
                       setState(() {
                         this.rating = rating.toInt();
                       });
-
                     }
                 ),
                 Padding(
@@ -102,6 +113,43 @@ class _RatingCompanyState extends State<RatingCompany>{
                                 const Color.fromARGB(255, 2, 7, 153)),
                             backgroundColor: MaterialStateProperty.all(
                                 Color(0xFF06d6a0)),
+                            shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(25.0))))),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: SizedBox(
+                    width: 250,
+                    height: 45,
+                    child: ElevatedButton(
+                        onPressed: () async {
+
+                          setState(() {
+                            this.rating=0;
+                          });
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => ViewCompany(),
+
+                          ));
+
+                        },
+                        child: const Text(
+                          "Cancel",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'Rubik',
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                            shadowColor: MaterialStateProperty.all(
+                                const Color.fromARGB(255, 2, 7, 153)),
+                            backgroundColor: MaterialStateProperty.all(
+                                Color(0xFFE61414)),
                             shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
