@@ -168,7 +168,7 @@ class _ViewAppointmentState extends State<ViewAppointment> {
                                   ),
                                 ),
                                 RenderMyCustomWidget(
-                                  selectedValue: selectedValue!,
+                                  selectedValue: selectedValue,
                                   setFunction: getSelectedFunction(),
                                 ),
                               ],
