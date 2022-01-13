@@ -34,6 +34,7 @@ class _ViewCompanyState extends State<ViewCompany> {
     return Scaffold(
         backgroundColor: Color(0xFF0077B6),
         body: SafeArea(
+        child: SingleChildScrollView(
           child: Container(
               child: Card(
                 color: const Color(0xFF0077B6),
@@ -160,6 +161,7 @@ class _ViewCompanyState extends State<ViewCompany> {
 
               )
           ),
+        ),
         )
 
     );

@@ -2,6 +2,8 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:login_sprint1/pages/appointment/viewAppointment.dart';
+//--no-sound-null-safety
+import 'package:login_sprint1/pages/Ratings.dart';
 import 'package:login_sprint1/pages/base.dart';
 import 'package:login_sprint1/pages/booking/booking_request.dart';
 import 'package:login_sprint1/pages/booking/items.dart';
@@ -58,7 +60,8 @@ class MyApp extends StatelessWidget {
         "/setInfo": (context) => SetInformation(name: '', id: '', body: ''),
         "/ratespage": (context) => Rates(company_id: '',),
         "/itemsHire": (context) => const ItemsHire(id: '', name: ''),
-        "/orderpickup": (context) => const OrderPickup()
+        "/orderpickup": (context) => const OrderPickup(),
+        "/rateCompany" : (context) => const RatingCompany()
       },
     );
   }
