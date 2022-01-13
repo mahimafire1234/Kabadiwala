@@ -11,10 +11,13 @@ class SetInformation extends StatefulWidget {
   final String name;
   final String id;
   final Object body;
-  const SetInformation({Key? key, required this.name, required this.id,  required this.body}) : super(key: key);
+  const SetInformation(
+      {Key? key, required this.name, required this.id, required this.body})
+      : super(key: key);
 
   @override
-  State<SetInformation> createState() => _SetInformationState(name: name, id: id, body: body);
+  State<SetInformation> createState() =>
+      _SetInformationState(name: name, id: id, body: body);
 }
 
 class _SetInformationState extends State<SetInformation> {
@@ -22,12 +25,11 @@ class _SetInformationState extends State<SetInformation> {
   String name;
   var body;
 
-
-  _SetInformationState({ required this.name, required this.id, required this.body});
+  _SetInformationState(
+      {required this.name, required this.id, required this.body});
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -43,7 +45,7 @@ class _SetInformationState extends State<SetInformation> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 80, vertical: 10),
                 child: Row(
-                  children:  [
+                  children: [
                     Text(
                       "Company: ",
                       style: TextStyle(
@@ -81,10 +83,13 @@ class ColumnStart extends StatefulWidget {
   final String id;
   final Object data;
   final Object name;
-  const ColumnStart({Key? key, required this.id, required this.data, required this.name}) : super(key: key);
+  const ColumnStart(
+      {Key? key, required this.id, required this.data, required this.name})
+      : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ColumnStartState(id: id, data: data, name: name);
+  State<StatefulWidget> createState() =>
+      _ColumnStartState(id: id, data: data, name: name);
 }
 
 class _ColumnStartState extends State<ColumnStart> {
@@ -94,6 +99,13 @@ class _ColumnStartState extends State<ColumnStart> {
   String id;
   var data;
   var name;
+
+  int year = 0;
+  int month = 0;
+  int day = 0;
+  int hour = 0;
+  int minute = 0;
+
 
   var body = {};
 
@@ -108,7 +120,7 @@ class _ColumnStartState extends State<ColumnStart> {
   //   dateinput.text = "";
   // }
 
-  _ColumnStartState({ required this.id, required this.data, required this.name });
+  _ColumnStartState({required this.id, required this.data, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -127,15 +139,15 @@ class _ColumnStartState extends State<ColumnStart> {
                 textAlign: TextAlign.center,
                 decoration: const InputDecoration(
 
-                    // contentPadding: EdgeInsets.only(left: 80.0),
+                  // contentPadding: EdgeInsets.only(left: 80.0),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide.none),
                     hintText: "DD/MM/YYY",
                     prefixIcon:
-                        Icon(Icons.calendar_today, color: Colors.black)),
+                    Icon(Icons.calendar_today, color: Colors.black)),
                 readOnly:
-                    true, //set it true, so that user will not able to edit text
+                true, //set it true, so that user will not able to edit text
 
                 onTap: () async {
                   DateTime? pickedDate = await showDatePicker(
@@ -146,9 +158,14 @@ class _ColumnStartState extends State<ColumnStart> {
                   if (pickedDate != null) {
                     print(pickedDate);
                     String formateDate =
-                        DateFormat("yyyy-MM-dd").format(pickedDate);
+                    DateFormat("yyyy-MM-dd").format(pickedDate);
                     SaveLocalData.savedData(formateDate);
                     print(formateDate);
+
+                    this.year = pickedDate.year;
+                    this.month = pickedDate.month;
+                    this.day = pickedDate.day;
+
                     setState(() {
                       dateinput.text = formateDate;
                     });
@@ -174,13 +191,13 @@ class _ColumnStartState extends State<ColumnStart> {
                 textAlign: TextAlign.center,
                 decoration: const InputDecoration(
 
-                    // contentPadding: EdgeInsets.only(left: 80.0),
+                  // contentPadding: EdgeInsets.only(left: 80.0),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide.none),
                     hintText: "Location",
                     prefixIcon:
-                        Icon(CupertinoIcons.location, color: Colors.black)),
+                    Icon(CupertinoIcons.location, color: Colors.black)),
               ),
             ),
           ),
@@ -196,7 +213,7 @@ class _ColumnStartState extends State<ColumnStart> {
                 textAlign: TextAlign.center,
                 decoration: const InputDecoration(
 
-                    // contentPadding: EdgeInsets.only(left: 80.0),
+                  // contentPadding: EdgeInsets.only(left: 80.0),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide.none),
@@ -210,6 +227,9 @@ class _ColumnStartState extends State<ColumnStart> {
                   TimeOfDay? timepicker = await showTimePicker(
                       context: context, initialTime: TimeOfDay.now());
                   if (timepicker != null) {
+                    this.hour = timepicker.hour;
+                    this.minute = timepicker.minute;
+
                     print(timepicker.format(context));
                     String parseTime = timepicker.format(context);
                     SaveLocalData.savedData(parseTime);
@@ -231,31 +251,40 @@ class _ColumnStartState extends State<ColumnStart> {
                   title: "Are u sure u wanna book",
                   style: SweetAlertStyle.confirm,
                   showCancelButton: true, onPress: (bool isConfirm) {
-                if (isConfirm) {
 
-                  body = {
-                    "company" : id,
-                    "date" : dateinput.text.toString(),
-                    "time" : timeinput.text.toString(),
-                    "location" : location,
-                    "items": data["items"],
-                    "total_price": data["total_price"]
-                  };
+                    if (isConfirm) {
+                      var datetime = DateTime.utc(
+                          year,
+                          month,
+                          day,
+                          hour,
+                          minute
+                      ).toLocal();
+                      var dt = datetime.toString();
 
-                  Navigator.push(context, MaterialPageRoute(builder: (builder) => ConfirmBooking(data: body, name: name)));
+                      body = {
+                        "company" : id,
+                        "datetime" : dt,
+                        "location" : location,
+                        "items": data["items"],
+                        "total_price": data["total_price"]
+                      };
 
-                  // SweetAlert.show(context,
-                  //     style: SweetAlertStyle.success, title: "Success");
-                  List<String> myAllSavedData = SaveLocalData.getSavedData;
-                  print(myAllSavedData[0]);
-                  // for (var i in myAllSavedData) {
-                  //   print("Your saved data is --> $i");
-                  // }
-                  // return false to keep dialog
-                  return false;
-                }
-                return true;
-              });
+                      Navigator.push(context, MaterialPageRoute(builder: (builder) => ConfirmBooking(data: body, name: name)));
+
+
+                      // SweetAlert.show(context,
+                      //     style: SweetAlertStyle.success, title: "Success");
+                      List<String> myAllSavedData = SaveLocalData.getSavedData;
+                      print(myAllSavedData[0]);
+                      // for (var i in myAllSavedData) {
+                      //   print("Your saved data is --> $i");
+                      // }
+                      // return false to keep dialog
+                      return false;
+                    }
+                    return true;
+                  });
             },
             buttonText: "Confirm Booking",
           ),

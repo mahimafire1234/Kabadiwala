@@ -1,16 +1,120 @@
+import 'dart:convert';
+
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:login_sprint1/services/shared_preference.dart';
+import 'notifications/reminder.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
+
 
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+
+  getSchedule() async{
+
+    await MySharedPreferences.init();
+    final token = await MySharedPreferences.getToken();
+
+    var res = await http.get(Uri.parse("http://10.0.2.2:5000/booking/reminder"),
+      headers: {
+        'Content-type' : 'application/json',
+        "Accept": "application/json",
+        "Authorization": "Bearer $token"
+      },
+    );
+    var jsonData = await json.decode(res.body);
+    print(jsonData);
+    for(int i = 0; i<jsonData["result"].length; i++){
+
+      var year = jsonData["result"][i]["datetime"].toString().substring(0, 4);
+      var month = jsonData["result"][i]["datetime"].toString().substring(5, 7);
+      var day = jsonData["result"][i]["datetime"].toString().substring(8, 10);
+      var hour = jsonData["result"][i]["datetime"].toString().substring(11, 13);
+      var minute = jsonData["result"][i]["datetime"].toString().substring(14, 16);
+
+      NotificationWeekAndTime pickedSchedule = NotificationWeekAndTime(
+          year: int.parse(year),
+          month: int.parse(month),
+          day: int.parse(day),
+          hour: int.parse(hour),
+          minute: int.parse(minute));
+
+      NotificationWeekAndTime pickedScheduleHourBefore = NotificationWeekAndTime(
+          year: int.parse(year),
+          month: int.parse(month),
+          day: int.parse(day),
+          hour: int.parse(hour)-1,
+          minute: int.parse(minute));
+
+      reminder(pickedSchedule, "Pickup time!", "Your pickup order time has come");
+      reminder(pickedScheduleHourBefore, "Pickup time arriving soon", "Your pickup order's time is in 1 hour");
+
+    }
+
+
+  }
+
+  @override
+  void initState() {  //for notification permission
+    super.initState();
+    AwesomeNotifications().isNotificationAllowed().then(
+          (isAllowed) {
+        if (!isAllowed) {   //if notification permission not allowed show this pop up
+          showDialog(
+            context: context,
+            builder: (context) =>
+                AlertDialog(
+                  title: Text('Allow Notifications'),
+                  content: Text('Our app would like to send you notifications'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context); //when pressed the option close the popup
+                      },
+                      child: const Text(
+                        'Don\'t Allow',
+                        style: TextStyle(color: Colors.grey, fontSize: 18),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () =>
+                          AwesomeNotifications()
+                              .requestPermissionToSendNotifications()  //shows settings ko permission
+                              .then((_) => Navigator.pop(context)), // close popup
+                      child: const Text(
+                        'Allow',
+                        style: TextStyle(
+                          color:  Color(0xFF0077B6),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+          );
+        }
+      },
+    );
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    getSchedule();
+
+    // NotificationWeekAndTime pickedSchedule = NotificationWeekAndTime(day: 3, hour: 11, minute: 48);
+    //
+    // reminder(pickedSchedule);
+    // widget.getSchedule();
     return Scaffold(
         body: SafeArea(
             child: SingleChildScrollView(
@@ -133,37 +237,64 @@ class _HomeState extends State<Home> {
                               top: BorderSide(
                                 color: Colors.grey,
                                 width: 0.5,
-                              ),
-                              right: BorderSide(
-                                color: Colors.grey,
-                                width: 0.5,
-                              ),
-                            )),
-                        child: Option(image: "assets/icons/delivery.png",
-                            text: "Vendors",
-                        link: "/viewcompany"),
+                              )
+                            )
+                        )
                     ),
-                    Container(
-                      padding: EdgeInsets.only(left: 20.0),
-                      decoration: const BoxDecoration(
-                          border: Border(
-                            top: BorderSide(
-                              color: Colors.grey,
-                              width: 0.5,
-                            ),
-                            left: BorderSide(
-                              color: Colors.grey,
-                              width: 0.5,
-                            ),
+                              Container(
+                                  padding: EdgeInsets.only(left: 20.0),
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                          color: Colors.grey,
+                                          width: 0.5,
+                                        ),
+                                        left: BorderSide(
+                                          color: Colors.grey,
+                                          width: 0.5,
+                                        ),
+                                      )),
+                                  child: Option(
+                                      image: "assets/icons/list.png",
+                                      text: "Scoreboard")),
+                              Container(
+                                padding: EdgeInsets.only(left: 10.0),
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                        color: Colors.grey,
+                                        width: 0.5,
+                                      ),
+                                      right: BorderSide(
+                                        color: Colors.grey,
+                                        width: 0.5,
+                                      ),
+                                    )),
+                                child: Option(image: "assets/icons/delivery.png",
+                                    text: "Vendors",
+                                    link: "/viewcompany"),
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(left: 20.0),
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                        color: Colors.grey,
+                                        width: 0.5,
+                                      ),
+                                      left: BorderSide(
+                                        color: Colors.grey,
+                                        width: 0.5,
+                                      ),
+                                    )),
+                                child:  Option(image: "assets/icons/group.png", text: "Forum"),
+                              )
+                            ],
                           )),
-                      child:  Option(image: "assets/icons/group.png", text: "Forum"),
-                    )
-                  ],
-                )),
-          ],
-        ),
-      )
-    ))
+                    ],
+                  ),
+                )
+            ))
 
     );
   }
@@ -195,10 +326,10 @@ class _OptionState extends State<Option> {
       child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-        Image.asset("${image}", width: 50),
-        SizedBox(width: 15.0),
-        Text("${text}", overflow: TextOverflow.clip)
-      ]),
+            Image.asset("${image}", width: 50),
+            SizedBox(width: 15.0),
+            Text("${text}", overflow: TextOverflow.fade)
+          ]),
     );
   }
 }
