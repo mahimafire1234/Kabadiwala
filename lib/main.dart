@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: "/viewcompany",
+      initialRoute: "/login",
       routes: {
         '/signup': (context) => const SignUp(),
         '/login': (context) => LoginPage(),
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         "/setInfo": (context) => SetInformation(name: '', id: '', body: ''),
         "/ratespage": (context) => Rates(company_id: '',),
         "/itemsHire": (context) => const ItemsHire(id: '', name: ''),
-        "/rateComapny" : (context) => const RatingCompany()
+        "/rateCompany" : (context) => const RatingCompany()
       },
     );
   }
