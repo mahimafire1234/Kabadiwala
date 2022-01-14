@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:login_sprint1/LocalDataSave/SaveLocalData.dart';
+import 'package:login_sprint1/pages/appointment/updateAppointment.dart';
 import 'package:login_sprint1/services/booking_services.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 
@@ -399,6 +400,7 @@ class PendingWidget extends StatelessWidget {
       {Key? key, required this.setFunction, required this.status})
       : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -507,31 +509,31 @@ class PendingWidget extends StatelessWidget {
                                                   color: Colors.black),
                                             ),
                                             Text(
-                                              snapshot.data![i]["date"],
+                                              snapshot.data![i]["datetime"],
                                               style: TextStyle(
                                                   fontSize: 15,
                                                   color: Colors.black),
                                             )
                                           ]),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: Row(children: [
-                                            Text(
-                                              "Time : ",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18,
-                                                  color: Colors.black),
-                                            ),
-                                            Text(
-                                              snapshot.data![i]["time"],
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.black),
-                                            )
-                                          ]),
-                                        ),
+                                        // Padding(
+                                        //   padding: const EdgeInsets.all(4.0),
+                                        //   child: Row(children: [
+                                        //     Text(
+                                        //       "Time : ",
+                                        //       style: TextStyle(
+                                        //           fontWeight: FontWeight.bold,
+                                        //           fontSize: 18,
+                                        //           color: Colors.black),
+                                        //     ),
+                                        //     Text(
+                                        //       snapshot.data![i]["time"],
+                                        //       style: TextStyle(
+                                        //           fontSize: 15,
+                                        //           color: Colors.black),
+                                        //     )
+                                        //   ]),
+                                        // ),
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: Row(children: [
@@ -631,7 +633,13 @@ class PendingWidget extends StatelessWidget {
                                             width: 205,
                                             height: 35,
                                             child: ElevatedButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                                      UpdateAppointment(
+                                                          bookingID:snapshot.data![i]["_id"],
+                                                          olddatetime:snapshot.data![i]["datetime"],
+                                                          oldlocation:snapshot.data![i]["location"])));
+                                                },
                                                 child: Row(children: <Widget>[
                                                   Text(
                                                     "Update Appointment",

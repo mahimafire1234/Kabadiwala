@@ -34,6 +34,7 @@ class LoginPage extends StatefulWidget {
         token = (data["token"]);
         await MySharedPreferences.init();
         await MySharedPreferences.setTokenWithType(token, data["usertype"]);
+        await MySharedPreferences.setLoginId(data["data"]["_id"]);
         print(token);
         return isLogin;
       } else {

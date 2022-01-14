@@ -4,7 +4,8 @@ import 'package:http/http.dart' as http;
 
 
 class BookingServices {
-  static var baseUri = "http://192.168.100.252:5000/booking/";
+  // static var baseUri = "http://192.168.100.252:5000/booking/";
+  static var baseUri = "http://192.168.137.50:5000/booking/";
   // var baseUri = "http://127.0.0.1:5000/booking/";
 
   Future<String?> book(body, token) async {
@@ -153,5 +154,4 @@ class BookingServices {
       print(e);
     }
   }
-
 }
