@@ -25,7 +25,7 @@ class _BaseState extends State<Base> {
     return Scaffold(
       appBar: AppBar(
           title: Text("Kabadiwala"),
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: IconThemeData(color: Color(0xff0077B6)),
           elevation: 0.0),
       drawer: Drawer(
         child: ListView(

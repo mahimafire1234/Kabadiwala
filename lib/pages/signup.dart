@@ -56,10 +56,16 @@ class _SignUpState extends State<SignUp> {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <
                   Widget>[
+                const Center(
+                  child: Image(
+                    image: AssetImage("assets/images/logo.png"),
+                    width: 300,
+                    height: 250,),
+                ),
             Text('SIGN UP',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.blueAccent,
+                    color:  Color(0xff0077B6),
                     fontWeight: FontWeight.bold,
                     fontSize: 32,
                     fontFamily: 'Rubik')),

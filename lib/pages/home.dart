@@ -230,33 +230,6 @@ class _HomeState extends State<Home> {
                         child: Option(
                             image: "assets/icons/list.png",
                             text: "Scoreboard")),
-                    Container(
-                        padding: EdgeInsets.only(left: 10.0),
-                        decoration: const BoxDecoration(
-                            border: Border(
-                              top: BorderSide(
-                                color: Colors.grey,
-                                width: 0.5,
-                              )
-                            )
-                        )
-                    ),
-                              Container(
-                                  padding: EdgeInsets.only(left: 20.0),
-                                  decoration: const BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: Colors.grey,
-                                          width: 0.5,
-                                        ),
-                                        left: BorderSide(
-                                          color: Colors.grey,
-                                          width: 0.5,
-                                        ),
-                                      )),
-                                  child: Option(
-                                      image: "assets/icons/list.png",
-                                      text: "Scoreboard")),
                               Container(
                                 padding: EdgeInsets.only(left: 10.0),
                                 decoration: const BoxDecoration(

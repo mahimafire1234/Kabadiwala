@@ -74,6 +74,7 @@ flutter:
      - assets/images/
      - assets/icons/
      - assets/images/cycling.png
+     - assets/images/logo.png
      - assets/images/company.jpg
      - assets/icons/delivery.png
      - assets/icons/garbage-truck.png
