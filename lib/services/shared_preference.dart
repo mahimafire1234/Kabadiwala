@@ -7,6 +7,7 @@ class MySharedPreferences {
   static const String _id = "id";
   static const String _LoginId = "LoginId";
   static const String _usertype = "usertype";
+
   static Future init() async =>
       _preferences = await SharedPreferences.getInstance();
   static Future setTokenWithType(String token, String userType) async {
@@ -37,7 +38,10 @@ class MySharedPreferences {
 
   static String? get getCurrentUserType =>
       _preferences!.getString(_setUserType!);
+
   static Future setLoginId(String LoginId) async =>
       await _preferences!.setString(_LoginId, LoginId);
+
   static String? get getLoginId => _preferences!.getString(_LoginId);
 }
+
