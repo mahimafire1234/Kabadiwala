@@ -35,6 +35,8 @@ class LoginPage extends StatefulWidget {
         token = (data["token"]);
         await MySharedPreferences.init();
         await MySharedPreferences.setTokenWithType(token, data["usertype"]);
+        await MySharedPreferences.setUsertype(data["usertype"]);
+        await MySharedPreferences.setLoginId(data["data"]["_id"]);
         print(token);
         return isLogin;
       } else {
@@ -234,7 +236,7 @@ class _LoginPageState extends State<LoginPage> {
                     } else {
                       if (usertype == UserType.COMPANY) {
                         // Usertype.company mah ==> "company" ko value xa
-                        Navigator.pushNamed(context, "/bookingRequest");
+                        Navigator.pushNamed(context, "/paymentTransition");
                       } else {
                         Navigator.pushNamed(context, "/home");
                       }

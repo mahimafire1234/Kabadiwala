@@ -116,4 +116,20 @@ class BookingServices {
       print(e);
     }
   }
+
+  static Future<dynamic> getPayTransition(usertype, id, token) async {
+    try {
+      var response = await http.get(
+        Uri.parse(baseUri + "get_payment/$usertype/$id/"),
+        headers: {
+          'Content-type': 'application/json',
+          "Accept": "application/json",
+          "Authorization": "Bearer $token"
+        },
+      );
+      return response.body;
+    } catch (e) {
+      print(e);
+    }
+  }
 }

@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:login_sprint1/services/shared_preference.dart';
 import 'package:login_sprint1/pages/ratespage.dart';
+import 'package:login_sprint1/services/shared_preference.dart';
 
 class CompanyProfile extends StatefulWidget {
   const CompanyProfile({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class CompanyProfile extends StatefulWidget {
 }
 
 class _CompanyProfileState extends State<CompanyProfile> {
-  String id ="";
+  String id = "";
 
   Future<List<String>> getuserdata() async {
     await MySharedPreferences.init();
@@ -30,14 +30,13 @@ class _CompanyProfileState extends State<CompanyProfile> {
     String company_name = await data["data"]["name"];
     String company_id = await data["data"]["_id"];
     //list
-    List<String> companyInfo = [company_id,company_name];
+    List<String> companyInfo = [company_id, company_name];
     //set variable
     setState(() {
       id = company_id;
     });
     return companyInfo;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -71,16 +70,13 @@ class _CompanyProfileState extends State<CompanyProfile> {
                                 fontWeight: FontWeight.normal,
                                 fontSize: 15,
                               ))
-
                           : Text("empty",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
                                 fontSize: 15,
-                              )
-                      );
+                              ));
                     },
-
                   )),
               Padding(
                   padding: EdgeInsets.all(10),
@@ -117,27 +113,27 @@ class _CompanyProfileState extends State<CompanyProfile> {
                   scrollDirection: Axis.vertical,
                   children: [
                     Card(
-                        semanticContainer: true,
-                        color: Color(0xff92CAE8),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            side: BorderSide(
-                                color: Color(0xff0077B6), width: 4.0)),
-                        elevation: 5,
-                        child: new InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => Rates(company_id: id)));
-                            print("id"+id);
-                          },
-                          child: Center(
-                              // onPressed:(){print("clicked");},
-                              child: Text("My pricings",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold))),
-                        ),
-
+                      semanticContainer: true,
+                      color: Color(0xff92CAE8),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                          side:
+                              BorderSide(color: Color(0xff0077B6), width: 4.0)),
+                      elevation: 5,
+                      child: new InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => Rates(company_id: id)));
+                          print("id" + id);
+                        },
+                        child: Center(
+                            // onPressed:(){print("clicked");},
+                            child: Text("My pricings",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold))),
+                      ),
                     ),
                     Card(
                         color: Color(0xff92CAE8),
@@ -146,12 +142,17 @@ class _CompanyProfileState extends State<CompanyProfile> {
                             side: BorderSide(
                                 color: Color(0xff0077B6), width: 4.0)),
                         elevation: 5,
-                        child: Center(
-                            child: Text("Transactions History",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold)))),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, "/paymentTransition");
+                          },
+                          child: Center(
+                              child: Text("Transactions History",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold))),
+                        )),
                     Card(
                         color: Color(0xff92CAE8),
                         shape: RoundedRectangleBorder(

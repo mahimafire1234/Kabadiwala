@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import 'package:login_sprint1/pages/base.dart';
 import 'package:login_sprint1/pages/booking/booking_request.dart';
 import 'package:login_sprint1/pages/booking/items.dart';
+import 'package:login_sprint1/pages/booking/payment_transition.dart';
 import 'package:login_sprint1/pages/booking/set_information.dart';
 import 'package:login_sprint1/pages/insertrate.dart';
 import 'package:login_sprint1/pages/login.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
               company_id: '',
             ),
         '/myprofilekabadiwala': (context) => const CompanyProfile(),
+        '/paymentTransition': (context) => PaymentTransition(),
         '/myprofileuser': (context) => const UserProfile(),
         '/bookingRequest': (context) => BookingRequest(),
         "/setInfo": (context) => SetInformation(name: '', id: '', body: ''),
