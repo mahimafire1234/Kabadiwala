@@ -8,13 +8,14 @@ class CategoryServices{
   Future<dynamic> getRates(id) async {
     try {
       var response = await http
-          .get(Uri.parse("http://127.0.0.1:5000/category/getRate/$id"),
+          // .get(Uri.parse("http://127.0.0.1:5000/category/getRate/$id"),
+              .get(Uri.parse("http://10.0.2.2:5000/category/getRate/$id"),
           headers: {
             'Content-type' : 'application/json',
             "Accept": "application/json",
           });
-
-      return response.statusCode;
+      return response.body;
+      // return response.statusCode;
     } catch (e) {
       print(e);
     }

@@ -4,13 +4,13 @@ import 'dart:convert';
 class RatingsServices{
   Future<dynamic> insertRatings(body,company_id) async {
     try {
-      var response = await http.post(Uri.parse("http://10.0.2.2:5000/rate/giveRate/${company_id}"),
+      //url is for testing chnage it
+      var response = await http.post(Uri.parse("http://127.0.0.1:5000/rate/giveRate/$company_id"),
         headers: {
           'Content-type': 'application/json',
           "Accept": "application/json",
         },
-        body: json.encode(body),
-      );
+        body: json.encode(body));
       return response.body;
     } catch (e) {
       print(e);

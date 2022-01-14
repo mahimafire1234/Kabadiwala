@@ -111,13 +111,13 @@ class _ViewAppointmentState extends State<ViewAppointment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(Icons.menu_rounded),
-              onPressed: () {},
-            ),
-            title: Center(child: Text("Kabadiwala")),
-            backgroundColor: Color.fromARGB(255, 0, 119, 182)),
+        // appBar: AppBar(
+        //     leading: IconButton(
+        //       icon: Icon(Icons.menu_rounded),
+        //       onPressed: () {},
+        //     ),
+        //     title: Center(child: Text("Kabadiwala")),
+        //     backgroundColor: Color.fromARGB(255, 0, 119, 182)),
         body: SafeArea(
             child:SingleChildScrollView(
                 child: Container(

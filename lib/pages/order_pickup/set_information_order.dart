@@ -6,7 +6,7 @@ import 'package:login_sprint1/custom/ButtonAsWidgetr.dart';
 import 'package:login_sprint1/pages/order_pickup/confirm_order.dart';
 import 'package:sweetalert/sweetalert.dart';
 
-import '../Constraints.dart';
+import '../../constraints/constraints.dart';
 
 class SetInformationOrder extends StatefulWidget {
   final Object data;

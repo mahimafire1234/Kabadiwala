@@ -3,7 +3,7 @@ import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:login_sprint1/pages/Constraints.dart';
+import 'package:login_sprint1/constraints/constraints.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 import 'package:login_sprint1/services/userservices.dart';
 
@@ -228,7 +228,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     var response = await UserServices.signin(
                         body); // signin fuction returns response.body
-                    var data = jsonDecode(response);
+                    var data = json.decode(response);
 
                     print(data["data"]["usertype"]);
                     var usertype = (data["data"]["usertype"]);
@@ -244,12 +244,7 @@ class _LoginPageState extends State<LoginPage> {
                               const SnackBar(content: Text("Invalid login")));
                         }
                       } else {
-                        if (usertype == UserType.COMPANY) {
-                          // Usertype.company mah ==> "company" ko value xa
-                          Navigator.pushNamed(context, "/bookingRequest");
-                        } else {
-                          Navigator.pushNamed(context, "/home");
-                        }
+                        Navigator.pushNamed(context, "/home");
                       }
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
