@@ -13,3 +13,5 @@ class UserType {
   static const String COMPANY = "company";
   static const String USER = "user";
 }
+
+const String BASEURI = "http://10.0.2.2:5000";

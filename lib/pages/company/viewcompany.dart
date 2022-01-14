@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:login_sprint1/pages/oneCompany.dart';
+import 'package:login_sprint1/pages/company/oneCompany.dart';
 
 class ViewCompany extends StatefulWidget {
   const ViewCompany({Key? key}) : super(key: key);
@@ -34,6 +34,7 @@ class _ViewCompanyState extends State<ViewCompany> {
     return Scaffold(
         backgroundColor: Color(0xFF0077B6),
         body: SafeArea(
+        child: SingleChildScrollView(
           child: Container(
               child: Card(
                 color: const Color(0xFF0077B6),
@@ -87,63 +88,65 @@ class _ViewCompanyState extends State<ViewCompany> {
                                   shrinkWrap: true,
                                   itemCount : snapshot.data?.length,
                                   itemBuilder : (context, i){
-                                    return Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: PhysicalModel(
-                                        borderRadius: BorderRadius.circular(15),
-                                        color: Colors.white,
-                                        elevation: 10.0,
-                                        shadowColor: Color(0xff000f61),
-                                        child: ListTile(
-                                          tileColor: Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(15.0),
-                                          ),
-                                          onTap: () async{
-                                            final data = await widget.getUserData();
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute
-                                                  (builder: (context)=>oneCompany(id:snapshot.data![i].id),
-                                                  // settings: RouteSettings(
-                                                  //   arguments: data,
-                                                  // )
-                                                )
-                                            );
-                                          },
-                                          title: Row(
-                                            children: [
-                                              Text("image"),
-                                              Padding(
-                                                padding: const EdgeInsets.all(10.0),
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(snapshot.data![i].name,
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold,
-                                                          fontSize: 18),
-                                                    ),
+                                    return SingleChildScrollView(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: PhysicalModel(
+                                          borderRadius: BorderRadius.circular(15),
+                                          color: Colors.white,
+                                          elevation: 10.0,
+                                          shadowColor: Color(0xff000f61),
+                                          child: ListTile(
+                                            tileColor: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15.0),
+                                            ),
+                                            onTap: () async{
+                                              final data = await widget.getUserData();
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute
+                                                    (builder: (context)=>oneCompany(id:snapshot.data![i].id),
+                                                    // settings: RouteSettings(
+                                                    //   arguments: data,
+                                                    // )
+                                                  )
+                                              );
+                                            },
+                                            title: Row(
+                                              children: [
+                                                Text("image"),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(10.0),
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(snapshot.data![i].name,
+                                                        style: TextStyle(
+                                                            fontWeight: FontWeight.bold,
+                                                            fontSize: 18),
+                                                      ),
 
-                                                    SizedBox(height: 10.0),
-                                                    Row(
-                                                        children:[
-                                                          Text(snapshot.data![i].email),
-                                                          SizedBox(width: 10.0),
-                                                          // Text(snapshot.data![i].id),
-                                                        ]
-                                                    ),
-                                                    SizedBox(height: 10.0),
-                                                    Text("Rating: "),
+                                                      SizedBox(height: 10.0),
+                                                      Row(
+                                                          children:[
+                                                            Text(snapshot.data![i].email),
+                                                            SizedBox(width: 10.0),
+                                                            // Text(snapshot.data![i].id),
+                                                          ]
+                                                      ),
+                                                      SizedBox(height: 10.0),
+                                                      Text("Rating: "),
 
 
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
+
+
                                           ),
-
-
                                         ),
                                       ),
                                     );
@@ -160,6 +163,7 @@ class _ViewCompanyState extends State<ViewCompany> {
 
               )
           ),
+        ),
         )
 
     );

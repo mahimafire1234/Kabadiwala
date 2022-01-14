@@ -111,13 +111,13 @@ class _ViewAppointmentState extends State<ViewAppointment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(Icons.menu_rounded),
-              onPressed: () {},
-            ),
-            title: Center(child: Text("Kabadiwala")),
-            backgroundColor: Color.fromARGB(255, 0, 119, 182)),
+      // appBar: AppBar(
+      //     leading: IconButton(
+      //       icon: Icon(Icons.menu_rounded),
+      //       onPressed: () {},
+      //     ),
+      //     title: Center(child: Text("Kabadiwala")),
+      //     backgroundColor: Color.fromARGB(255, 0, 119, 182)),
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Container(
@@ -313,7 +313,8 @@ class _RenderMyCustomWidgetState extends State<RenderMyCustomWidget> {
                                                   color: Colors.black),
                                             ),
                                             Text(
-                                              snapshot.data![i]["datetime"].toString(),
+                                              snapshot.data![i]["datetime"]
+                                                  .toString(),
                                               style: TextStyle(
                                                   fontSize: 15,
                                                   color: Colors.black),
@@ -509,7 +510,8 @@ class PendingWidget extends StatelessWidget {
                                                   color: Colors.black),
                                             ),
                                             Text(
-                                              snapshot.data![i]["datetime"].toString(),
+                                              snapshot.data![i]["datetime"]
+                                                  .toString(),
                                               style: TextStyle(
                                                   fontSize: 15,
                                                   color: Colors.black),
@@ -618,27 +620,37 @@ class PendingWidget extends StatelessWidget {
                                                         .all<
                                                         RoundedRectangleBorder>(
                                                         RoundedRectangleBorder(
-                                                          borderRadius:
-                                                          BorderRadius.circular(
-                                                              25.0),
-                                                            side: BorderSide(color:Color.fromARGB(255, 0, 119, 182))
+                                                            borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                25.0),
+                                                            side: BorderSide(
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                    255, 0, 119,
+                                                                    182))
 
                                                         )))),
                                           ),
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.fromLTRB(
-                                              40,0, 30, 10),
+                                              40, 0, 30, 10),
                                           child: SizedBox(
                                             width: 205,
                                             height: 35,
                                             child: ElevatedButton(
                                                 onPressed: () {
-                                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                                      UpdateAppointment(
-                                                          bookingID:snapshot.data![i]["_id"],
-                                                          olddatetime:snapshot.data![i]["datetime"],
-                                                          oldlocation:snapshot.data![i]["location"])));
+                                                  Navigator.push(context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              UpdateAppointment(
+                                                                  bookingID: snapshot
+                                                                      .data![i]["_id"],
+                                                                  olddatetime: snapshot
+                                                                      .data![i]["datetime"],
+                                                                  oldlocation: snapshot
+                                                                      .data![i]["location"])));
                                                 },
                                                 child: Row(children: <Widget>[
                                                   Text(
@@ -678,10 +690,15 @@ class PendingWidget extends StatelessWidget {
                                                         .all<
                                                         RoundedRectangleBorder>(
                                                         RoundedRectangleBorder(
-                                                          borderRadius:
-                                                          BorderRadius.circular(
-                                                              25.0),
-                                                            side: BorderSide(color:Color.fromARGB(255, 0, 119, 182))
+                                                            borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                25.0),
+                                                            side: BorderSide(
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                    255, 0, 119,
+                                                                    182))
 
                                                         )))),
                                           ),
@@ -815,7 +832,8 @@ class AcceptedWidget extends StatelessWidget {
                                                 color: Colors.black),
                                           ),
                                           Text(
-                                            snapshot.data![i]["datetime"].toString(),
+                                            snapshot.data![i]["datetime"]
+                                                .toString(),
                                             style: TextStyle(
                                                 fontSize: 15,
                                                 color: Colors.black),

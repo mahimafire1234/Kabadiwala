@@ -3,7 +3,7 @@ import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:login_sprint1/pages/Constraints.dart';
+import 'package:login_sprint1/constraints/constraints.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 import 'package:login_sprint1/services/userservices.dart';
 
@@ -34,6 +34,7 @@ class LoginPage extends StatefulWidget {
         token = (data["token"]);
         await MySharedPreferences.init();
         await MySharedPreferences.setTokenWithType(token, data["usertype"]);
+        await MySharedPreferences.setUsertype(data["usertype"]);
         await MySharedPreferences.setLoginId(data["data"]["_id"]);
         print(token);
         return isLogin;
@@ -67,13 +68,19 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const Center(
+                child: Image(
+                  image: AssetImage("assets/images/logo.png"),
+                  width: 180,
+                  height: 180,),
+              ),
+              const Center(
                 child: Padding(
-                  padding: EdgeInsets.only(top: 80.0),
+                  padding: EdgeInsets.only(top: 5.0),
                   child: Text(
                     "Login",
                     style: TextStyle(
                         fontSize: 30,
-                        color: Colors.blue,
+                        color: Color(0xff0077B6),
                         fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
@@ -193,60 +200,65 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              ElevatedButton(
-                style: ButtonStyle(
+              SizedBox(
+                height: 50,
+                child:
+                ElevatedButton(
+
+                  style: ButtonStyle(
                     padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                         EdgeInsets.symmetric(
                             horizontal: 120.0, vertical: 12.0)),
+                    backgroundColor: MaterialStateProperty.all(
+                        Color.fromARGB(255, 0, 119, 182)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16.0),
-                            side: BorderSide(color: Colors.black)))),
-                onPressed: () async {
-                  dynamic Data = await widget.login(
-                      loginEmail: widget.emailController.text,
-                      loginPassword: widget.passwordController.text);
+                          borderRadius: BorderRadius.circular(16.0),
+                        )),
+                  ),
+                  onPressed: () async {
+                    dynamic Data = await widget.login(
+                        loginEmail: widget.emailController.text,
+                        loginPassword: widget.passwordController.text);
 
-                  var loginEmail = widget.emailController.text;
-                  var loginPassword = widget.passwordController.text;
-                  Map<dynamic, dynamic> body = {
-                    "email": loginEmail,
-                    "password": loginPassword
-                  };
+                    var loginEmail = widget.emailController.text;
+                    var loginPassword = widget.passwordController.text;
+                    Map<dynamic, dynamic> body = {
+                      "email": loginEmail,
+                      "password": loginPassword
+                    };
 
-                  var response = await UserServices.signin(
-                      body); // signin fuction returns response.body
-                  var data = jsonDecode(response);
+                    var response = await UserServices.signin(
+                        body); // signin fuction returns response.body
+                    var data = json.decode(response);
 
-                  print(data["data"]["usertype"]);
-                  var usertype = (data["data"]["usertype"]);
-                  print("my Data is :$Data");
-                  print(data["data"]["userType"]);
+                    print(data["data"]["usertype"]);
+                    var usertype = (data["data"]["usertype"]);
+                    print("my Data is :$Data");
+                    print(data["data"]["userType"]);
 
-                  if (_formKey.currentState!.validate() &&
-                      _formKey1.currentState!.validate()) {
-                    if (Data != true) {
-                      //form valid xa ki xaina check garxa
-                      {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text("Invalid login")));
-                      }
-                    } else {
-                      if (usertype == UserType.COMPANY) {
-                        // Usertype.company mah ==> "company" ko value xa
-                        Navigator.pushNamed(context, "/bookingRequest");
+                    if (_formKey.currentState!.validate() &&
+                        _formKey1.currentState!.validate()) {
+                      if (Data != true) {
+                        //form valid xa ki xaina check garxa
+                        {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Invalid login")));
+                        }
                       } else {
                         Navigator.pushNamed(context, "/home");
                       }
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text("please validate form first login")));
                     }
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("please validate form first login")));
-                  }
-                },
-                child: Text(
-                  "Login",
+                  },
+                  child: Text(
+                    "Login",
+                    style: TextStyle(fontSize: 20),
+                  ),
                 ),
+
               ),
               SizedBox(
                 height: 14,

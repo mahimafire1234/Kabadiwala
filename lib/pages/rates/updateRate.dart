@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:http/http.dart' as http;
-import 'package:login_sprint1/pages/ratespage.dart';
+import 'package:login_sprint1/pages/rates/ratespage.dart';
 
 class UpdateRate extends StatefulWidget {
   String company_id;

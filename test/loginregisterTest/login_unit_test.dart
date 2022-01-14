@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:login_sprint1/pages/login.dart';
+import 'package:login_sprint1/pages/user/login.dart';
 
 void main() {
-  test("login ko test", () async* {
+  test("Test for user login", () async* {
     LoginPage loginPage = LoginPage();
     var actual = await loginPage.login(
-        loginEmail: "rajivkarky15@gmail.com", loginPassword: "hi");
+        loginEmail: "test12567@gmail.com", loginPassword: "test");
     expect(actual, 200);
   });
 }

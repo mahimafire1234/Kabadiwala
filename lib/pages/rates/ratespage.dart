@@ -1,10 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:login_sprint1/pages/insertrate.dart';
-import 'package:login_sprint1/pages/updateRate.dart';
-import 'package:login_sprint1/services/Category.dart';
-import 'package:login_sprint1/services/userservices.dart';
+import 'package:login_sprint1/pages/rates/insertrate.dart';
+import 'package:login_sprint1/pages/rates/updateRate.dart';
 import 'package:http/http.dart' as http;
 
 class Rates extends StatefulWidget{

@@ -3,30 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:login_sprint1/LocalDataSave/SaveLocalData.dart';
 import 'package:login_sprint1/custom/ButtonAsWidgetr.dart';
-import 'package:login_sprint1/constraints/constraints.dart';
-import 'package:login_sprint1/pages/booking/confirm_booking.dart';
+import 'package:login_sprint1/pages/order_pickup/confirm_order.dart';
 import 'package:sweetalert/sweetalert.dart';
 
-class SetInformation extends StatefulWidget {
-  final String name;
-  final String id;
-  final Object body;
-  const SetInformation(
-      {Key? key, required this.name, required this.id, required this.body})
-      : super(key: key);
+import '../../constraints/constraints.dart';
+
+class SetInformationOrder extends StatefulWidget {
+  final Object data;
+  const SetInformationOrder({Key? key, required this.data}) : super(key: key);
 
   @override
-  State<SetInformation> createState() =>
-      _SetInformationState(name: name, id: id, body: body);
+  _SetInformationOrderState createState() => _SetInformationOrderState(data: data);
 }
 
-class _SetInformationState extends State<SetInformation> {
-  String id;
-  String name;
-  var body;
-
-  _SetInformationState(
-      {required this.name, required this.id, required this.body});
+class _SetInformationOrderState extends State<SetInformationOrder> {
+  Object data;
+  _SetInformationOrderState({required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -42,35 +34,10 @@ class _SetInformationState extends State<SetInformation> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 40.0),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 80, vertical: 10),
-                child: Row(
-                  children: [
-                    Text(
-                      "Company: ",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20.0),
-                    ),
-                    SizedBox(
-                      width: 10.0,
-                    ),
-                    Text(
-                      this.name,
-                      style: TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.redAccent,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      width: 10.0,
-                    ),
-                  ],
-                ),
-              ),
               SizedBox(
                 height: 10.0,
               ),
-              ColumnStart(id: id, data: body, name: name),
+              ColumnStart(data: data),
             ],
           ),
         ),
@@ -80,25 +47,20 @@ class _SetInformationState extends State<SetInformation> {
 }
 
 class ColumnStart extends StatefulWidget {
-  final String id;
   final Object data;
-  final Object name;
-  const ColumnStart(
-      {Key? key, required this.id, required this.data, required this.name})
-      : super(key: key);
+  const ColumnStart({Key? key, required this.data}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() =>
-      _ColumnStartState(id: id, data: data, name: name);
+  State<StatefulWidget> createState() => _ColumnStartState(data: data);
 }
+
 
 class _ColumnStartState extends State<ColumnStart> {
   String date = "";
   String time = "";
   String location = "";
-  String id;
   var data;
-  var name;
+
 
   int year = 0;
   int month = 0;
@@ -120,7 +82,7 @@ class _ColumnStartState extends State<ColumnStart> {
   //   dateinput.text = "";
   // }
 
-  _ColumnStartState({required this.id, required this.data, required this.name});
+  _ColumnStartState({ required this.data });
 
   @override
   Widget build(BuildContext context) {
@@ -156,11 +118,9 @@ class _ColumnStartState extends State<ColumnStart> {
                       firstDate: DateTime(2000),
                       lastDate: DateTime(2030));
                   if (pickedDate != null) {
-                    print(pickedDate);
                     String formateDate =
                     DateFormat("yyyy-MM-dd").format(pickedDate);
                     SaveLocalData.savedData(formateDate);
-                    print(formateDate);
 
                     this.year = pickedDate.year;
                     this.month = pickedDate.month;
@@ -227,10 +187,10 @@ class _ColumnStartState extends State<ColumnStart> {
                   TimeOfDay? timepicker = await showTimePicker(
                       context: context, initialTime: TimeOfDay.now());
                   if (timepicker != null) {
+
                     this.hour = timepicker.hour;
                     this.minute = timepicker.minute;
 
-                    print(timepicker.format(context));
                     String parseTime = timepicker.format(context);
                     SaveLocalData.savedData(parseTime);
                     setState(() {
@@ -251,37 +211,26 @@ class _ColumnStartState extends State<ColumnStart> {
                   title: "Are u sure u wanna book",
                   style: SweetAlertStyle.confirm,
                   showCancelButton: true, onPress: (bool isConfirm) {
-
                     if (isConfirm) {
+
                       var datetime = DateTime.utc(
                           year,
                           month,
                           day,
-                          hour,
-                          minute
+                          hour.toInt(),
+                          minute.toInt()
                       ).toLocal();
                       var dt = datetime.toString();
-
+                      print(dt);
                       body = {
-                        "company" : id,
                         "datetime" : dt,
                         "location" : location,
-                        "items": data["items"],
-                        "total_price": data["total_price"]
+                        "items": data
                       };
-                      print(body);
 
-                      Navigator.push(context, MaterialPageRoute(builder: (builder) => ConfirmBooking(data: body, name: name)));
+                      Navigator.push(context, MaterialPageRoute(builder: (builder) => ConfirmOrder(data: body, time: hour.toString() + ":" + minute.toString() )));
 
-
-                      // SweetAlert.show(context,
-                      //     style: SweetAlertStyle.success, title: "Success");
                       List<String> myAllSavedData = SaveLocalData.getSavedData;
-                      print(myAllSavedData[0]);
-                      // for (var i in myAllSavedData) {
-                      //   print("Your saved data is --> $i");
-                      // }
-                      // return false to keep dialog
                       return false;
                     }
                     return true;

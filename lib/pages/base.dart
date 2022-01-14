@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:login_sprint1/pages/myprofilekabadiwala.dart';
+
+import 'package:login_sprint1/pages/appointment/view_appointment.dart';
+import 'package:login_sprint1/pages/user/myprofilekabadiwala.dart';
+import 'package:login_sprint1/pages/booking/set_information.dart';
 
 import 'home.dart';
 
@@ -17,14 +20,18 @@ class _BaseState extends State<Base> {
 
   _BaseState(this.currentIndex);
 
-  final screens = [Home(), CompanyProfile()];
+  final screens = [
+    Home(),
+    ViewAppointment(),
+    CompanyProfile()
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           title: Text("Kabadiwala"),
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: IconThemeData(color: Color(0xff0077B6)),
           elevation: 0.0),
       drawer: Drawer(
         child: ListView(
@@ -73,6 +80,7 @@ class _BaseState extends State<Base> {
         onTap: (index) => setState(() => currentIndex = index),
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: "View Appointments"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile")
         ],
       ),

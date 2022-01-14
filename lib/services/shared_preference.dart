@@ -1,5 +1,4 @@
 import 'package:shared_preferences/shared_preferences.dart';
-
 class MySharedPreferences {
   static SharedPreferences? _preferences;
   static String? _setUserType;
@@ -11,7 +10,6 @@ class MySharedPreferences {
 
   static Future init() async =>
       _preferences = await SharedPreferences.getInstance();
-
   static Future setTokenWithType(String token, String userType) async {
     _setUserType = userType;
     if (_setUserType == "company") {
@@ -31,7 +29,6 @@ class MySharedPreferences {
 
   static Future setId(String id) async =>
       await _preferences!.setString(_id, id);
-
   static String? get getId => _preferences!.getString(_id);
 
   static Future setUsertype(String usertype) async =>
@@ -47,3 +44,4 @@ class MySharedPreferences {
 
   static String? get getLoginId => _preferences!.getString(_LoginId);
 }
+

@@ -5,10 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:login_sprint1/LocalDataSave/SaveLocalData.dart';
-import 'package:login_sprint1/pages/appointment/viewAppointment.dart';
+import 'package:login_sprint1/constraints/constraints.dart';
+import 'package:login_sprint1/pages/appointment/view_appointment.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
-
-import '../Constraints.dart';
 
 class UpdateAppointment extends StatefulWidget {
   String bookingID;

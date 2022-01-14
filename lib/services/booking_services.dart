@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-
-class BookingServices {
-  static var baseUri = "http://127.0.0.1:5000/booking/";
+class BookingServices{
+  static var baseUri = "http://10.0.2.2:5000/booking/";
 
   Future<String?> book(body, token) async {
     try {
