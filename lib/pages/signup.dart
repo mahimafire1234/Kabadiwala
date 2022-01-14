@@ -59,8 +59,8 @@ class _SignUpState extends State<SignUp> {
                 const Center(
                   child: Image(
                     image: AssetImage("assets/images/logo.png"),
-                    width: 300,
-                    height: 250,),
+                    width: 180,
+                    height: 180,),
                 ),
             Text('SIGN UP',
                 textAlign: TextAlign.center,

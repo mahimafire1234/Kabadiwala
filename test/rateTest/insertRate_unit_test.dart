@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:login_sprint1/pages/insertrate.dart';
+import 'package:login_sprint1/pages/rates/insertrate.dart';
 import 'package:login_sprint1/services/category_services.dart';
 import 'package:login_sprint1/services/userservices.dart';
 
@@ -13,8 +13,8 @@ void main() async {
       {"price": "931", "category": "Home"}
     ];
     var data = {"userID": company_id, "category_rate": rate};
-    var userServices = UserServices();
-    var response = await userServices.insertRate(data);
+    var categoryServices = CategoryServices();
+    var response = await categoryServices.insertRate(data);
     var resBody = json.decode(response.toString());
     bool received = resBody["success"];
     expect(expected, received);

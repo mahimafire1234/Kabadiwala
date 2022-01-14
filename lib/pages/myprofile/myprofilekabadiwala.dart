@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/services/shared_preference.dart';
-import 'package:login_sprint1/pages/ratespage.dart';
+import 'package:login_sprint1/pages/rates/ratespage.dart';
 
 class CompanyProfile extends StatefulWidget {
   const CompanyProfile({Key? key}) : super(key: key);

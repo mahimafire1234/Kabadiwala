@@ -68,8 +68,8 @@ class _LoginPageState extends State<LoginPage> {
               const Center(
                 child: Image(
                   image: AssetImage("assets/images/logo.png"),
-                  width: 300,
-                  height: 250,),
+                  width: 180,
+                  height: 180,),
               ),
               const Center(
                 child: Padding(

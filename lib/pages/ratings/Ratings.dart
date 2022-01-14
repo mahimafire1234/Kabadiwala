@@ -4,7 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:login_sprint1/pages/viewcompany.dart';
+import 'package:login_sprint1/pages/company/viewcompany.dart';
 
 class RatingCompany extends StatefulWidget {
   const RatingCompany({Key? key}) :super(key: key);
