@@ -12,22 +12,24 @@ import 'package:login_sprint1/services/shared_preference.dart';
 class UpdateAppointment extends StatefulWidget {
   String bookingID;
   String oldlocation;
-  String olddatetime;
+  String olddate;
+  String oldtime;
 
   UpdateAppointment(
-      {required this.bookingID, required this.oldlocation, required this.olddatetime});
+      {required this.bookingID, required this.oldlocation, required this.olddate, required this.oldtime});
 
   @override
   _UpdateAppointmentState createState() =>
-      _UpdateAppointmentState(bookingID,oldlocation,olddatetime);
+      _UpdateAppointmentState(bookingID,oldlocation,olddate, oldtime);
 }
 
 class _UpdateAppointmentState extends State<UpdateAppointment> {
   String bookingID;
   String oldlocation;
-  String olddatetime;
+  String olddate;
+  String oldtime;
 
-  _UpdateAppointmentState(this.bookingID, this.oldlocation,this.olddatetime);
+  _UpdateAppointmentState(this.bookingID, this.oldlocation,this.olddate, this.oldtime);
   String date ="";
   String time = "";
   String location ="";
@@ -39,11 +41,13 @@ class _UpdateAppointmentState extends State<UpdateAppointment> {
   int minute = 0;
 
 
-  TextEditingController dateinput = TextEditingController();
-  TextEditingController timeinput = TextEditingController();
+  TextEditingController dateinput = new TextEditingController();
+  TextEditingController timeinput =  new TextEditingController();
+
 
   void initState(){
-    dateinput.text = "";
+    dateinput.text = olddate;
+    timeinput.text = oldtime;
   }
 
   updateData() async {
@@ -236,6 +240,15 @@ class _UpdateAppointmentState extends State<UpdateAppointment> {
                       Navigator.push(context,MaterialPageRoute(builder:(context)=> ViewAppointment()));
                     }
                     if(res["success"] == false){
+                      final snackB = SnackBar(
+                        duration: Duration(seconds: 5),
+                        content: Text("Failed to update"),
+                        action: SnackBarAction(
+                          label: 'Dismiss',
+                          onPressed: () {},
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackB);
                       print("error");
                     }
                   },
