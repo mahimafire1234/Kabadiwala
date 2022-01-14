@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:login_sprint1/pages/priceview.dart';
+import 'package:login_sprint1/pages/rates/priceview.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import 'booking/items.dart';
+import '../booking/items.dart';
 
 class oneCompany extends StatefulWidget {
   String id;

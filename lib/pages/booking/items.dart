@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:login_sprint1/pages/oneCompany.dart';
+import 'package:login_sprint1/pages/company/oneCompany.dart';
 import 'package:login_sprint1/pages/booking/set_information.dart';
-import 'package:login_sprint1/pages/viewcompany.dart';
+import 'package:login_sprint1/pages/company/viewcompany.dart';
 import 'package:login_sprint1/services/category_services.dart';
 
 class ItemsHire extends StatefulWidget {
