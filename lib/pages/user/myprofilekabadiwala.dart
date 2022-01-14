@@ -21,9 +21,17 @@ class _CompanyProfileState extends State<CompanyProfile> {
     await MySharedPreferences.init();
 
     final token = await MySharedPreferences.getToken();
+    String usertype =await MySharedPreferences.getUsertype!;
+
+    String url;
     // print(token);
+    if(usertype == "company"){
+      url ="http://10.0.2.2:5000/user/loggedin_company";
+    }else{
+      url ="http://10.0.2.2:5000/user/loggedin_user";
+    }
     var response = await http
-        .get(Uri.parse("http://10.0.2.2:5000/user/loggedin_company"), headers: {
+        .get(Uri.parse(url), headers: {
       "Authorization": "Bearer $token",
     });
 
@@ -31,7 +39,6 @@ class _CompanyProfileState extends State<CompanyProfile> {
     // print(data);
     String user_name = await data["data"]["name"];
     String user_id = await data["data"]["_id"];
-    String usertype = await data["data"]["usertype"];
     print(usertype);
     //list
     List<String> companyInfo = [user_id,user_name,usertype];
