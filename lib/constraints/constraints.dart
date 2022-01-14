@@ -12,4 +12,4 @@ class UserType {
   static const String USER = "user";
 }
 
-const String baseUri = "http://10.0.2.2:5000/";
+const String BASEURI = "http://10.0.2.2:5000";

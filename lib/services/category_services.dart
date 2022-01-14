@@ -1,15 +1,16 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:login_sprint1/constraints/constraints.dart';
 
 class CategoryServices{
-  var baseUri = "http://127.0.0.1:5000/category";
+  var baseUri = "$BASEURI/category";
 
   //get rate for each company id
   Future<dynamic> getRates(id) async {
     try {
       var response = await http
           // .get(Uri.parse("http://127.0.0.1:5000/category/getRate/$id"),
-              .get(Uri.parse("http://10.0.2.2:5000/category/getRate/$id"),
+          .get(Uri.parse("$baseUri/getRate/$id"),
           headers: {
             'Content-type' : 'application/json',
             "Accept": "application/json",
@@ -47,7 +48,7 @@ class CategoryServices{
             "Accept": "application/json",
           },
           body: json.encode(body));
-      return response.body;
+return response.body;
     } catch (e) {
       print(e);
     }

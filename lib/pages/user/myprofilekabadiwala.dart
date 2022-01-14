@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:login_sprint1/pages/appointment/viewAppointment.dart';
+import 'package:login_sprint1/pages/appointment/view_appointment.dart';
+import 'package:login_sprint1/pages/booking/booking_request.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 import 'package:login_sprint1/pages/rates/ratespage.dart';
 
@@ -159,17 +160,22 @@ class _CompanyProfileState extends State<CompanyProfile> {
                                       fontWeight: FontWeight.bold)))),
                       Card(
                           color: Color(0xff92CAE8),
+
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0),
                               side: BorderSide(
                                   color: Color(0xff0077B6), width: 4.0)),
                           elevation: 5,
+                          child: new InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => BookingRequest()));
+                              },
                           child: Center(
-                              child: Text("My Favorites",
+                              child: Text("Booking requests",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontWeight: FontWeight.bold)))),
+                                      fontWeight: FontWeight.bold)))),),
                       Card(
                           color: Color(0xff92CAE8),
                           shape: RoundedRectangleBorder(

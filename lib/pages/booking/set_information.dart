@@ -269,6 +269,7 @@ class _ColumnStartState extends State<ColumnStart> {
                         "items": data["items"],
                         "total_price": data["total_price"]
                       };
+                      print(body);
 
                       Navigator.push(context, MaterialPageRoute(builder: (builder) => ConfirmBooking(data: body, name: name)));
 

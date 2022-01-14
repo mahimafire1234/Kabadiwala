@@ -1,7 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
-import 'package:login_sprint1/pages/appointment/viewAppointment.dart';
+import 'package:login_sprint1/pages/appointment/view_appointment.dart';
 //--no-sound-null-safety
 import 'package:login_sprint1/pages/ratings/Ratings.dart';
 import 'package:login_sprint1/pages/base.dart';
@@ -10,7 +10,6 @@ import 'package:login_sprint1/pages/booking/items.dart';
 import 'package:login_sprint1/pages/booking/set_information.dart';
 import 'package:login_sprint1/pages/rates/insertrate.dart';
 import 'package:login_sprint1/pages/user/login.dart';
-import 'package:login_sprint1/pages/user/myprofileUser.dart';
 import 'package:login_sprint1/pages/user/myprofilekabadiwala.dart';
 import 'package:login_sprint1/pages/company/oneCompany.dart';
 import 'package:login_sprint1/pages/order_pickup/order_pickup.dart';
@@ -56,7 +55,6 @@ class MyApp extends StatelessWidget {
               company_id: '',
             ),
         '/myprofilekabadiwala': (context) => const CompanyProfile(),
-        '/myprofileuser': (context) => const UserProfile(),
         '/bookingRequest': (context) => BookingRequest(),
         "/setInfo": (context) => SetInformation(name: '', id: '', body: ''),
         "/ratespage": (context) => Rates(company_id: '',),

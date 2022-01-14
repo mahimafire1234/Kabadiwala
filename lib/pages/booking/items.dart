@@ -36,8 +36,17 @@ class _ItemsHireState extends State<ItemsHire> {
     try {
       var categoryServices = CategoryServices();
       var response = await categoryServices.getRates(id);
-      data = response;
-      return response;
+      var resBody = json.decode(response);
+      var categoryRate = resBody["data"][0]["category_rate"];
+      List<CategoryRate> categoryRateList = [];
+      for(int i = 0; i<categoryRate.length; i++ ){
+        var cr = categoryRate[i];
+        categoryRateList.add(
+          CategoryRate(cr["_id"], cr["category"], cr["price"])
+        );
+      }
+      data = categoryRateList;
+      return categoryRateList;
     } catch (e) {
       print(e);
     }
@@ -65,6 +74,7 @@ class _ItemsHireState extends State<ItemsHire> {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       const Padding(
                         padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
@@ -273,10 +283,18 @@ class _ItemsHireState extends State<ItemsHire> {
                           width: 300,
                           child: ElevatedButton(
                               onPressed: () {
+                                print(items);
+                                var filteredItems = [];
+                                for(int i = 0; i< items.length; i++ ){
+                                  if(items[i].toString() != "{}"){
+                                    filteredItems.add(items[i]);
+                                  }
+                                }
                                 body = {
-                                  "items": items,
+                                  "items": filteredItems,
                                   "total_price": total
                                 };
+
                                 Navigator.push(context, MaterialPageRoute(
                                   builder: (context) => SetInformation(id: this.id, name: this.name, body: this.body ),
                                 ));
