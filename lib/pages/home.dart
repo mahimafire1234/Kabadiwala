@@ -4,6 +4,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:login_sprint1/constraints/constraints.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 import 'notifications/reminder.dart';
 
@@ -22,7 +23,7 @@ class _HomeState extends State<Home> {
     await MySharedPreferences.init();
     final token = await MySharedPreferences.getToken();
 
-    var res = await http.get(Uri.parse("http://10.0.2.2:5000/booking/reminder"),
+    var res = await http.get(Uri.parse("$BASEURI/booking/reminder"),
       headers: {
         'Content-type' : 'application/json',
         "Accept": "application/json",
@@ -31,32 +32,35 @@ class _HomeState extends State<Home> {
     );
     var jsonData = await json.decode(res.body);
     print(jsonData);
-    for(int i = 0; i<jsonData["result"].length; i++){
+    if(jsonData["message"] != "Unauthorized"){
+      for(int i = 0; i<jsonData["result"].length; i++){
 
-      var year = jsonData["result"][i]["datetime"].toString().substring(0, 4);
-      var month = jsonData["result"][i]["datetime"].toString().substring(5, 7);
-      var day = jsonData["result"][i]["datetime"].toString().substring(8, 10);
-      var hour = jsonData["result"][i]["datetime"].toString().substring(11, 13);
-      var minute = jsonData["result"][i]["datetime"].toString().substring(14, 16);
+        var year = jsonData["result"][i]["datetime"].toString().substring(0, 4);
+        var month = jsonData["result"][i]["datetime"].toString().substring(5, 7);
+        var day = jsonData["result"][i]["datetime"].toString().substring(8, 10);
+        var hour = jsonData["result"][i]["datetime"].toString().substring(11, 13);
+        var minute = jsonData["result"][i]["datetime"].toString().substring(14, 16);
 
-      NotificationWeekAndTime pickedSchedule = NotificationWeekAndTime(
-          year: int.parse(year),
-          month: int.parse(month),
-          day: int.parse(day),
-          hour: int.parse(hour),
-          minute: int.parse(minute));
+        NotificationWeekAndTime pickedSchedule = NotificationWeekAndTime(
+            year: int.parse(year),
+            month: int.parse(month),
+            day: int.parse(day),
+            hour: int.parse(hour),
+            minute: int.parse(minute));
 
-      NotificationWeekAndTime pickedScheduleHourBefore = NotificationWeekAndTime(
-          year: int.parse(year),
-          month: int.parse(month),
-          day: int.parse(day),
-          hour: int.parse(hour)-1,
-          minute: int.parse(minute));
+        NotificationWeekAndTime pickedScheduleHourBefore = NotificationWeekAndTime(
+            year: int.parse(year),
+            month: int.parse(month),
+            day: int.parse(day),
+            hour: int.parse(hour)-1,
+            minute: int.parse(minute));
 
-      reminder(pickedSchedule, "Pickup time!", "Your pickup order time has come");
-      reminder(pickedScheduleHourBefore, "Pickup time arriving soon", "Your pickup order's time is in 1 hour");
+        reminder(pickedSchedule, "Pickup time!", "Your pickup order time has come");
+        reminder(pickedScheduleHourBefore, "Pickup time arriving soon", "Your pickup order's time is in 1 hour");
 
+      }
     }
+
 
 
   }

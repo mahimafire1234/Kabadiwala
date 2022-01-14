@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:login_sprint1/pages/appointment/viewAppointment.dart';
+import 'package:login_sprint1/pages/appointment/view_appointment.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 
 class UserProfile extends StatefulWidget {
