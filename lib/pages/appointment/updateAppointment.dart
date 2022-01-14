@@ -29,7 +29,8 @@ class _UpdateAppointmentState extends State<UpdateAppointment> {
   String olddatetime;
 
   _UpdateAppointmentState(this.bookingID, this.oldlocation,this.olddatetime);
-  String datetime = "";
+  String date ="";
+  String time = "";
   String location ="";
 
   int year = 0;
@@ -38,29 +39,39 @@ class _UpdateAppointmentState extends State<UpdateAppointment> {
   int hour = 0;
   int minute = 0;
 
+
   TextEditingController dateinput = TextEditingController();
   TextEditingController timeinput = TextEditingController();
 
-  void initState() {
+  void initState(){
     dateinput.text = "";
   }
-
 
   updateData() async {
     try {
       String? user_id = MySharedPreferences.getLoginId;
-      var data = {"location": location,"datetime":dateinput};
+      var datetime = DateTime.utc(
+          year,
+          day,
+          hour,
+          minute
+      ).toLocal();
+      var dt = datetime.toString();
+      print ('dt $dt');
+
+      var data = {"location": location,"datetime":dt};
       var body = await json.encode(data);
-      print("body");
-      print(body);
+      print('body $body');
+
       var response = await http.put(
           Uri.parse(
-              "http:192.168.137.50/booking/updateAppointment/${user_id}/${bookingID}"),
+              "http://192.168.100.252:5000/booking/updateBook/${user_id}/${bookingID}"),
           headers: {
             'Content-type': 'application/json',
             "Accept": "application/json",
           },
           body: body);
+      print('res1 $response');
       return response.body;
     } catch (error) {
       print(error);
@@ -112,11 +123,11 @@ class _UpdateAppointmentState extends State<UpdateAppointment> {
                       firstDate: DateTime(2000),
                       lastDate: DateTime(2030));
                   if (pickedDate != null) {
-                    print(pickedDate);
+                    print('pickedDate: $pickedDate');
                     String formateDate =
                         DateFormat("yyyy-MM-dd").format(pickedDate);
                     SaveLocalData.savedData(formateDate);
-                    print(formateDate);
+                    print('formateDate: $formateDate');
 
                     this.year = pickedDate.year;
                     this.month = pickedDate.month;
@@ -124,6 +135,7 @@ class _UpdateAppointmentState extends State<UpdateAppointment> {
 
                     setState(() {
                       dateinput.text = formateDate;
+                      print('dateinput $dateinput');
                     });
                   } else {
                     print("date is not selected");
@@ -164,7 +176,7 @@ class _UpdateAppointmentState extends State<UpdateAppointment> {
               shadowColor: const Color(0xff2a2a2a),
               borderRadius: BorderRadius.circular(25),
               child: TextFormField(
-                initialValue: datetime,
+                controller: timeinput,
                 textAlign: TextAlign.center,
                 decoration: const InputDecoration(
 
@@ -185,11 +197,13 @@ class _UpdateAppointmentState extends State<UpdateAppointment> {
                     this.hour = timepicker.hour;
                     this.minute = timepicker.minute;
 
-                    print(timepicker.format(context));
+                    print('timepicker: $timepicker.format(context)');
                     String parseTime = timepicker.format(context);
                     SaveLocalData.savedData(parseTime);
+
                     setState(() {
                       timeinput.text = parseTime.toString();
+                      print('timeinput $timeinput');
                     });
                   }
                 },
@@ -207,6 +221,7 @@ class _UpdateAppointmentState extends State<UpdateAppointment> {
               child: ElevatedButton(
                   onPressed: () async {
                     var response = await updateData();
+                    print('response $response');
                     var res = json.decode(response);
                     print(res["success"]);
                     final snackB = SnackBar(

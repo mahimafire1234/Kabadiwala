@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class UserServices {
-  // static var baseUri = "http://192.168.100.252:5000";
-  static var baseUri = "http://192.168.137.50:5000";
+  static var baseUri = "http://127.0.0.1:5000:5000";
+
   Future<String?> signup(body) async {
     try {
       var response =

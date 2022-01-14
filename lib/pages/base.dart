@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:login_sprint1/pages/myprofileUser.dart';
 import 'package:login_sprint1/pages/myprofilekabadiwala.dart';
-import 'package:login_sprint1/pages/booking/set_information.dart';
 
 import 'home.dart';
 
@@ -19,7 +17,7 @@ class _BaseState extends State<Base> {
 
   _BaseState(this.currentIndex);
 
-  final screens = [Home(), UserProfile()];
+  final screens = [Home(), CompanyProfile()];
 
   @override
   Widget build(BuildContext context) {

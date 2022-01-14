@@ -64,7 +64,7 @@ class ViewAppointment extends StatefulWidget {
     List<dynamic>? pendingList = [];
     try {
       var response = await BookingServices.viewPendingOnly(
-          MySharedPreferences.getId, MySharedPreferences.getToken());
+          MySharedPreferences.getLoginId, MySharedPreferences.getToken());
       var data = jsonDecode(response);
       if (data["success"] == true) {
         var items = data["data"];
@@ -169,7 +169,7 @@ class _ViewAppointmentState extends State<ViewAppointment> {
                               ),
                             ),
                             RenderMyCustomWidget(
-                              selectedValue: selectedValue!,
+                              selectedValue: selectedValue,
                               setFunction: getSelectedFunction(),
                             ),
                           ],
@@ -313,31 +313,31 @@ class _RenderMyCustomWidgetState extends State<RenderMyCustomWidget> {
                                                   color: Colors.black),
                                             ),
                                             Text(
-                                              snapshot.data![i]["date"],
+                                              snapshot.data![i]["datetime"].toString(),
                                               style: TextStyle(
                                                   fontSize: 15,
                                                   color: Colors.black),
                                             )
                                           ]),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: Row(children: [
-                                            Text(
-                                              "Time : ",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18,
-                                                  color: Colors.black),
-                                            ),
-                                            Text(
-                                              snapshot.data![i]["time"],
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.black),
-                                            )
-                                          ]),
-                                        ),
+                                        // Padding(
+                                        //   padding: const EdgeInsets.all(4.0),
+                                        //   child: Row(children: [
+                                        //     Text(
+                                        //       "Time : ",
+                                        //       style: TextStyle(
+                                        //           fontWeight: FontWeight.bold,
+                                        //           fontSize: 18,
+                                        //           color: Colors.black),
+                                        //     ),
+                                        //     Text(
+                                        //       snapshot.data![i]["time"],
+                                        //       style: TextStyle(
+                                        //           fontSize: 15,
+                                        //           color: Colors.black),
+                                        //     )
+                                        //   ]),
+                                        // ),
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: Row(children: [
@@ -509,7 +509,7 @@ class PendingWidget extends StatelessWidget {
                                                   color: Colors.black),
                                             ),
                                             Text(
-                                              snapshot.data![i]["datetime"],
+                                              snapshot.data![i]["datetime"].toString(),
                                               style: TextStyle(
                                                   fontSize: 15,
                                                   color: Colors.black),
@@ -815,31 +815,31 @@ class AcceptedWidget extends StatelessWidget {
                                                 color: Colors.black),
                                           ),
                                           Text(
-                                            snapshot.data![i]["date"],
+                                            snapshot.data![i]["datetime"].toString(),
                                             style: TextStyle(
                                                 fontSize: 15,
                                                 color: Colors.black),
                                           )
                                         ]),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: Row(children: [
-                                          Text(
-                                            "Time : ",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18,
-                                                color: Colors.black),
-                                          ),
-                                          Text(
-                                            snapshot.data![i]["time"],
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.black),
-                                          )
-                                        ]),
-                                      ),
+                                      // Padding(
+                                      //   padding: const EdgeInsets.all(4.0),
+                                      //   child: Row(children: [
+                                      //     Text(
+                                      //       "Time : ",
+                                      //       style: TextStyle(
+                                      //           fontWeight: FontWeight.bold,
+                                      //           fontSize: 18,
+                                      //           color: Colors.black),
+                                      //     ),
+                                      //     Text(
+                                      //       snapshot.data![i]["time"],
+                                      //       style: TextStyle(
+                                      //           fontSize: 15,
+                                      //           color: Colors.black),
+                                      //     )
+                                      //   ]),
+                                      // ),
                                       Padding(
                                         padding: const EdgeInsets.all(4.0),
                                         child: Row(children: [
