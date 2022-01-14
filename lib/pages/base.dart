@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:login_sprint1/pages/appointment/viewAppointment.dart';
+import 'package:login_sprint1/pages/appointment/view_appointment.dart';
 import 'package:login_sprint1/pages/user/myprofilekabadiwala.dart';
 import 'package:login_sprint1/pages/booking/set_information.dart';
 

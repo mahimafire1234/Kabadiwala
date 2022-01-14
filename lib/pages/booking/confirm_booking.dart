@@ -32,6 +32,7 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
       var bookingServices = BookingServices();
       var response = await bookingServices.book(data, token);
       var decodedData = jsonDecode(response!);
+      print(decodedData);
       var bookinId = decodedData["data"]["_id"];
       await MySharedPreferences.setId(bookinId);
       print(bookinId);
@@ -89,11 +90,13 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
                         ),
                       ),
                       CustomRow(text1: "Company", text2: name),
-                      CustomRow(text1: "Date", text2: data["date"].toString()),
+                      CustomRow(text1: "Date",
+                          text2: data["datetime"].toString().substring(0, 10)),
                       CustomRow(
                           text1: "Location",
                           text2: data["location"].toString()),
-                      CustomRow(text1: "Time", text2: data["time"].toString()),
+                      CustomRow(text1: "Time",
+                          text2: data["datetime"].toString().substring(11, 16)),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                         child: Row(
@@ -150,6 +153,7 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
                         child: Divider(color: Colors.black),
                       ),
                       Column(children: [
+
                         for (var item in data["items"])
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),

@@ -1,7 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
-import 'package:login_sprint1/pages/appointment/viewAppointment.dart';
+import 'package:login_sprint1/pages/appointment/view_appointment.dart';
 //--no-sound-null-safety
 import 'package:login_sprint1/pages/Ratings.dart';
 import 'package:login_sprint1/pages/base.dart';
