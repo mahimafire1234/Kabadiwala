@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/pages/rates/priceview.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:login_sprint1/pages/ratings/Ratings.dart';
 
 import '../booking/items.dart';
 
@@ -63,6 +64,7 @@ class _ShowOneState extends State<oneCompany> {
             title: Text("Kabadiwala"),
             backgroundColor: Color(0xff0077B6)),
         body: SafeArea(
+          child:SingleChildScrollView(
           child: Column(children: [
             SizedBox(
               height: 35,
@@ -119,6 +121,7 @@ class _ShowOneState extends State<oneCompany> {
                   );
                 }else {
                   return RatingBar.builder(
+                    allowHalfRating: true,
                       initialRating: snapshot.data!.toDouble(),
                       itemBuilder: (context,_) => Icon(Icons.star,color: Colors.amber,),
                       onRatingUpdate: (rating) {}
@@ -127,6 +130,12 @@ class _ShowOneState extends State<oneCompany> {
               },
             ),
 
+           InkWell(
+             child: Text("Rate Now",style: TextStyle(color: Colors.blue),),
+             onTap:(){ Navigator.push(context, MaterialPageRoute(
+               builder: (context) => RatingCompany(company_id: this.id,),
+             ));},
+           ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -212,7 +221,7 @@ class _ShowOneState extends State<oneCompany> {
               ),
             ),
           ]),
-        ));
+        )));
   }
 }
 class OneCompany{

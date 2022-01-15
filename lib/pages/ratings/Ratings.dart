@@ -8,24 +8,26 @@ import 'dart:convert';
 import 'package:login_sprint1/pages/company/viewcompany.dart';
 
 class RatingCompany extends StatefulWidget {
-  const RatingCompany({Key? key}) :super(key: key);
-
+  // const RatingCompany({Key? key}) :super(key: key);
+  String company_id;
+  RatingCompany({required this.company_id});
   @override
-  _RatingCompanyState createState() => _RatingCompanyState();
+  _RatingCompanyState createState() => _RatingCompanyState(this.company_id);
 
 }
 
 class _RatingCompanyState extends State<RatingCompany>{
 
   int rating = 0;
-  String company_id = "61d96a36687290929a25f3c9";
+  String company_id;
+  _RatingCompanyState(this.company_id);
 
   //sending ratings to backend
   sendRatings() async {
     var data = {"rating":this.rating};
     var body = await json.encode(data);
     try{
-      var response = await http.post(Uri.parse("http://10.0.2.2:5000/rate/giveRate/${company_id}"),
+      var response = await http.post(Uri.parse("http://10.0.2.2:5000/rate/giveRate/$company_id"),
           headers: {
             'Content-type': 'application/json',
             "Accept": "application/json",

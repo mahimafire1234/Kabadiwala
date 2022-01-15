@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
         "/ratespage": (context) => Rates(company_id: '',),
         "/itemsHire": (context) => const ItemsHire(id: '', name: ''),
         "/orderpickup": (context) => const OrderPickup(),
-        "/rateCompany" : (context) => const RatingCompany()
+        "/rateCompany" : (context) => RatingCompany(company_id: '',)
       },
     );
   }
