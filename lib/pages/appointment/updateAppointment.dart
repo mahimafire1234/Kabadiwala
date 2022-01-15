@@ -64,7 +64,7 @@ class _UpdateAppointmentState extends State<UpdateAppointment> {
 
       var response = await http.put(
           Uri.parse(
-              "http://192.168.100.252:5000/booking/updateBook/${user_id}/${bookingID}"),
+              "http://10.0.2.2:5000/booking/updateBook/${user_id}/${bookingID}"),
           headers: {
             'Content-type': 'application/json',
             "Accept": "application/json",

@@ -58,11 +58,9 @@ class _PaymentTransitionState extends State<PaymentTransition> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title:
-            Title(color: Colors.red, child: Text("View Transaction History")),
-        elevation: 20.0,
-      ),
+        appBar: AppBar(
+            title: Text("Kabadiwala"),
+            backgroundColor: Color(0xff0077B6)),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
