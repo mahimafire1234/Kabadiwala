@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'package:sweetalert/sweetalert.dart';
 import 'package:login_sprint1/LocalDataSave/SaveLocalData.dart';
 import 'package:login_sprint1/pages/appointment/updateAppointment.dart';
 import 'package:login_sprint1/services/booking_services.dart';
@@ -79,6 +79,7 @@ class ViewAppointment extends StatefulWidget {
     }
     return pendingList;
   }
+
 
   @override
   _ViewAppointmentState createState() => _ViewAppointmentState();
@@ -393,6 +394,27 @@ class PendingWidget extends StatelessWidget {
   final Future<List<dynamic>>? setFunction;
   final String status;
 
+  Future<String?> updateBooking(userid, bookingid, body, context) async {
+    try {
+      await MySharedPreferences.init();
+      final token = await MySharedPreferences.getToken();
+
+      var bookingServices = BookingServices();
+      var response = await BookingServices.updateBooking(
+          userid, bookingid, token, body);
+      var res = json.decode(response!);
+      print(res);
+      if (res["success"]) {
+        Navigator.pushNamed(
+            context,
+            "/viewappointment");
+      }
+      return response;
+    } catch (err) {
+      print(err);
+    }
+  }
+
   const PendingWidget(
       {Key? key, required this.setFunction, required this.status})
       : super(key: key);
@@ -577,7 +599,31 @@ class PendingWidget extends StatelessWidget {
                                             width: 205,
                                             height: 35,
                                             child: ElevatedButton(
-                                                onPressed: () {},
+                                                onPressed: ()  {
+                                                   SweetAlert.show(context,
+                                                    title: "Are you sure you want to cancel your booking?",
+                                                    style: SweetAlertStyle
+                                                        .confirm,
+                                                    showCancelButton: true,
+                                                    onPress: (bool isConfirm) {
+                                                      if (isConfirm) {
+                                                        updateBooking(
+                                                            snapshot
+                                                                .data![i]["user"],
+                                                            snapshot
+                                                                .data![i]["_id"],
+                                                            {
+                                                              "status": "cancelled"
+                                                            },
+                                                            context);
+                                                        return false;
+
+                                                      } else {
+                                                        return true;
+                                                      }
+                                                    },
+                                                  );
+                                                },
                                                 child: Row(children: <Widget>[
                                                   Text(
                                                     "Cancel Appointment",

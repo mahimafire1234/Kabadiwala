@@ -168,6 +168,7 @@ class BookingServices{
     }
   }
 
+
   static Future<dynamic> getPayTransition(usertype, id, token) async {
     try {
       var response = await http.get(
@@ -178,9 +179,27 @@ class BookingServices{
           "Authorization": "Bearer $token"
         },
       );
+    }
+    catch (e) {
+      print(e);
+    }
+  }
+
+  //cancel
+  static Future<String?> updateBooking(userid, bookingid, token, body) async {
+    try {
+      var response = await http.put(Uri.parse("${baseUri}updateBook/$userid/$bookingid"),
+          headers: {
+            'Content-type': 'application/json',
+            "Accept": "application/json",
+            "Authorization": "Bearer $token"
+          },
+          body: json.encode(body));
+
       return response.body;
     } catch (e) {
       print(e);
     }
   }
+
 }
