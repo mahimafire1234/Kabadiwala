@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
+import 'package:login_sprint1/pages/company/oneCompany.dart';
 import 'dart:convert';
 
 import 'package:login_sprint1/pages/company/viewcompany.dart';
@@ -17,12 +18,12 @@ class RatingCompany extends StatefulWidget {
 class _RatingCompanyState extends State<RatingCompany>{
 
   int rating = 0;
+  String company_id = "61d96a36687290929a25f3c9";
 
   //sending ratings to backend
   sendRatings() async {
     var data = {"rating":this.rating};
     var body = await json.encode(data);
-    String company_id = "61d96a36687290929a25f3c9";
     try{
       var response = await http.post(Uri.parse("http://10.0.2.2:5000/rate/giveRate/${company_id}"),
           headers: {
@@ -99,6 +100,19 @@ class _RatingCompanyState extends State<RatingCompany>{
                           var response = await sendRatings();
                           var res = json.decode(response);
                           print(res["success"]);
+                          if(res["success"] == true){
+                            final snackB = SnackBar(
+                              duration: Duration(seconds: 5),
+                              content: Text(res["message"]),
+                              action: SnackBarAction(
+                                label: 'Dismiss',
+                                onPressed: () {},
+                              ),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackB);
+                            Navigator.push(context,MaterialPageRoute(builder:(context)=> oneCompany(id: company_id,)));
+                          }
+
                           },
                         child: const Text(
                           "Done",
