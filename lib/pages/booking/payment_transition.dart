@@ -58,6 +58,11 @@ class _PaymentTransitionState extends State<PaymentTransition> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title:
+            Title(color: Colors.red, child: Text("View Transaction History")),
+        elevation: 20.0,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -66,7 +71,7 @@ class _PaymentTransitionState extends State<PaymentTransition> {
                 child: Container(
                   alignment: Alignment.center,
                   child: Text(
-                    "View Transition history",
+                    "View Transaction history",
                     style:
                         TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),
                   ),
