@@ -2,6 +2,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:login_sprint1/pages/appointment/view_appointment.dart';
+import 'package:login_sprint1/pages/booking/payment_transition.dart';
 //--no-sound-null-safety
 import 'package:login_sprint1/pages/ratings/Ratings.dart';
 import 'package:login_sprint1/pages/base.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
             ),
         '/myprofilekabadiwala': (context) => const CompanyProfile(),
         '/bookingRequest': (context) => BookingRequest(),
+        '/paymentRequest': (context) => PaymentTransition(),
         "/setInfo": (context) => SetInformation(name: '', id: '', body: ''),
         "/ratespage": (context) => Rates(company_id: '',),
         "/itemsHire": (context) => const ItemsHire(id: '', name: ''),
