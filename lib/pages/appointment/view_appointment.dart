@@ -398,7 +398,7 @@ class PendingWidget extends StatelessWidget {
   final Future<List<dynamic>>? setFunction;
   final String status;
 
-  Future<String?> updateBooking(userid, bookingid, body) async {
+  Future<String?> updateBooking(userid, bookingid, body, context) async {
     try {
       await MySharedPreferences.init();
       final token = await MySharedPreferences.getToken();
@@ -406,7 +406,13 @@ class PendingWidget extends StatelessWidget {
       var bookingServices = BookingServices();
       var response = await BookingServices.updateBooking(
           userid, bookingid, token, body);
-      print(response);
+      var res = json.decode(response!);
+      print(res);
+      if (res["success"]) {
+        Navigator.pushNamed(
+            context,
+            "/viewappointment");
+      }
       return response;
     } catch (err) {
       print(err);
@@ -604,24 +610,18 @@ class PendingWidget extends StatelessWidget {
                                                         .confirm,
                                                     showCancelButton: true,
                                                     onPress: (bool isConfirm) {
-                                                      if (isConfirm) { // l
-                                                        var response =  updateBooking(
+                                                      if (isConfirm) {
+                                                        updateBooking(
                                                             snapshot
                                                                 .data![i]["user"],
                                                             snapshot
                                                                 .data![i]["_id"],
                                                             {
                                                               "status": "cancelled"
-                                                            });
-                                                        var res = json.decode(
-                                                            response
-                                                                .toString());
-                                                        if (res["success"]) {
-                                                          Navigator.pushNamed(
-                                                              context,
-                                                              "/viewappointment");
-                                                        }
+                                                            },
+                                                            context);
                                                         return false;
+
                                                       } else {
                                                         return true;
                                                       }

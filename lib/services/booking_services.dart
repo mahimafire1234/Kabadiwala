@@ -155,13 +155,13 @@ class BookingServices{
   //cancel
   static Future<String?> updateBooking(userid, bookingid, token, body) async {
     try {
-      var response = await http.post(Uri.parse("${baseUri}updateBook/$userid/$bookingid"),
+      var response = await http.put(Uri.parse("${baseUri}updateBook/$userid/$bookingid"),
           headers: {
             'Content-type': 'application/json',
             "Accept": "application/json",
             "Authorization": "Bearer $token"
           },
-          body: body);
+          body: json.encode(body));
       return response.body;
     } catch (e) {
       print(e);
