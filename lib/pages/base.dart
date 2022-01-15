@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:login_sprint1/pages/appointment/view_appointment.dart';
+import 'package:login_sprint1/pages/booking/booking_request.dart';
 import 'package:login_sprint1/pages/user/myprofilekabadiwala.dart';
 import 'package:login_sprint1/pages/booking/set_information.dart';
 
@@ -21,7 +23,6 @@ class _BaseState extends State<Base> {
 
   final screens = [
     Home(),
-    ViewAppointment(),
     CompanyProfile()
   ];
 
@@ -79,7 +80,6 @@ class _BaseState extends State<Base> {
         onTap: (index) => setState(() => currentIndex = index),
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: "View Appointments"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile")
         ],
       ),
