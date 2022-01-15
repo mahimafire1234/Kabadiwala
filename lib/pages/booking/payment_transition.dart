@@ -9,10 +9,6 @@ import 'package:login_sprint1/services/shared_preference.dart';
 
 class PaymentTransition extends StatefulWidget {
   String? startingValue;
-  String? approvedValue = "accepted";
-  String? declinedValue = "rejected";
-  String? username;
-  List<String> itemList = <String>["pending", "accepted", "rejected"];
 
   PaymentTransition({Key? key}) : super(key: key);
 
@@ -161,7 +157,15 @@ class _RenderMyCustomWidgetState extends State<RenderMyCustomWidget> {
                             Padding(
                               padding: EdgeInsets.only(left: 30.0),
                               child: Text(
-                                "Date  ${snapshot.data![index]["date"]}",
+                                "Date  ${snapshot.data![index]["datetime"].toString().substring(0, 10)}",
+                                style: TextStyle(
+                                    fontSize: 16.0, color: Colors.black),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 30.0),
+                              child: Text(
+                                "Time  ${snapshot.data![index]["datetime"].toString().substring(11, 16)}",
                                 style: TextStyle(
                                     fontSize: 16.0, color: Colors.black),
                               ),
@@ -180,98 +184,3 @@ class _RenderMyCustomWidgetState extends State<RenderMyCustomWidget> {
     );
   }
 }
-
-// class AcceptedRejectedWidget extends StatelessWidget {
-//   final Color statusColor;
-//   final String status;
-//   final Future<List<dynamic>>? setFunction;
-//   const AcceptedRejectedWidget(
-//       {Key? key,
-//       required this.statusColor,
-//       required this.setFunction,
-//       required this.status})
-//       : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       height: 400,
-//       child: FutureBuilder<List<dynamic>>(
-//         future: setFunction,
-//         builder: (context, snapshot) {
-//           return (snapshot.hasData == true)
-//               ? ListView.separated(
-//                   scrollDirection: Axis.vertical,
-//                   padding: EdgeInsets.all(20),
-//                   // shrinkWrap: true,
-//                   itemCount: snapshot.data!.length,
-//                   itemBuilder: (BuildContext context, dynamic index) {
-//                     return Container(
-//                       decoration: BoxDecoration(
-//                           color: Colors.blue,
-//                           borderRadius:
-//                               BorderRadius.all(Radius.circular(10.0))),
-//                       height: 190.0,
-//                       child: Card(
-//                         shadowColor: Colors.black,
-//                         semanticContainer: true,
-//                         elevation: 2,
-//                         child: Column(
-//                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                           crossAxisAlignment: CrossAxisAlignment.start,
-//                           children: [
-//                             Row(
-//                               children: [
-//                                 Padding(
-//                                   padding: EdgeInsets.only(left: 30.0),
-//                                   child: Text(
-//                                     "Status: ",
-//                                     style: TextStyle(
-//                                         fontSize: 16.0,
-//                                         color: Colors.black,
-//                                         fontWeight: FontWeight.bold),
-//                                   ),
-//                                 ),
-//                                 Padding(
-//                                   padding: EdgeInsets.only(left: 5.0),
-//                                   child: Text(
-//                                     status,
-//                                     style: TextStyle(
-//                                         fontSize: 16.0,
-//                                         color: statusColor,
-//                                         fontWeight: FontWeight.bold),
-//                                   ),
-//                                 ),
-//                               ],
-//                             ),
-//                             Column(
-//                               crossAxisAlignment: CrossAxisAlignment.start,
-//                               children: [
-//                                 Padding(
-//                                   padding: EdgeInsets.symmetric(
-//                                       horizontal: 10.0, vertical: 5.0),
-//                                   child: Text(
-//                                     "Username by ${snapshot.data![index]["user"]["name"]}",
-//                                     style: TextStyle(
-//                                       fontSize: 18.0,
-//                                       color: Colors.black,
-//                                     ),
-//                                   ),
-//                                 ),
-//                               ],
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                     );
-//                   },
-//                   separatorBuilder: (BuildContext context, dynamic index) =>
-//                       const Divider(),
-//                 )
-//               : Text("null");
-//         },
-//       ),
-//     );
-//   }
-
-// }
