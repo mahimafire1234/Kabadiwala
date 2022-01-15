@@ -32,6 +32,23 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
       var bookingServices = BookingServices();
       var response = await bookingServices.book(data, token);
       var decodedData = jsonDecode(response!);
+
+      var res = json.decode(response);
+      if (res['success']) {
+        final snackB = SnackBar(
+          duration: Duration(seconds: 5),
+          content: Text(res["message"]),
+          action: SnackBarAction(
+            label: 'Dismiss',
+            onPressed: () {},
+          ),
+        );
+        ScaffoldMessenger.of(context)
+            .showSnackBar(snackB);
+
+        Navigator.pushNamed(context, "/home");
+      }
+
       print(decodedData);
       var bookinId = decodedData["data"]["_id"];
       await MySharedPreferences.setId(bookinId);
@@ -232,21 +249,6 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
                             ElevatedButton(
                               onPressed: () async {
                                 var res = await book();
-                                var response = json.decode(res);
-                                if (response['success']) {
-                                  final snackB = SnackBar(
-                                    duration: Duration(seconds: 5),
-                                    content: Text(response["message"]),
-                                    action: SnackBarAction(
-                                      label: 'Dismiss',
-                                      onPressed: () {},
-                                    ),
-                                  );
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackB);
-
-                                  Navigator.pushNamed(context, "/home");
-                                }
                               },
                               child: Text("Confirm Booking"),
                             )
