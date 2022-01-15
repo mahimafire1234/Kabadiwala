@@ -88,7 +88,7 @@ class _ViewCompanyState extends State<ViewCompany> {
                                   shrinkWrap: true,
                                   itemCount : snapshot.data?.length,
                                   itemBuilder : (context, i){
-                                    return SingleChildScrollView(
+                                    return Center(
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
                                         child: PhysicalModel(

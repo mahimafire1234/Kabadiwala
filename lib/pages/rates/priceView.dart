@@ -42,6 +42,9 @@ class _PriceViewState extends State<PriceView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          title: Text("Kabadiwala"),
+          backgroundColor: Color(0xff0077B6)),
       backgroundColor: const Color(0xFFFFFFFF),
       body:       SafeArea(
         child: Column(children: [

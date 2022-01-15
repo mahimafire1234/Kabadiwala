@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:login_sprint1/LocalDataSave/SaveLocalData.dart';
+import 'package:login_sprint1/pages/booking/booking_request_confirm.dart';
 import 'package:login_sprint1/services/booking_services.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 
@@ -106,6 +107,9 @@ class _BookingRequestState extends State<BookingRequest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          title: Text("Kabadiwala"),
+          backgroundColor: Color(0xff0077B6)),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -416,6 +420,20 @@ class AcceptedRejectedWidget extends StatelessWidget {
                                 ),
                               ),
                             ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 5.0),
+                              child: Center(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) => BookingRequestConfirm( data: snapshot.data![index] ),
+                                    ));
+                                  },
+                                  child: Text("Complete"),
+
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),

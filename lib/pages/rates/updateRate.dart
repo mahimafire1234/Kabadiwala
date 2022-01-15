@@ -50,6 +50,9 @@ class _UpdateRateState extends State<UpdateRate> {
     print(company_id);
     print(objectID);
     return Scaffold(
+      appBar: AppBar(
+          title: Text("Kabadiwala"),
+          backgroundColor: Color(0xff0077B6)),
       body: SafeArea(
         child: Column(
           children: [
