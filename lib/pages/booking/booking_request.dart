@@ -107,6 +107,9 @@ class _BookingRequestState extends State<BookingRequest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          title: Text("Kabadiwala"),
+          backgroundColor: Color(0xff0077B6)),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(

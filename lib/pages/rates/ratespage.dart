@@ -65,11 +65,7 @@ class _RatesState extends State<Rates>{
   Widget build(BuildContext buildContext){
     return Scaffold(
       appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.menu_rounded),
-            onPressed: () {},
-          ),
-          title: Center(child: Text("Kabadiwala")),
+          title: Text("Kabadiwala"),
           backgroundColor: Color(0xff0077B6)),
       body:
       SafeArea(
