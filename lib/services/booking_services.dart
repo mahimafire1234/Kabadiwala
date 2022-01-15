@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-class BookingServices{
+class BookingServices {
   static var baseUri = "http://10.0.2.2:5000/booking/";
 
   Future<String?> book(body, token) async {
@@ -140,6 +140,22 @@ class BookingServices{
     try {
       var response = await http.get(
         Uri.parse(baseUri + "view_pending"),
+        headers: {
+          'Content-type': 'application/json',
+          "Accept": "application/json",
+          "Authorization": "Bearer $token"
+        },
+      );
+      return response.body;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static Future<dynamic> getPayTransition(usertype, id, token) async {
+    try {
+      var response = await http.get(
+        Uri.parse(baseUri + "get_payment/$usertype/$id/"),
         headers: {
           'Content-type': 'application/json',
           "Accept": "application/json",
