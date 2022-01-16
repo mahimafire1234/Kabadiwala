@@ -246,7 +246,7 @@ class _LoginPageState extends State<LoginPage> {
                               const SnackBar(content: Text("Invalid login")));
                         }
                       } else {
-                        Navigator.pushNamed(context, "/home");
+                        Navigator.pushNamed(context, "/bookingRequest");
                       }
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
