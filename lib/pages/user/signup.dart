@@ -281,6 +281,7 @@ class _SignUpState extends State<SignUp> {
                             onPressed: () {},
                           ),
                         );
+                        ScaffoldMessenger.of(context).showSnackBar(snackB);
                       }
                     }
                   },
