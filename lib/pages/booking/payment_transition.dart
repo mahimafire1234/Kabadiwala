@@ -16,12 +16,12 @@ class PaymentTransition extends StatefulWidget {
     List<dynamic>? pendingList = [];
     try {
       var response = await BookingServices.getPayTransition(
-          MySharedPreferences.getUsertype,
-          MySharedPreferences.getLoginId,
-          MySharedPreferences.getToken());
+        MySharedPreferences.getUsertype,
+        MySharedPreferences.getLoginId,
+      );
       print("data type is ${MySharedPreferences.getUsertype}");
       print("id type is -------------${MySharedPreferences.getLoginId}");
-      var data = jsonDecode(response);
+      var data = await jsonDecode(response);
       print("data for payment =======>>>>>${data["data"]}");
 
       if (data["success"] == true) {
@@ -58,9 +58,8 @@ class _PaymentTransitionState extends State<PaymentTransition> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: Text("Kabadiwala"),
-            backgroundColor: Color(0xff0077B6)),
+      appBar:
+          AppBar(title: Text("Kabadiwala"), backgroundColor: Color(0xff0077B6)),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -124,7 +123,7 @@ class _RenderMyCustomWidgetState extends State<RenderMyCustomWidget> {
                           color: Colors.blue,
                           borderRadius:
                               BorderRadius.all(Radius.circular(10.0))),
-                      height: 100.0,
+                      height: 150.0,
                       child: Card(
                         shadowColor: Colors.black,
                         semanticContainer: true,
