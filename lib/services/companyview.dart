@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/constraints/constraints.dart';
 
-class CompanyView{
+class CompanyView {
   var baseUri = "$BASEURI/user";
 
   Future<dynamic> getCompany() async {
@@ -10,7 +10,7 @@ class CompanyView{
       var response = await http
           .get(Uri.parse("$baseUri/get_company"),
           headers: {
-            'Content-type' : 'application/json',
+            'Content-type': 'application/json',
             "Accept": "application/json",
           });
 
@@ -25,7 +25,7 @@ class CompanyView{
       var response = await http
           .get(Uri.parse("$baseUri/showOne/${id}"),
           headers: {
-            'Content-type' : 'application/json',
+            'Content-type': 'application/json',
             "Accept": "application/json",
           });
 
@@ -34,5 +34,6 @@ class CompanyView{
       print(e);
     }
   }
+
 
 }

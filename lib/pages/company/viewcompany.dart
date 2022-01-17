@@ -3,9 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/pages/company/oneCompany.dart';
+import 'package:login_sprint1/services/companyview.dart';
 
 class ViewCompany extends StatefulWidget {
-  const ViewCompany({Key? key}) : super(key: key);
+  List<User> users = [];
+  ViewCompany({Key? key}) : super(key: key);
   Future<List<User>?> getUserData() async{
     var response = await http.get(Uri.parse("http://10.0.2.2:5000/user/get_company"),
       headers: {
@@ -14,21 +16,18 @@ class ViewCompany extends StatefulWidget {
       },
     );
     var jsonData = await jsonDecode(response.body);
-    List<User> users = [];
     for(var u in jsonData["user"]){
       User user = User(u["name"], u["email"],u["id"]);
       users.add(user);
     }
     return users;
   }
-
   @override
   _ViewCompanyState createState() => _ViewCompanyState();
+
 }
 
 class _ViewCompanyState extends State<ViewCompany> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,9 +53,17 @@ class _ViewCompanyState extends State<ViewCompany> {
                               color: Colors.white,
                               elevation: 10.0,
                               shadowColor: Color(0xff000f61),
-                              child: TextField(
-                                obscureText: true,
-                                onChanged: (val) {
+                              child: TextFormField(
+                                onChanged: (val) { //on change done by the user
+                                  final users = widget.users.where((user) {
+                                    final nameLower = user.name.toLowerCase();
+                                    final searchLower = val.toLowerCase();
+                                    return nameLower.contains(searchLower) ;
+                                  }).toList();
+                                  setState(() {
+                                    widget.users = users;
+                                  });
+                                  print(widget.users);
                                 },
                                 decoration: const InputDecoration(
                                     filled: true,
