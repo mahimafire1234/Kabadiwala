@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:login_sprint1/constraints/constraints.dart';
 
 class UserServices {
-  static var baseUri = "http://192.168.100.252:5000/user/";
+  static var baseUri = BASEURI + "/user";
   Future<dynamic> signup(body) async {
     try {
       var response =

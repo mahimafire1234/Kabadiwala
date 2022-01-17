@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/constraints/constraints.dart';
 
-class BookingServices{
+class BookingServices {
   static var baseUri = "$BASEURI/booking/";
 
   Future<String?> book(body, token) async {
@@ -23,7 +23,7 @@ class BookingServices{
 
   Future<String?> updateBookingCompany(id, body, token) async {
     try {
-      var response = await http.put(Uri.parse(baseUri+ "update/$id"),
+      var response = await http.put(Uri.parse(baseUri + "update/$id"),
           headers: {
             'Content-type': 'application/json',
             "Accept": "application/json",
@@ -168,19 +168,17 @@ class BookingServices{
     }
   }
 
-
-  static Future<dynamic> getPayTransition(usertype, id, token) async {
+  static Future<dynamic> getPayTransition(usertype, id) async {
     try {
       var response = await http.get(
         Uri.parse(baseUri + "get_payment/$usertype/$id/"),
         headers: {
           'Content-type': 'application/json',
           "Accept": "application/json",
-          "Authorization": "Bearer $token"
         },
       );
-    }
-    catch (e) {
+      return response.body;
+    } catch (e) {
       print(e);
     }
   }
@@ -188,18 +186,18 @@ class BookingServices{
   //cancel
   static Future<String?> updateBooking(userid, bookingid, token, body) async {
     try {
-      var response = await http.put(Uri.parse("${baseUri}updateBook/$userid/$bookingid"),
-          headers: {
-            'Content-type': 'application/json',
-            "Accept": "application/json",
-            "Authorization": "Bearer $token"
-          },
-          body: json.encode(body));
+      var response =
+          await http.put(Uri.parse("${baseUri}updateBook/$userid/$bookingid"),
+              headers: {
+                'Content-type': 'application/json',
+                "Accept": "application/json",
+                "Authorization": "Bearer $token"
+              },
+              body: json.encode(body));
 
       return response.body;
     } catch (e) {
       print(e);
     }
   }
-
 }

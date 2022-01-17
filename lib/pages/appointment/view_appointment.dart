@@ -506,24 +506,24 @@ class PendingWidget extends StatelessWidget {
                                             ),
                                         ]),
                                         SizedBox(height: 10.0),
-                                        Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: Row(children: [
-                                            Text(
-                                              "User : ",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18,
-                                                  color: Colors.black),
-                                            ),
-                                            Text(
-                                              snapshot.data![i]["user"],
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.black),
-                                            )
-                                          ]),
-                                        ),
+                                        // Padding(
+                                        //   padding: const EdgeInsets.all(4.0),
+                                        //   child: Row(children: [
+                                        //     Text(
+                                        //       "User : ",
+                                        //       style: TextStyle(
+                                        //           fontWeight: FontWeight.bold,
+                                        //           fontSize: 18,
+                                        //           color: Colors.black),
+                                        //     ),
+                                        //     Text(
+                                        //       snapshot.data![i]["user"],
+                                        //       style: TextStyle(
+                                        //           fontSize: 15,
+                                        //           color: Colors.black),
+                                        //     )
+                                        //   ]),
+                                        // ),
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: Row(children: [
@@ -636,7 +636,7 @@ class PendingWidget extends StatelessWidget {
                                                   Text(
                                                     "Cancel Appointment",
                                                     style: TextStyle(
-                                                        fontSize: 15,
+                                                        fontSize: 12,
                                                         fontFamily: 'Rubik',
                                                         fontWeight:
                                                         FontWeight.bold,
@@ -714,7 +714,7 @@ class PendingWidget extends StatelessWidget {
                                                   Text(
                                                     "Update Appointment",
                                                     style: TextStyle(
-                                                        fontSize: 15,
+                                                        fontSize: 13,
                                                         fontFamily: 'Rubik',
                                                         fontWeight:
                                                         FontWeight.bold,

@@ -68,6 +68,7 @@ class _BaseState extends State<Base> {
               onTap: () {
                 // Update the state of the app.
                 // ...
+                Navigator.pushNamed(context, "/login");
               },
             ),
           ],

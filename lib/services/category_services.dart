@@ -25,7 +25,7 @@ class CategoryServices{
   Future<dynamic> insertRate(body) async {
     try {
       var response =
-      await http.post(Uri.parse("http://10.0.2.2:5000/category/insertRate"),
+      await http.post(Uri.parse("$baseUri/insertRate"),
       // await http.post(Uri.parse("http://127.0.0.1:5000/category/insertRate"),
           headers: {
             'Content-type': 'application/json',
@@ -42,7 +42,7 @@ class CategoryServices{
     try {
       var response =
       // await http.post(Uri.parse("http://10.0.2.2:5000/category/insertRate"),
-      await http.put(Uri.parse("http://127.0.0.1:5000/category/updateRate/${company_id}/${object_id}"),
+      await http.put(Uri.parse("$baseUri/updateRate/${company_id}/${object_id}"),
           headers: {
             'Content-type': 'application/json',
             "Accept": "application/json",
