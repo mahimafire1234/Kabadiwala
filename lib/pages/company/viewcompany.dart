@@ -153,7 +153,7 @@ class _ViewCompanyState extends State<ViewCompany> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute
-                                        (builder: (context)=>oneCompany(id:users![i].id),
+                                        (builder: (context)=>oneCompany(companyID:users![i].id),
                                         // settings: RouteSettings(
                                         //   arguments: data,
                                         // )
