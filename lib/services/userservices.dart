@@ -36,5 +36,19 @@ class UserServices {
     }
   }
 
+  static Future<String?> getUserData(token) async {
+    try {
+      var response = await http.get(Uri.parse("$baseUri/"),
+          headers: {
+            'Content-type': 'application/json',
+            "Accept": "application/json",
+            "Authorization": "Bearer $token"
+          });
+      return response.body;
+    } on Exception {
+      print("network connection problem");
+      return null;
+    }
+  }
 
 }

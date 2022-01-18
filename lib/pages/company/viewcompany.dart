@@ -16,7 +16,7 @@ class ViewCompany extends StatefulWidget {
     var jsonData = await jsonDecode(response.body);
     List<User> users = [];
     for(var u in jsonData["user"]){
-      User user = User(u["name"], u["email"],u["id"]);
+      User user = User(u["name"], u["email"],u["id"], u["phone"], u["image"], u["companyLocation"]);
       users.add(user);
     }
     return users;
@@ -172,5 +172,6 @@ class _ViewCompanyState extends State<ViewCompany> {
 
 class User{
   final String name, email,id;
-  User(this.name, this.email,this.id);
+  final String? companyLocation, phone, image;
+  User(this.name, this.email,this.id, this.phone, this.companyLocation, this.image);
 }

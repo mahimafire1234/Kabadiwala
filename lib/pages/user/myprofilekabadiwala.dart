@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:login_sprint1/constraints/constraints.dart';
 import 'package:login_sprint1/pages/appointment/view_appointment.dart';
 import 'package:login_sprint1/pages/booking/booking_request.dart';
 import 'package:login_sprint1/pages/rates/ratespage.dart';
+import 'package:login_sprint1/pages/user/profile_update.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 
 class CompanyProfile extends StatefulWidget {
@@ -26,9 +28,9 @@ class _CompanyProfileState extends State<CompanyProfile> {
     String url;
     // print(token);
     if (usertype == "company") {
-      url = "http://10.0.2.2:5000/user/loggedin_company";
+      url = "$BASEURI/user/loggedin_company";
     } else {
-      url = "http://10.0.2.2:5000/user/loggedin_user";
+      url = "$BASEURI/user/loggedin_user";
     }
     var response = await http.get(Uri.parse(url), headers: {
       "Authorization": "Bearer $token",
@@ -107,7 +109,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
                         style: TextStyle(fontSize: 20),
                       ),
                       onPressed: () {
-                        // getuserdata();
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileUpdate()));
                       },
                       style: ButtonStyle(
                         backgroundColor:
@@ -257,7 +259,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
                         style: TextStyle(fontSize: 20),
                       ),
                       onPressed: () {
-                        // getuserdata();
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileUpdate()));
                       },
                       style: ButtonStyle(
                         backgroundColor:
