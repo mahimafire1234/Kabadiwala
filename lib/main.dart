@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignUp(),
         '/login': (context) => LoginPage(),
         '/home': (context) => const Base(index: 0),
-        '/viewcompany': (context) => const ViewCompany(),
+        '/viewcompany': (context) => ViewCompany(),
         '/viewappointment': (context) =>  ViewAppointment(),
         '/onecompany': (context) => oneCompany(
               id: '',
