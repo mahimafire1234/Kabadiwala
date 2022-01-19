@@ -6,26 +6,28 @@ import 'package:http/http.dart' as http;
 import 'package:login_sprint1/pages/rates/priceview.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:login_sprint1/pages/ratings/Ratings.dart';
+import 'package:login_sprint1/services/shared_preference.dart';
 
+import '../../constraints/constraints.dart';
 import '../booking/items.dart';
 
 class oneCompany extends StatefulWidget {
-  String id;
-  oneCompany({required this.id});
+  String companyID;
+  oneCompany({required this.companyID});
   // const oneCompany({Key? key}) : super(key: key);
 
   @override
-  _ShowOneState createState() => _ShowOneState(id);
+  _ShowOneState createState() => _ShowOneState(companyID);
 }
 
 class _ShowOneState extends State<oneCompany> {
-  String id;
+  String companyID;
   String name = "";
-  _ShowOneState(this.id);
+  _ShowOneState(this.companyID);
   //get wala for one company info
 
   Future<List<OneCompany>>? getOneCompany() async {
-    var response = await http.get(Uri.parse("http://192.168.100.252:5000/user/showOne/${id}"),
+    var response = await http.get(Uri.parse("$BASEURI/user/showOne/${companyID}"),
       headers: {
         'Content-type' : 'application/json',
         "Accept": "application/json",
@@ -44,7 +46,7 @@ class _ShowOneState extends State<oneCompany> {
 
   //get rating for company
   Future<num>? getRate() async {
-    var response = await http.get(Uri.parse("http://192.168.100.252:5000/rate/getRate/${id}"),
+    var response = await http.get(Uri.parse("http://192.168.100.252:5000/rate/getRate/${companyID}"),
       headers: {
         'Content-type' : 'application/json',
         "Accept": "application/json",
@@ -54,6 +56,25 @@ class _ShowOneState extends State<oneCompany> {
     var deriveData = jsonData["data"]["rating"];
     // // adding data to empty list
     return deriveData;
+  }
+
+  //post function for favorites
+  Future<dynamic>? addToFavorites() async{
+    String id = await  MySharedPreferences.getLoginId!;
+    print(id);
+
+    try{
+      var response = await http.post(Uri.parse("http://10.0.2.2:5000/favorites/addfavorites/$id/$companyID"),
+        headers: {
+          'Content-type' : 'application/json',
+          "Accept": "application/json",
+        },
+      );
+      return response.body;
+    }catch(error){
+      print(error);
+    }
+
   }
 
 
@@ -133,7 +154,7 @@ class _ShowOneState extends State<oneCompany> {
            InkWell(
              child: Text("Rate Now",style: TextStyle(color: Colors.blue),),
              onTap:(){ Navigator.push(context, MaterialPageRoute(
-               builder: (context) => RatingCompany(company_id: this.id,),
+               builder: (context) => RatingCompany(company_id: this.companyID,),
              ));},
            ),
             Padding(
@@ -152,7 +173,7 @@ class _ShowOneState extends State<oneCompany> {
                                     color: Color.fromARGB(255, 0, 119, 182))))),
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => ItemsHire(id: this.id, name: this.name ),
+                          builder: (context) => ItemsHire(id: this.companyID, name: this.name ),
 
                       ));
                     },
@@ -172,7 +193,22 @@ class _ShowOneState extends State<oneCompany> {
                                 borderRadius: BorderRadius.circular(10.0),
                                 side: BorderSide(
                                     color: Color.fromARGB(255, 0, 119, 182))))),
-                    onPressed: () {},
+                    onPressed: () async {
+                      var response = await addToFavorites();
+                      var res = json.decode(response);
+                      print(res["success"]);
+                      if (res["success"] == true) {
+                        final snackB = SnackBar(
+                          duration: Duration(seconds: 5),
+                          content: Text("Added To favorites successfully"),
+                          action: SnackBarAction(
+                            label: 'Dismiss',
+                            onPressed: () {},
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackB);
+                      }
+                    },
                     child: Icon(
                       CupertinoIcons.heart_solid,
                       color: Colors.red,
@@ -193,7 +229,7 @@ class _ShowOneState extends State<oneCompany> {
                           side: BorderSide(
                               color: Color.fromARGB(255, 0, 119, 182))))),
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PriceView(company_id: id,)));              },
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PriceView(company_id: companyID,)));              },
               child: Text(
                 "See Pricings",
               ),

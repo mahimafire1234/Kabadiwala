@@ -112,7 +112,7 @@ class _RatingCompanyState extends State<RatingCompany>{
                               ),
                             );
                             ScaffoldMessenger.of(context).showSnackBar(snackB);
-                            Navigator.push(context,MaterialPageRoute(builder:(context)=> oneCompany(id: company_id,)));
+                            Navigator.push(context,MaterialPageRoute(builder:(context)=> oneCompany(companyID: company_id,)));
                           }
 
                           },

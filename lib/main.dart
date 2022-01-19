@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:login_sprint1/pages/appointment/view_appointment.dart';
 import 'package:login_sprint1/pages/booking/payment_transition.dart';
+import 'package:login_sprint1/pages/favorites/favorites.dart';
 //--no-sound-null-safety
 import 'package:login_sprint1/pages/ratings/Ratings.dart';
 import 'package:login_sprint1/pages/base.dart';
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
         '/viewcompany': (context) =>  ViewCompany(),
         '/viewappointment': (context) =>  ViewAppointment(),
         '/onecompany': (context) => oneCompany(
-              id: '',
+              companyID: '',
             ),
         '/insertrate': (context) => InsertRate(
               company_id: '',
@@ -62,7 +63,8 @@ class MyApp extends StatelessWidget {
         "/ratespage": (context) => Rates(company_id: '',),
         "/itemsHire": (context) => const ItemsHire(id: '', name: ''),
         "/orderpickup": (context) => const OrderPickup(),
-        "/rateCompany" : (context) => RatingCompany(company_id: '',)
+        "/rateCompany" : (context) => RatingCompany(company_id: '',),
+        "/favorites":(context) => Favorites(),
       },
     );
   }
