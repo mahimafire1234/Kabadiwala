@@ -19,6 +19,7 @@ class CompanyProfile extends StatefulWidget {
 class _CompanyProfileState extends State<CompanyProfile> {
   String id = "";
   String user_type = "";
+  String image = "";
   Future<List<String>> getuserdata() async {
     await MySharedPreferences.init();
 
@@ -40,6 +41,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
     // print(data);
     String user_name = await data["data"]["name"];
     String user_id = await data["data"]["_id"];
+    String image = await data["data"]["image"];
     print(usertype);
     //list
     List<String> companyInfo = [user_id, user_name, usertype];
@@ -47,6 +49,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
     setState(() {
       id = user_id;
       user_type = usertype;
+      this.image = image;
     });
     return companyInfo;
   }
@@ -63,12 +66,12 @@ class _CompanyProfileState extends State<CompanyProfile> {
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Image(
+                    children:  [
+                      this.image == "" ? Image(
                         image: AssetImage("assets/images/cycling.png"),
                         width: 200,
                         height: 200,
-                      )
+                      ): Image.network("$BASEURI/$image")
                     ],
                   ),
                 ),
@@ -213,12 +216,12 @@ class _CompanyProfileState extends State<CompanyProfile> {
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Image(
+                    children: [
+                      this.image == "" ? Image(
                         image: AssetImage("assets/images/cycling.png"),
                         width: 200,
                         height: 200,
-                      )
+                      ): Image.network("$BASEURI/$image")
                     ],
                   ),
                 ),

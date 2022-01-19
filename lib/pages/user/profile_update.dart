@@ -3,10 +3,13 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:login_sprint1/constraints/constraints.dart';
 import 'package:login_sprint1/pages/company/viewcompany.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 import 'package:login_sprint1/services/userservices.dart';
+import 'dart:io';
 
 class ProfileUpdate extends StatefulWidget {
   const ProfileUpdate({Key? key}) : super(key: key);
@@ -17,7 +20,8 @@ class ProfileUpdate extends StatefulWidget {
 
 class _ProfileUpdateState extends State<ProfileUpdate> {
 
-  User? user = null ;
+  String image = "";
+  String imageFrom = "asset";
 
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
@@ -37,6 +41,22 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
     _locationController = TextEditingController();
   }
 
+  Future pickImage(ImageSource source) async{
+    try{
+      final image = await ImagePicker().pickImage(source: source);
+      if(image == null) return ;
+
+      final temporaryImage = File(image.path);
+      setState(() {
+        this.imageFrom = "phone";
+        this.image = temporaryImage.path;
+      });
+    }on PlatformException catch(e){
+      print(e);
+    }
+
+  }
+
   Future<Object?> getUserData() async {
     try{
       MySharedPreferences.init();
@@ -52,6 +72,12 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
         _emailController.text = u["email"];
         _phoneController.text = u["phone"];
         _locationController.text = u["companyLocation"];
+        print(u["image"]);
+
+        if(u["image"] != null || u["image"] != ""){
+          image = u["image"];
+          imageFrom = "api";
+        }
 
         return resBody["data"].toString();
       }
@@ -65,6 +91,13 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text("Profile"),
+      ),
        body: SafeArea(
          child: SingleChildScrollView(
            child: Padding(
@@ -73,6 +106,30 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                key: _key,
                  child: Column(
                    children: [
+                     ProfileWidget(
+                       imagePath: image,
+                       imageFrom: imageFrom,
+                       isEdit: true,
+                       onClicked: () async {
+                         showModalBottomSheet(
+                             context: context,
+                             builder: (context) => Column(
+                               mainAxisSize: MainAxisSize.min,
+                               children:[
+                                 ListTile(
+                                   leading: Icon(Icons.camera_alt),
+                                   title: Text('Camera'),
+                                   onTap: () => pickImage(ImageSource.camera),
+                                 ),
+                                 ListTile(
+                                   leading: Icon(Icons.image),
+                                   title: Text('Gallery'),
+                                   onTap: () => pickImage(ImageSource.gallery),
+                                 )
+                               ]
+                             ));
+                       },
+                     ),
                      InputField(
                        labelText: "Name",
                          emptyValidationText: "Enter name",
@@ -95,7 +152,6 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                        emptyValidationText: "Enter phone number",
                        keyboardType: TextInputType.number,
                        prefixIcon: CupertinoIcons.rectangle_stack_person_crop,
-                       validator: (value) =>  value!.isEmpty ? "Please enter phone number" : null,
                        controller: _phoneController,
                        obscureText: false,
                      ),
@@ -103,9 +159,53 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                        labelText: "Location",
                        emptyValidationText: "Enter location",
                        prefixIcon: CupertinoIcons.location,
-                       validator: (value) =>  value!.isEmpty ? "Please enter phone number" : null,
                        controller: _locationController,
                        obscureText: false,
+                     ),
+                     const SizedBox(height: 20.0),
+                     Row(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         children: [
+                           ElevatedButton(
+                               onPressed: () {
+                                 Navigator.pop(context);
+                               },
+                               child: Text("Cancel"),
+                               style: ElevatedButton.styleFrom(
+                                 primary: Color(0xFFFFFFFF),
+                                 onPrimary: Color(0xFF0077B6),
+                               )
+                           ),
+                           const SizedBox(width: 10.0),
+                           ElevatedButton(onPressed: () async {
+                             print(_nameController.text);
+                             print(image);
+
+                             var body = {
+                               "name": _nameController.text,
+                               "email": _emailController.text,
+                               "phone": _phoneController.text,
+                               "location": _locationController.text,
+                             };
+
+                             var token = MySharedPreferences.getToken();
+                             var response = await UserServices.update(token, image, body);
+                             var resBody = json.decode(response!);
+                             final snackB = SnackBar(
+                               duration: Duration(seconds: 5),
+                               content: Text(resBody["message"]),
+                               action: SnackBarAction(
+                                 label: 'Dismiss',
+                                 onPressed: () {},
+                               ),
+                             );
+                             ScaffoldMessenger.of(context).showSnackBar(snackB);
+                             if(resBody["success"]){
+                               Navigator.pop(context);
+                             }
+                           },
+                             child: const Text("Update Profile"))
+                         ]
                      )
                    ]
                  )),
@@ -121,7 +221,7 @@ class InputField extends StatelessWidget {
   String emptyValidationText;
   IconData prefixIcon;
   Widget? suffixIcon;
-  Function validator;
+  Function? validator;
   TextInputType? keyboardType;
   TextEditingController controller;
   bool? obscureText;
@@ -131,7 +231,7 @@ class InputField extends StatelessWidget {
     required this.emptyValidationText,
     required this.prefixIcon,
     this.suffixIcon,
-    required this.validator,
+    this.validator,
     this.keyboardType,
     required this.controller,
     this.obscureText,
@@ -145,7 +245,7 @@ class InputField extends StatelessWidget {
         keyboardType: keyboardType,
         controller: controller,
         obscureText: obscureText!,
-        validator: (val) => validator(val),
+        validator: (val) => validator!(val),
         decoration: InputDecoration(
             border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -159,3 +259,80 @@ class InputField extends StatelessWidget {
   }
 }
 
+
+class ProfileWidget extends StatelessWidget {
+  final String imagePath;
+  final String imageFrom;
+  final bool isEdit;
+  final VoidCallback onClicked;
+
+  const ProfileWidget({
+    Key? key,
+    required this.imagePath,
+    required this.imageFrom,
+    this.isEdit = false,
+    required this.onClicked,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final color = Theme.of(context).colorScheme.primary;
+
+    return Center(
+      child: Stack(
+        children: [
+          buildImage(),
+          Positioned(
+            bottom: 0,
+            right: 4,
+            child: buildEditIcon(color),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildImage() {
+    var image = null;
+    if(imagePath == "") image = Image.asset("assets/images/cycling.png", width: 128, height: 128);
+    else if(imageFrom == "phone") image = Image.file(File(imagePath), width: 128, height: 128);
+    else if(imageFrom == "api") image = Image.network("$BASEURI/$imagePath", width: 128, height: 128);
+
+    return ClipOval(
+      child: Material(
+        color: Colors.transparent,
+        child: image,
+      ),
+    );
+  }
+
+  Widget buildEditIcon(Color color) => buildCircle(
+    color: Colors.white,
+    all: 3,
+    child: buildCircle(
+      color: color,
+      all: 1,
+      child: IconButton(
+        onPressed: onClicked,
+        icon: Icon(
+          isEdit ? Icons.add_a_photo : Icons.edit,
+          color: Colors.white,
+          size: 20,
+        ),
+      ),
+    ),
+  );
+
+  Widget buildCircle({
+    required Widget child,
+    required double all,
+    required Color color,
+  }) =>
+      ClipOval(
+        child: Container(
+          padding: EdgeInsets.all(all),
+          color: color,
+          child: child,
+        ),
+      );
+}

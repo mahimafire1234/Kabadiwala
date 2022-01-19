@@ -51,4 +51,36 @@ class UserServices {
     }
   }
 
+  static Future<String?> update(token, filePath, body) async {
+    try {
+      http.MultipartRequest request = http.MultipartRequest("PATCH", Uri.parse("$baseUri/"));
+
+      if(filePath != ""){
+        http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
+            'image', filePath);
+        request.files.add(multipartFile);
+        print("entered");
+      }else{
+        request.fields["image"] = "";
+      }
+
+      body.forEach((key, value){
+        request.fields[key] = value;
+      });
+      request.headers.addAll({
+        'Content-type': 'application/json',
+        "Accept": "application/json",
+        "Authorization": "Bearer $token"
+      }) ;
+      http.StreamedResponse response = await request.send();
+      var res = await response.stream.bytesToString();
+      return res;
+    } on Exception {
+      print("network connection problem");
+      return null;
+    }
+  }
+
+
+
 }
