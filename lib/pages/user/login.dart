@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:core';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:login_sprint1/constraints/constraints.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 import 'package:login_sprint1/services/userservices.dart';
 
@@ -71,7 +71,8 @@ class _LoginPageState extends State<LoginPage> {
                 child: Image(
                   image: AssetImage("assets/images/logo.png"),
                   width: 180,
-                  height: 180,),
+                  height: 180,
+                ),
               ),
               const Center(
                 child: Padding(
@@ -202,9 +203,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(
                 height: 50,
-                child:
-                ElevatedButton(
-
+                child: ElevatedButton(
                   style: ButtonStyle(
                     padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                         EdgeInsets.symmetric(
@@ -213,8 +212,8 @@ class _LoginPageState extends State<LoginPage> {
                         Color.fromARGB(255, 0, 119, 182)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                        )),
+                      borderRadius: BorderRadius.circular(16.0),
+                    )),
                   ),
                   onPressed: () async {
                     dynamic Data = await widget.login(
@@ -232,10 +231,9 @@ class _LoginPageState extends State<LoginPage> {
                         body); // signin fuction returns response.body
                     var data = json.decode(response);
 
-                    print(data["data"]["usertype"]);
+                    print("user type for login ${data["data"]["usertype"]}");
                     var usertype = (data["data"]["usertype"]);
                     print("my Data is :$Data");
-                    print(data["data"]["userType"]);
 
                     if (_formKey.currentState!.validate() &&
                         _formKey1.currentState!.validate()) {
@@ -258,7 +256,6 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
-
               ),
               SizedBox(
                 height: 14,
