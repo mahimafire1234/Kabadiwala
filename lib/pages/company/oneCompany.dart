@@ -25,7 +25,7 @@ class _ShowOneState extends State<oneCompany> {
   //get wala for one company info
 
   Future<List<OneCompany>>? getOneCompany() async {
-    var response = await http.get(Uri.parse("http://10.0.2.2:5000/user/showOne/${id}"),
+    var response = await http.get(Uri.parse("http://192.168.100.252:5000/user/showOne/${id}"),
       headers: {
         'Content-type' : 'application/json',
         "Accept": "application/json",
@@ -44,7 +44,7 @@ class _ShowOneState extends State<oneCompany> {
 
   //get rating for company
   Future<num>? getRate() async {
-    var response = await http.get(Uri.parse("http://10.0.2.2:5000/rate/getRate/${id}"),
+    var response = await http.get(Uri.parse("http://192.168.100.252:5000/rate/getRate/${id}"),
       headers: {
         'Content-type' : 'application/json',
         "Accept": "application/json",
