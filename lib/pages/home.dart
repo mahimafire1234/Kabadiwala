@@ -274,8 +274,8 @@ class MyDesign extends StatelessWidget {
   Widget build(BuildContext context) {
     return MySharedPreferences.getUsertype == UserType.COMPANY
         ? Option(
-            image: "assets/icons/garbage-truck.png",
-            text: "company a \n pickup",
+            image: "assets/images/view_request.jpg",
+            text: "view all \n request",
             link: "/getAllBooking")
         : Option(
             image: "assets/icons/garbage-truck.png",
@@ -310,8 +310,12 @@ class _OptionState extends State<Option> {
         Navigator.pushNamed(context, link.toString());
       },
       child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-        Image.asset("${image}", width: 50),
-        SizedBox(width: 15.0),
+        Image.asset(
+          "${image}",
+          width: 54,
+          fit: BoxFit.fitHeight,
+        ),
+        SizedBox(width: 14.0),
         Text("${text}", overflow: TextOverflow.fade)
       ]),
     );
