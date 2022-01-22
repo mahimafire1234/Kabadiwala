@@ -15,7 +15,7 @@ class LoginPage extends StatefulWidget {
   var passwordController = TextEditingController();
   LoginPage({Key? key}) : super(key: key);
 
-  dynamic isLogin = true;
+  // dynamic isLogin = true;
 
   dynamic login(
       {required String? loginEmail, required String? loginPassword}) async {
@@ -37,10 +37,10 @@ class LoginPage extends StatefulWidget {
         await MySharedPreferences.setUsertype(data["usertype"]);
         await MySharedPreferences.setLoginId(data["data"]["_id"]);
         print(token);
-        return isLogin;
+        return true;
       } else {
-        isLogin = false;
-        return isLogin;
+        // isLogin = false;
+        return false;
       }
     } on Exception {
       print(Exception("Error in network connection"));
@@ -216,27 +216,27 @@ class _LoginPageState extends State<LoginPage> {
                     )),
                   ),
                   onPressed: () async {
-                    dynamic Data = await widget.login(
-                        loginEmail: widget.emailController.text,
-                        loginPassword: widget.passwordController.text);
-
-                    var loginEmail = widget.emailController.text;
-                    var loginPassword = widget.passwordController.text;
-                    Map<dynamic, dynamic> body = {
-                      "email": loginEmail,
-                      "password": loginPassword
-                    };
-
-                    var response = await UserServices.signin(
-                        body); // signin fuction returns response.body
-                    var data = json.decode(response);
-
-                    print("user type for login ${data["data"]["usertype"]}");
-                    var usertype = (data["data"]["usertype"]);
-                    print("my Data is :$Data");
+                    //
+                    // var loginEmail = widget.emailController.text;
+                    // var loginPassword = widget.passwordController.text;
+                    // Map<dynamic, dynamic> body = {
+                    //   "email": loginEmail,
+                    //   "password": loginPassword
+                    // };
+                    //
+                    // var response = await UserServices.signin(
+                    //     body); // signin fuction returns response.body
+                    // var data = json.decode(response);
+                    //
+                    // print("user type for login ${data["data"]["usertype"]}");
+                    // var usertype = (data["data"]["usertype"]);
 
                     if (_formKey.currentState!.validate() &&
                         _formKey1.currentState!.validate()) {
+                      dynamic Data = await widget.login(
+                          loginEmail: widget.emailController.text,
+                          loginPassword: widget.passwordController.text);
+                      print("my Data is :$Data");
                       if (Data != true) {
                         //form valid xa ki xaina check garxa
                         {
