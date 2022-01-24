@@ -15,6 +15,8 @@ import '../booking/items.dart';
 class oneCompany extends StatefulWidget {
   String companyID;
   oneCompany({required this.companyID});
+
+  var reviewController = TextEditingController();
   // const oneCompany({Key? key}) : super(key: key);
 
   @override
@@ -25,6 +27,8 @@ class _ShowOneState extends State<oneCompany> {
   String companyID;
   String name = "";
   String phone = "";
+  String review="";
+
   _ShowOneState(this.companyID);
   //get wala for one company info
 
@@ -49,7 +53,7 @@ class _ShowOneState extends State<oneCompany> {
 
   //get rating for company
   Future<num>? getRate() async {
-    var response = await http.get(Uri.parse("http://10.0.2.2:5000/rate/getRate/${companyID}"),
+    var response = await http.get(Uri.parse("$BASEURI/rate/getRate/${companyID}"),
       headers: {
         'Content-type' : 'application/json',
         "Accept": "application/json",
@@ -67,7 +71,7 @@ class _ShowOneState extends State<oneCompany> {
     print(id);
 
     try{
-      var response = await http.post(Uri.parse("http://10.0.2.2:5000/favorites/addfavorites/$id/$companyID"),
+      var response = await http.post(Uri.parse("$BASEURI/favorites/addfavorites/$id/$companyID"),
         headers: {
           'Content-type' : 'application/json',
           "Accept": "application/json",
@@ -78,6 +82,41 @@ class _ShowOneState extends State<oneCompany> {
       print(error);
     }
 
+  }
+  //post function for review
+  Future<dynamic>? insertReview() async{
+    String id = await  MySharedPreferences.getLoginId!;
+    print(id);
+
+    try{
+      var body ={
+        "review":review
+      };
+      var response = await http.post(Uri.parse("$BASEURI/review/insertReview/${id}/${companyID}"),
+        headers: {
+          'Content-type' : 'application/json',
+          "Accept": "application/json",
+        },
+        body:json.encode(body)
+      );
+      return response.body;
+    }catch(error){
+      print(error);
+    }
+  }
+  //get function for review
+  Future<List<dynamic>>? getReview() async {
+    List<dynamic>? reviewList = [];
+    var response = await http.get(Uri.parse("$BASEURI/review/getReview/${companyID}"),
+      headers: {
+        'Content-type' : 'application/json',
+        "Accept": "application/json",
+      },
+    );
+    print("hiiiiiiiitttttt");
+    var jsonData = jsonDecode(response.body);
+
+    return reviewList;
   }
 
 
@@ -277,6 +316,12 @@ class _ShowOneState extends State<oneCompany> {
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 20),
                   child: Center(
                     child: TextFormField(
+                      onChanged: (val){
+                        setState(() {
+                          review=val;
+                        });
+                      },
+                      controller: widget.reviewController,
                       decoration: InputDecoration(
                           focusColor: Colors.black,
                           border: OutlineInputBorder(
@@ -285,16 +330,83 @@ class _ShowOneState extends State<oneCompany> {
                           prefixIcon: Icon(
                             CupertinoIcons.square_pencil,
                           ),
-                          suffixIcon: Icon(
-                            CupertinoIcons.checkmark_alt,
-                            color: Colors.green,
-                            size: 35.0,
-                          ),
+                          suffixIcon: IconButton(
+                            icon:Icon(Icons.check,size:25.0,color:Colors.green),
+                            onPressed:() async {
+                              var response = await insertReview();
+                              var res = json.decode(response);
+                              final snackB = SnackBar(
+                                duration:
+                                Duration(seconds: 5),
+                                content:
+                                Text(res["message"]),
+                                action: SnackBarAction(
+                                  label: 'Dismiss',
+                                  onPressed: () {},
+                                ),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackB);
+                            }),
                           labelText: "Write a Review...",
                           contentPadding: EdgeInsets.only(left: 80.0)),
                     ),
                   ),
                 ),
+                Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: FutureBuilder<List<dynamic>>(
+                      future: getReview(),
+                      builder: (context, snapshot) {
+                         if (snapshot.data == null) {
+                           return Container(
+                             child: Padding(
+                               padding: const EdgeInsets.all(10.0),
+                               child: Text("No Reviews yet"),
+                             ),
+                           );
+                         }else{
+                           return  ListView.builder(
+                           shrinkWrap: true,
+                           itemCount: snapshot.data?.length,
+                           itemBuilder: (context, i) {
+                             return ListTile(
+                                 tileColor: Colors.white,
+                                 shape: RoundedRectangleBorder(
+                                   borderRadius:
+                                   BorderRadius.circular(15.0),
+                                 ),
+                                 title: Row(
+                                   children: [
+                                     Padding(
+                                       padding: const EdgeInsets.all(10.0),
+                                       child: Column(
+                                         crossAxisAlignment:
+                                         CrossAxisAlignment.start,
+                                         children: [
+                                           Text(
+                                             snapshot.data![i]["review"],
+                                             style: const TextStyle(
+                                                 fontWeight:
+                                                 FontWeight.bold,
+                                                 fontSize: 18),
+                                           ),
+                                           const SizedBox(height: 10.0),
+                                           Row(children: [
+                                             Text(snapshot.data![i].review),
+                                             const SizedBox(width: 10.0),
+                                             // Text(snapshot.data![i].id),
+                                           ]),
+                                         ],
+                                       ),
+                                     ),
+                                   ],
+
+                                 ));
+                           });
+                         };
+                    }),
+                    )
               ]),
             )));
   }
