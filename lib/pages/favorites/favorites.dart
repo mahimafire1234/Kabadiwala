@@ -13,12 +13,10 @@ class Favorites extends StatefulWidget {
 
   @override
   _FavoritesState createState() => _FavoritesState();
-
 }
 
 class _FavoritesState extends State<Favorites> {
-
-
+  //get favorites
   Future<List<FavoritesList>?> getFavorites() async{
     String id = await  MySharedPreferences.getLoginId!;
 
@@ -39,6 +37,22 @@ class _FavoritesState extends State<Favorites> {
     }
     print(favoritesData);
     return favoritesData;
+  }
+
+  //delete from favorites
+  deleteFavorites(companyID) async{
+    String id = await  MySharedPreferences.getLoginId!;
+    try{
+      var response = await http.delete(Uri.parse("$BASEURI/favorites/deleteFavorites/$id/$companyID"),
+        headers: {
+          'Content-type' : 'application/json',
+          "Accept": "application/json",
+        },
+      );
+      return response.body;
+    }catch(error){
+      print(error);
+    }
   }
 
   @override
@@ -104,7 +118,38 @@ class _FavoritesState extends State<Favorites> {
                                                         fontFamily: 'Rubik'),
                                                   ),
                                                 ],
+                                              ),
+                                              Row(
+                                                crossAxisAlignment: CrossAxisAlignment.end,
+                                                children: [
+                                                  GestureDetector(
+                                                    child: Icon(
+                                                      Icons.delete_rounded,
+                                                      color: Colors.blue,
+                                                      size: 30.0,
+                                                      semanticLabel: "Icon",
+
+                                                    ),
+                                                    onTap: () async {
+                                                      var companyID = snapshot.data![i].id;
+                                                      var response = await deleteFavorites(companyID);
+                                                      var res = json.decode(response);
+                                                      final snackB = SnackBar(
+                                                        duration: Duration(seconds: 5),
+                                                        content: Text(res["message"]),
+                                                        action: SnackBarAction(
+                                                          label: 'Dismiss',
+                                                          onPressed: () {},
+                                                        ),
+                                                      );
+                                                      ScaffoldMessenger.of(context).showSnackBar(snackB);
+                                                      Navigator.pushNamed(context, "/favorites");
+                                                    },
+                                                  )
+                                                ],
+
                                               )
+
 
 
                                             ]),

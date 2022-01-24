@@ -27,7 +27,7 @@ class _RatingCompanyState extends State<RatingCompany>{
     var data = {"rating":this.rating};
     var body = await json.encode(data);
     try{
-      var response = await http.post(Uri.parse("http://192.168.100.252:5000/rate/giveRate/$company_id"),
+      var response = await http.post(Uri.parse("http://10.0.2.2:5000/rate/giveRate/$company_id"),
           headers: {
             'Content-type': 'application/json',
             "Accept": "application/json",
