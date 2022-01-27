@@ -47,6 +47,7 @@ dependencies:
   url_launcher: ^6.0.9
   flutter_phone_direct_caller: ^2.0.0
   image_picker:
+  pin_entry_text_field:
 
 dev_dependencies:
   flutter_test:

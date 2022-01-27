@@ -98,6 +98,54 @@ class UserServices {
     }
   }
 
+  static Future<String?> forgotPassword(body) async {
+    try {
+      var response = await http.post(Uri.parse("$baseUri/forgot_password"),
+          headers: {
+            'Content-type': 'application/json',
+            "Accept": "application/json"
+          },
+          body: json.encode(body)
+      );
+      return response.body;
+    } on Exception {
+      print("network connection problem");
+      return null;
+    }
+  }
+
+  static Future<String?> checkOtp(body) async {
+    try {
+      var response = await http.post(Uri.parse("$baseUri/reset_password"),
+          headers: {
+            'Content-type': 'application/json',
+            "Accept": "application/json"
+          },
+          body: json.encode(body)
+      );
+      return response.body;
+    } on Exception {
+      print("network connection problem");
+      return null;
+    }
+  }
+
+
+  static Future<String?> resetPassword(body) async {
+    try {
+      var response = await http.patch(Uri.parse("$baseUri/reset_password"),
+          headers: {
+            'Content-type': 'application/json',
+            "Accept": "application/json"
+          },
+          body: json.encode(body)
+      );
+      return response.body;
+    } on Exception {
+      print("network connection problem");
+      return null;
+    }
+  }
 
 
 }

@@ -4,6 +4,8 @@ import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:login_sprint1/pages/user/forgot_password.dart';
+import 'package:login_sprint1/pages/user/signup.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 import 'package:login_sprint1/services/userservices.dart';
 
@@ -261,80 +263,24 @@ class _LoginPageState extends State<LoginPage> {
                 height: 14,
               ),
               Center(
-                child: Text(
-                  "Forget Password?",
-                  style: TextStyle(fontSize: 18, color: Color(0xff0077B6)),
+                child: TextButton(
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPassword())),
+                  child: Text(
+                    "Forgot Password?",
+                    style: TextStyle(fontSize: 18, color: Color(0xff0077B6)),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 14,
               ),
               Center(
-                child: Text(
-                  "OR",
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
+                child: TextButton(
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp())),
+                  child: Text(
+                    "Sign Up",
+                    style: TextStyle(fontSize: 18, color: Color(0xff0077B6)),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 14,
-              ),
-              Center(
-                child: Text(
-                  "Sign in using",
-                  style: TextStyle(fontSize: 18, color: Colors.black),
-                ),
-              ),
-              SizedBox(
-                height: 14,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ExtractWidget(
-                    icon: FontAwesomeIcons.facebook,
-                    colour: Colors.blue,
-                    onClick: () {},
-                  ),
-                  SizedBox(
-                    width: 8.0,
-                  ),
-                  ExtractWidget(
-                    icon: FontAwesomeIcons.google,
-                    colour: Colors.orangeAccent,
-                    onClick: () {},
-                  ),
-                  SizedBox(
-                    width: 8.0,
-                  ),
-                  ExtractWidget(
-                    icon: FontAwesomeIcons.apple,
-                    onClick: () {},
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 14,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Not a member?",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  GestureDetector(
-                    onTap: () => {Navigator.pushNamed(context, "/signup")},
-                    child: Text(
-                      "Sign Up",
-                      style: TextStyle(color: Colors.blue, fontSize: 18),
-                    ),
-                  )
-                ],
-              ),
-            ],
+              )
+          ]
           ),
         ),
       ),
