@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:core';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:login_sprint1/constraints/constraints.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 import 'package:login_sprint1/services/userservices.dart';
 
@@ -15,7 +15,7 @@ class LoginPage extends StatefulWidget {
   var passwordController = TextEditingController();
   LoginPage({Key? key}) : super(key: key);
 
-  dynamic isLogin = true;
+  // dynamic isLogin = true;
 
   dynamic login(
       {required String? loginEmail, required String? loginPassword}) async {
@@ -37,10 +37,10 @@ class LoginPage extends StatefulWidget {
         await MySharedPreferences.setUsertype(data["usertype"]);
         await MySharedPreferences.setLoginId(data["data"]["_id"]);
         print(token);
-        return isLogin;
+        return true;
       } else {
-        isLogin = false;
-        return isLogin;
+        // isLogin = false;
+        return false;
       }
     } on Exception {
       print(Exception("Error in network connection"));
@@ -71,7 +71,8 @@ class _LoginPageState extends State<LoginPage> {
                 child: Image(
                   image: AssetImage("assets/images/logo.png"),
                   width: 180,
-                  height: 180,),
+                  height: 180,
+                ),
               ),
               const Center(
                 child: Padding(
@@ -202,9 +203,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(
                 height: 50,
-                child:
-                ElevatedButton(
-
+                child: ElevatedButton(
                   style: ButtonStyle(
                     padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                         EdgeInsets.symmetric(
@@ -213,32 +212,31 @@ class _LoginPageState extends State<LoginPage> {
                         Color.fromARGB(255, 0, 119, 182)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                        )),
+                      borderRadius: BorderRadius.circular(16.0),
+                    )),
                   ),
                   onPressed: () async {
-                    dynamic Data = await widget.login(
-                        loginEmail: widget.emailController.text,
-                        loginPassword: widget.passwordController.text);
-
-                    var loginEmail = widget.emailController.text;
-                    var loginPassword = widget.passwordController.text;
-                    Map<dynamic, dynamic> body = {
-                      "email": loginEmail,
-                      "password": loginPassword
-                    };
-
-                    var response = await UserServices.signin(
-                        body); // signin fuction returns response.body
-                    var data = json.decode(response);
-
-                    print(data["data"]["usertype"]);
-                    var usertype = (data["data"]["usertype"]);
-                    print("my Data is :$Data");
-                    print(data["data"]["userType"]);
+                    //
+                    // var loginEmail = widget.emailController.text;
+                    // var loginPassword = widget.passwordController.text;
+                    // Map<dynamic, dynamic> body = {
+                    //   "email": loginEmail,
+                    //   "password": loginPassword
+                    // };
+                    //
+                    // var response = await UserServices.signin(
+                    //     body); // signin fuction returns response.body
+                    // var data = json.decode(response);
+                    //
+                    // print("user type for login ${data["data"]["usertype"]}");
+                    // var usertype = (data["data"]["usertype"]);
 
                     if (_formKey.currentState!.validate() &&
                         _formKey1.currentState!.validate()) {
+                      dynamic Data = await widget.login(
+                          loginEmail: widget.emailController.text,
+                          loginPassword: widget.passwordController.text);
+                      print("my Data is :$Data");
                       if (Data != true) {
                         //form valid xa ki xaina check garxa
                         {
@@ -258,7 +256,6 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
-
               ),
               SizedBox(
                 height: 14,

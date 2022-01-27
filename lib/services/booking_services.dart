@@ -200,4 +200,35 @@ class BookingServices {
       print(e);
     }
   }
+
+  static Future<String?> getAllbooking() async {
+    try {
+      var response = await http.get(
+        Uri.parse(baseUri + "getAllBooking"),
+        headers: {
+          'Content-type': 'application/json',
+          "Accept": "application/json",
+        },
+      );
+      return response.body;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static Future<String?> approvedOrderRequest(id, token) async {
+    try {
+      var response = await http.put(
+        Uri.parse(baseUri + "approvedOrderRequest/$id"),
+        headers: {
+          'Content-type': 'application/json',
+          "Accept": "application/json",
+          "Authorization": "Bearer $token"
+        },
+      );
+      return response.body;
+    } catch (e) {
+      print(e);
+    }
+  }
 }

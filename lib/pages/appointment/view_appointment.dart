@@ -115,63 +115,71 @@ class _ViewAppointmentState extends State<ViewAppointment> {
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Container(
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(children: [
-                        Text(
-                          "My appointments",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 26.0,
-                              color: Color(0xFF0077B6)),
-                        ),
-                        Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: PhysicalModel(
-                                borderRadius: BorderRadius.circular(25),
-                                color: Colors.white,
-                                elevation: 5.0,
-                                shadowColor: const Color(0xff2a2a2a),
-                                child: DropdownButtonFormField(
-                                  decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide.none,
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(15)),
-                                      ),
-                                      contentPadding: EdgeInsets.only(
-                                          left: 20.0)),
-                                  value: selectedValue,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      selectedValue = newValue! as String;
-                                      print(selectedValue);
-                                    });
-                                  },
-                                  items: widget.statusList.map((String value1) {
-                                    return DropdownMenuItem<String>(
-                                      value: value1,
-                                      child: new Text(value1),
-                                    );
-                                  }).toList(),
-                                  isDense: true,
-                                  isExpanded: true,
-                                ),
+                    child: Card(
+                        child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(children: [
+                              Text(
+                                "My appointments",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 26.0,
+                                    color: Color(0xFF0077B6)),
                               ),
-                            ),
-                            RenderMyCustomWidget(
-                              selectedValue: selectedValue,
-                              setFunction: getSelectedFunction(),
-                            ),
-                          ],
-                        ),
-                      ]),
-                    ),
-                  ),
-                ))));
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: PhysicalModel(
+                                      borderRadius: BorderRadius.circular(
+                                          25),
+                                      color: Colors.white,
+                                      elevation: 5.0,
+                                      shadowColor: const Color(
+                                          0xff2a2a2a),
+                                      child: DropdownButtonFormField(
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                              borderRadius:
+                                              BorderRadius.all(
+                                                  Radius.circular(15)),
+                                            ),
+                                            contentPadding: EdgeInsets
+                                                .only(
+                                                left: 20.0)),
+                                        value: selectedValue,
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            selectedValue =
+                                            newValue! as String;
+                                            print(selectedValue);
+                                          });
+                                        },
+                                        items: widget.statusList.map((
+                                            String value1) {
+                                          return DropdownMenuItem<String>(
+                                            value: value1,
+                                            child: new Text(value1),
+                                          );
+                                        }).toList(),
+                                        isDense: true,
+                                        isExpanded: true,
+                                      ),
+                                    ),
+                                  ),
+                                  RenderMyCustomWidget(
+                                    selectedValue: selectedValue,
+                                    setFunction: getSelectedFunction(),
+                                  ),
+                                ],
+                              ),
+                            ]
+                            )
+                        )
+                    )))
+        )
+    );
   }
 }
 
@@ -308,7 +316,7 @@ class _RenderMyCustomWidgetState extends State<RenderMyCustomWidget> {
                                             ),
                                             Text(
                                               snapshot.data![i]["datetime"]
-                                                  .toString().substring(0,10),
+                                                  .toString().substring(0, 10),
                                               style: TextStyle(
                                                   fontSize: 15,
                                                   color: Colors.black),
@@ -326,7 +334,9 @@ class _RenderMyCustomWidgetState extends State<RenderMyCustomWidget> {
                                                   color: Colors.black),
                                             ),
                                             Text(
-                                              snapshot.data![i]["datetime"].toString().substring(11,16),
+                                              snapshot.data![i]["datetime"]
+                                                  .toString()
+                                                  .substring(11, 16),
                                               style: TextStyle(
                                                   fontSize: 15,
                                                   color: Colors.black),
@@ -526,7 +536,7 @@ class PendingWidget extends StatelessWidget {
                                             ),
                                             Text(
                                               snapshot.data![i]["datetime"]
-                                                  .toString().substring(0,10),
+                                                  .toString().substring(0, 10),
                                               style: TextStyle(
                                                   fontSize: 15,
                                                   color: Colors.black),
@@ -544,7 +554,9 @@ class PendingWidget extends StatelessWidget {
                                                   color: Colors.black),
                                             ),
                                             Text(
-                                              snapshot.data![i]["datetime"].toString().substring(11,16),
+                                              snapshot.data![i]["datetime"]
+                                                  .toString()
+                                                  .substring(11, 16),
                                               style: TextStyle(
                                                   fontSize: 15,
                                                   color: Colors.black),
@@ -596,8 +608,8 @@ class PendingWidget extends StatelessWidget {
                                             width: 205,
                                             height: 35,
                                             child: ElevatedButton(
-                                                onPressed: ()  {
-                                                   SweetAlert.show(context,
+                                                onPressed: () {
+                                                  SweetAlert.show(context,
                                                     title: "Are you sure you want to cancel your booking?",
                                                     style: SweetAlertStyle
                                                         .confirm,
@@ -614,7 +626,6 @@ class PendingWidget extends StatelessWidget {
                                                             },
                                                             context);
                                                         return false;
-
                                                       } else {
                                                         return true;
                                                       }
@@ -687,9 +698,15 @@ class PendingWidget extends StatelessWidget {
                                                                   bookingID: snapshot
                                                                       .data![i]["_id"],
                                                                   olddate: snapshot
-                                                                      .data![i]["datetime"].toString().substring(0,10),
-                                                                  oldtime:snapshot
-                                                                      .data![i]["datetime"].toString().substring(11,16),
+                                                                      .data![i]["datetime"]
+                                                                      .toString()
+                                                                      .substring(
+                                                                      0, 10),
+                                                                  oldtime: snapshot
+                                                                      .data![i]["datetime"]
+                                                                      .toString()
+                                                                      .substring(
+                                                                      11, 16),
                                                                   oldlocation: snapshot
                                                                       .data![i]["location"])));
                                                 },
@@ -874,7 +891,7 @@ class AcceptedWidget extends StatelessWidget {
                                           ),
                                           Text(
                                             snapshot.data![i]["datetime"]
-                                                .toString().substring(0,10),
+                                                .toString().substring(0, 10),
                                             style: TextStyle(
                                                 fontSize: 15,
                                                 color: Colors.black),
@@ -892,7 +909,9 @@ class AcceptedWidget extends StatelessWidget {
                                                 color: Colors.black),
                                           ),
                                           Text(
-                                            snapshot.data![i]["datetime"].toString().substring(11,16),
+                                            snapshot.data![i]["datetime"]
+                                                .toString()
+                                                .substring(11, 16),
                                             style: TextStyle(
                                                 fontSize: 15,
                                                 color: Colors.black),

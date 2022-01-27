@@ -29,15 +29,15 @@ class _CompanyProfileState extends State<CompanyProfile> {
     String url;
     // print(token);
     if (usertype == "company") {
-      url = "$BASEURI/user/loggedin_company";
+      url = "http://10.0.2.2:5000/user/loggedin_company";
     } else {
-      url = "$BASEURI/user/loggedin_user";
+      url = "http://10.0.2.2:5000/user/loggedin_user";
     }
     var response = await http.get(Uri.parse(url), headers: {
       "Authorization": "Bearer $token",
     });
 
-    var data = await jsonDecode(response.body);
+    var data = await json.decode(response.body);
     // print(data);
     String user_name = await data["data"]["name"];
     String user_id = await data["data"]["_id"];
@@ -73,8 +73,8 @@ class _CompanyProfileState extends State<CompanyProfile> {
                         height: 200,
                       ): Image.network(
                           "$BASEURI/$image",
-                        width: 200,
-                        height: 200
+                          width: 200,
+                          height: 200
                       )
                     ],
                   ),
@@ -220,15 +220,15 @@ class _CompanyProfileState extends State<CompanyProfile> {
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children:  [
                       this.image == "" ? Image(
                         image: AssetImage("assets/images/cycling.png"),
                         width: 200,
                         height: 200,
                       ): Image.network(
                           "$BASEURI/$image",
-                        width: 200,
-                        height: 200
+                          width: 200,
+                          height: 200
                       )
                     ],
                   ),
@@ -328,7 +328,11 @@ class _CompanyProfileState extends State<CompanyProfile> {
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold)))),
                       ),
-                      Card(
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/favorites");
+                    },
+                    child: Card(
                           color: Color(0xff92CAE8),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0),
@@ -340,7 +344,8 @@ class _CompanyProfileState extends State<CompanyProfile> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontWeight: FontWeight.bold)))),
+                                      fontWeight: FontWeight.bold))))
+                  ),
                       Card(
                           color: Color(0xff92CAE8),
                           shape: RoundedRectangleBorder(
