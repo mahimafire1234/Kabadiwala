@@ -71,7 +71,11 @@ class _CompanyProfileState extends State<CompanyProfile> {
                         image: AssetImage("assets/images/cycling.png"),
                         width: 200,
                         height: 200,
-                      ): Image.network("$BASEURI/$image")
+                      ): Image.network(
+                          "$BASEURI/$image",
+                        width: 200,
+                        height: 200
+                      )
                     ],
                   ),
                 ),
@@ -221,7 +225,11 @@ class _CompanyProfileState extends State<CompanyProfile> {
                         image: AssetImage("assets/images/cycling.png"),
                         width: 200,
                         height: 200,
-                      ): Image.network("$BASEURI/$image")
+                      ): Image.network(
+                          "$BASEURI/$image",
+                        width: 200,
+                        height: 200
+                      )
                     ],
                   ),
                 ),

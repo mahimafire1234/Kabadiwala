@@ -31,7 +31,7 @@ class _SignUpState extends State<SignUp> {
       var body = {
         "name": name,
         "email": email,
-        "number": number,
+        "phone": number,
         "usertype": usertype,
         "password": password
       };

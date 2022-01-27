@@ -11,6 +11,8 @@ import 'package:login_sprint1/services/shared_preference.dart';
 import 'package:login_sprint1/services/userservices.dart';
 import 'dart:io';
 
+import 'change_password.dart';
+
 class ProfileUpdate extends StatefulWidget {
   const ProfileUpdate({Key? key}) : super(key: key);
 
@@ -75,8 +77,10 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
         print(u["image"]);
 
         if(u["image"] != null || u["image"] != ""){
-          image = u["image"];
-          imageFrom = "api";
+          setState(() {
+              image = u["image"];
+              imageFrom ="api";
+          });
         }
 
         return resBody["data"].toString();
@@ -130,6 +134,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                              ));
                        },
                      ),
+                     SizedBox(height: 10.0),
                      InputField(
                        labelText: "Name",
                          emptyValidationText: "Enter name",
@@ -178,18 +183,16 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                            ),
                            const SizedBox(width: 10.0),
                            ElevatedButton(onPressed: () async {
-                             print(_nameController.text);
-                             print(image);
 
                              var body = {
                                "name": _nameController.text,
                                "email": _emailController.text,
                                "phone": _phoneController.text,
-                               "location": _locationController.text,
+                               "companyLocation": _locationController.text,
                              };
 
                              var token = MySharedPreferences.getToken();
-                             var response = await UserServices.update(token, image, body);
+                             var response = await UserServices.update(token, image, body, imageFrom);
                              var resBody = json.decode(response!);
                              final snackB = SnackBar(
                                duration: Duration(seconds: 5),
@@ -204,7 +207,20 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                                Navigator.pop(context);
                              }
                            },
-                             child: const Text("Update Profile"))
+                             child: const Text("Update Profile")),
+
+                         ]
+                     ),
+                     SizedBox(height: 10.0),
+                     Row(
+                         mainAxisAlignment: MainAxisAlignment.end,
+                         children: [
+                           TextButton(
+                               onPressed: () {
+                                 Navigator.push(context,
+                                     MaterialPageRoute(builder: (context) => ChangePassword()));
+                               },
+                               child: Text("Change Password"))
                          ]
                      )
                    ]
@@ -245,7 +261,7 @@ class InputField extends StatelessWidget {
         keyboardType: keyboardType,
         controller: controller,
         obscureText: obscureText!,
-        validator: (val) => validator!(val),
+        validator: (value) => validator!(value),
         decoration: InputDecoration(
             border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -293,15 +309,28 @@ class ProfileWidget extends StatelessWidget {
   }
 
   Widget buildImage() {
-    var image = null;
-    if(imagePath == "") image = Image.asset("assets/images/cycling.png", width: 128, height: 128);
-    else if(imageFrom == "phone") image = Image.file(File(imagePath), width: 128, height: 128);
-    else if(imageFrom == "api") image = Image.network("$BASEURI/$imagePath", width: 128, height: 128);
-
+    if(imageFrom == "api") print("from api");
     return ClipOval(
       child: Material(
         color: Colors.transparent,
-        child: image,
+        child: imagePath == "" ? Image.asset("assets/images/cycling.png", width: 128, height: 128) : (
+            imageFrom == "phone"? Image.file(File(imagePath), width: 128, height: 128) :
+            Image.network("$BASEURI/$imagePath", width: 128, height: 128,
+              loadingBuilder: (context, child, loadingProgress){
+                if(loadingProgress == null){
+                  return child;
+                }
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null ?
+                        loadingProgress.cumulativeBytesLoaded/int.parse(loadingProgress.expectedTotalBytes.toString()) :
+                        null,
+                  )
+                );
+              },
+
+            )
+        )
       ),
     );
   }

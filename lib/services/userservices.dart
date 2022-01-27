@@ -51,16 +51,16 @@ class UserServices {
     }
   }
 
-  static Future<String?> update(token, filePath, body) async {
+  static Future<String?> update(token, filePath, body, imageFrom) async {
     try {
       http.MultipartRequest request = http.MultipartRequest("PATCH", Uri.parse("$baseUri/"));
 
-      if(filePath != ""){
+      if(filePath != "" && imageFrom != "api"){
         http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
             'image', filePath);
         request.files.add(multipartFile);
         print("entered");
-      }else{
+      }else if(imageFrom != "api" && filePath == ""){
         request.fields["image"] = "";
       }
 
@@ -75,6 +75,23 @@ class UserServices {
       http.StreamedResponse response = await request.send();
       var res = await response.stream.bytesToString();
       return res;
+    } on Exception {
+      print("network connection problem");
+      return null;
+    }
+  }
+
+  static Future<String?> changePassword(token, body) async {
+    try {
+      var response = await http.patch(Uri.parse("$baseUri/password"),
+          headers: {
+            'Content-type': 'application/json',
+            "Accept": "application/json",
+            "Authorization": "Bearer $token"
+          },
+        body: json.encode(body)
+      );
+      return response.body;
     } on Exception {
       print("network connection problem");
       return null;
