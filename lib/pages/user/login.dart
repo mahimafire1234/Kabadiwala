@@ -6,16 +6,24 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 import 'package:login_sprint1/services/userservices.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
+  LoginPage({Key? key}) : super(key: key);
+
+  // dynamic isLogin = true;
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   String email = "";
   String password = "";
   var token;
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
-  LoginPage({Key? key}) : super(key: key);
-
-  // dynamic isLogin = true;
+  dynamic usertype;
 
   dynamic login(
       {required String? loginEmail, required String? loginPassword}) async {
@@ -33,7 +41,9 @@ class LoginPage extends StatefulWidget {
       if (data["success"] == true) {
         token = (data["token"]);
         await MySharedPreferences.init();
+
         await MySharedPreferences.setTokenWithType(token, data["usertype"]);
+        usertype = await MySharedPreferences.setUsertype(data["usertype"]);
         await MySharedPreferences.setUsertype(data["usertype"]);
         await MySharedPreferences.setLoginId(data["data"]["_id"]);
         print(token);
@@ -47,11 +57,6 @@ class LoginPage extends StatefulWidget {
     }
   }
 
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
   final myEmailKey = GlobalKey<FormState>();
   final myPasswordKey = GlobalKey<FormState>();
   final _formKey = GlobalKey<FormState>();
@@ -59,6 +64,12 @@ class _LoginPageState extends State<LoginPage> {
 
   bool hidePassword = true;
   bool checkValue = false;
+  @override
+  void initState() {
+    _loadUserEmailPassword();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                         return null;
                       },
                       key: myEmailKey,
-                      controller: widget.emailController,
+                      controller: emailController,
                       decoration: const InputDecoration(
                           focusColor: Colors.black,
                           border: OutlineInputBorder(
@@ -140,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       },
                       key: myPasswordKey,
-                      controller: widget.passwordController,
+                      controller: passwordController,
                       obscureText: hidePassword,
                       decoration: InputDecoration(
                           border: const OutlineInputBorder(
@@ -181,15 +192,24 @@ class _LoginPageState extends State<LoginPage> {
                       checkColor: Colors.white,
                       value: checkValue,
                       onChanged: (bool? value) {
+                        print("check value is $checkValue");
                         setState(() {
                           checkValue = !checkValue;
                         });
+
+                        print("check value is $checkValue");
+                        // MySharedPreferences.setRememberme(checkValue);
+
+                        // await MySharedPreferences.setToken(token);
+                        // login(
+                        //     loginEmail: emailController.text,
+                        //     loginPassword: passwordController.text);
                       },
                     ),
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          checkValue = !checkValue;
+                          checkValue = checkValue;
                         });
                       },
                       child: Text(
@@ -233,9 +253,9 @@ class _LoginPageState extends State<LoginPage> {
 
                     if (_formKey.currentState!.validate() &&
                         _formKey1.currentState!.validate()) {
-                      dynamic Data = await widget.login(
-                          loginEmail: widget.emailController.text,
-                          loginPassword: widget.passwordController.text);
+                      dynamic Data = await login(
+                          loginEmail: emailController.text,
+                          loginPassword: passwordController.text);
                       print("my Data is :$Data");
                       if (Data != true) {
                         //form valid xa ki xaina check garxa
@@ -244,6 +264,18 @@ class _LoginPageState extends State<LoginPage> {
                               const SnackBar(content: Text("Invalid login")));
                         }
                       } else {
+                        if (checkValue) {
+                          SharedPreferences.getInstance().then(
+                            (prefs) {
+                              prefs.setBool("remember_me", checkValue);
+                              prefs.setString('email', emailController.text);
+                              prefs.setString(
+                                  'password', passwordController.text);
+                              // prefs.setString("usertype", usertype);
+                            },
+                          );
+                        }
+
                         Navigator.pushNamed(context, "/home");
                       }
                     } else {
@@ -339,6 +371,33 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void _loadUserEmailPassword() async {
+    print("Load Email");
+    try {
+      // var _remeberMe = MySharedPreferences.getRememberme;
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      var email = _prefs.getString("email");
+      var password = _prefs.getString("password");
+      var _remeberMe = _prefs.getBool("remember_me") ?? false;
+
+      print(_remeberMe);
+      print(email);
+      print(password);
+      if (_remeberMe == true) {
+        checkValue = true;
+        setState(() {});
+
+        // emailController.text = email!;
+        // passwordController.text = password!;
+        Navigator.pushNamed(context, "/home");
+      } else {
+        checkValue = false;
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }
 

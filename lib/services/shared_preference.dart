@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+
 class MySharedPreferences {
   static SharedPreferences? _preferences;
   static String? _setUserType;
@@ -44,4 +45,3 @@ class MySharedPreferences {
 
   static String? get getLoginId => _preferences!.getString(_LoginId);
 }
-
