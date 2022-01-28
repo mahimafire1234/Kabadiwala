@@ -5,6 +5,7 @@ import 'package:login_sprint1/pages/appointment/view_appointment.dart';
 import 'package:login_sprint1/pages/booking/booking_request.dart';
 import 'package:login_sprint1/pages/user/myprofilekabadiwala.dart';
 import 'package:login_sprint1/pages/booking/set_information.dart';
+import 'package:login_sprint1/services/shared_preference.dart';
 
 import 'home.dart';
 
@@ -68,6 +69,7 @@ class _BaseState extends State<Base> {
               onTap: () {
                 // Update the state of the app.
                 // ...
+                MySharedPreferences.removeAll();
                 Navigator.pushNamed(context, "/login");
               },
             ),

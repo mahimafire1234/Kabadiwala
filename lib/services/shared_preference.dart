@@ -12,6 +12,7 @@ class MySharedPreferences {
   static Future init() async =>
       _preferences = await SharedPreferences.getInstance();
   static Future setTokenWithType(String token, String userType) async {
+    await _preferences!.setString(_usertype, userType);
     _setUserType = userType;
     if (_setUserType == "company") {
       await _preferences!.setString(_adminTokenKey, token);
@@ -44,4 +45,6 @@ class MySharedPreferences {
       await _preferences!.setString(_LoginId, LoginId);
 
   static String? get getLoginId => _preferences!.getString(_LoginId);
+
+  static void removeAll() => _preferences!.clear();
 }

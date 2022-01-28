@@ -37,15 +37,17 @@ class _LoginPageState extends State<LoginPage> {
 
       var data = json.decode(response);
       print(data);
-      print(data["success"]);
+      print(data["data"]["usertype"]);
       if (data["success"] == true) {
         token = (data["token"]);
         await MySharedPreferences.init();
 
         await MySharedPreferences.setTokenWithType(token, data["usertype"]);
-        usertype = await MySharedPreferences.setUsertype(data["usertype"]);
-        await MySharedPreferences.setUsertype(data["usertype"]);
+        // usertype = await MySharedPreferences.setUsertype(data["data"]["usertype"]);
+        await MySharedPreferences.setUsertype(data["data"]["usertype"]);
         await MySharedPreferences.setLoginId(data["data"]["_id"]);
+        var usertype = MySharedPreferences.getUsertype;
+        print("usertype: " + usertype!);
         print(token);
         return true;
       } else {

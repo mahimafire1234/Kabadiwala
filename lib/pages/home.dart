@@ -18,6 +18,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   getSchedule() async {
+
     final token = await MySharedPreferences.getToken();
 
     var res = await http.get(
@@ -68,6 +69,7 @@ class _HomeState extends State<Home> {
   void initState() {
     //for notification permission
     super.initState();
+
     AwesomeNotifications().isNotificationAllowed().then(
       (isAllowed) {
         if (!isAllowed) {
@@ -192,7 +194,7 @@ class _HomeState extends State<Home> {
               child: GridView.count(
                 shrinkWrap: true,
                 childAspectRatio: 2.0,
-                crossAxisCount: 2,
+                crossAxisCount: 1,
                 children: [
                   Container(
                     padding: EdgeInsets.only(left: 10.0),
@@ -266,13 +268,35 @@ class _HomeState extends State<Home> {
   }
 }
 
-class MyDesign extends StatelessWidget {
+class MyDesign extends StatefulWidget {
   const MyDesign({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<MyDesign> createState() => _MyDesignState();
+}
+
+class _MyDesignState extends State<MyDesign> {
+  var usertype = "";
+
+  @override
+  void initState()  {
+    super.initState();
+    initPreferences();
+  }
+
+  void initPreferences() async{
+    await MySharedPreferences.init();
+    setState(() {
+      usertype = MySharedPreferences.getUsertype!;
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MySharedPreferences.getUsertype == UserType.COMPANY
+    return usertype == UserType.COMPANY
         ? Option(
             image: "assets/images/view_request.jpg",
             text: "view all \n request",
