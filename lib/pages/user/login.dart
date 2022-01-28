@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 import 'package:login_sprint1/services/userservices.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -43,6 +42,7 @@ class _LoginPageState extends State<LoginPage> {
         await MySharedPreferences.init();
 
         await MySharedPreferences.setTokenWithType(token, data["usertype"]);
+        await MySharedPreferences.setToken(token);
         usertype = await MySharedPreferences.setUsertype(data["usertype"]);
         await MySharedPreferences.setUsertype(data["usertype"]);
         await MySharedPreferences.setLoginId(data["data"]["_id"]);
@@ -64,9 +64,11 @@ class _LoginPageState extends State<LoginPage> {
 
   bool hidePassword = true;
   bool checkValue = false;
+
+  // @override
   @override
   void initState() {
-    _loadUserEmailPassword();
+    getUserDetails();
     super.initState();
   }
 
@@ -196,14 +198,6 @@ class _LoginPageState extends State<LoginPage> {
                         setState(() {
                           checkValue = !checkValue;
                         });
-
-                        print("check value is $checkValue");
-                        // MySharedPreferences.setRememberme(checkValue);
-
-                        // await MySharedPreferences.setToken(token);
-                        // login(
-                        //     loginEmail: emailController.text,
-                        //     loginPassword: passwordController.text);
                       },
                     ),
                     GestureDetector(
@@ -236,21 +230,6 @@ class _LoginPageState extends State<LoginPage> {
                     )),
                   ),
                   onPressed: () async {
-                    //
-                    // var loginEmail = widget.emailController.text;
-                    // var loginPassword = widget.passwordController.text;
-                    // Map<dynamic, dynamic> body = {
-                    //   "email": loginEmail,
-                    //   "password": loginPassword
-                    // };
-                    //
-                    // var response = await UserServices.signin(
-                    //     body); // signin fuction returns response.body
-                    // var data = json.decode(response);
-                    //
-                    // print("user type for login ${data["data"]["usertype"]}");
-                    // var usertype = (data["data"]["usertype"]);
-
                     if (_formKey.currentState!.validate() &&
                         _formKey1.currentState!.validate()) {
                       dynamic Data = await login(
@@ -265,17 +244,14 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       } else {
                         if (checkValue) {
-                          SharedPreferences.getInstance().then(
-                            (prefs) {
-                              prefs.setBool("remember_me", checkValue);
-                              prefs.setString('email', emailController.text);
-                              prefs.setString(
-                                  'password', passwordController.text);
-                              // prefs.setString("usertype", usertype);
-                            },
-                          );
+                          await MySharedPreferences.init();
+                          await MySharedPreferences.setEmail(
+                              emailController.text);
+                          await MySharedPreferences.setPassword(
+                              passwordController.text);
+                          print("Value saved --> ${emailController.text}");
+                          print("Value saved --> ${passwordController.text}");
                         }
-
                         Navigator.pushNamed(context, "/home");
                       }
                     } else {
@@ -373,30 +349,40 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _loadUserEmailPassword() async {
-    print("Load Email");
+  void getUserDetails() async {
     try {
-      // var _remeberMe = MySharedPreferences.getRememberme;
-      SharedPreferences _prefs = await SharedPreferences.getInstance();
-      var email = _prefs.getString("email");
-      var password = _prefs.getString("password");
-      var _remeberMe = _prefs.getBool("remember_me") ?? false;
-
-      print(_remeberMe);
-      print(email);
-      print(password);
-      if (_remeberMe == true) {
-        checkValue = true;
-        setState(() {});
-
-        // emailController.text = email!;
-        // passwordController.text = password!;
-        Navigator.pushNamed(context, "/home");
+      await MySharedPreferences.init();
+      var email = MySharedPreferences.getEmail;
+      var password = MySharedPreferences.getPassword;
+      if (email != "" && password != "") {
+        _loadUserEmailPassword(email, password);
       } else {
-        checkValue = false;
+        Navigator.pushNamed(context, "/login");
       }
-    } catch (e) {
-      print(e);
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  void _loadUserEmailPassword(String? loginEmail, String? loginPassword) async {
+    Map<dynamic, dynamic> body = {
+      "email": loginEmail,
+      "password": loginPassword
+    };
+    try {
+      var response = await UserServices.signin(body);
+      var data = json.decode(response);
+      if (data["success"] == true) {
+        await MySharedPreferences.init();
+        await MySharedPreferences.setTokenWithType(
+            data["token"], data["usertype"]);
+        await MySharedPreferences.setToken(data["token"]);
+        await MySharedPreferences.setUsertype(data["usertype"]);
+        await MySharedPreferences.setLoginId(data["data"]["_id"]);
+        Navigator.pushNamed(context, "/home");
+      }
+    } on Exception {
+      print(Exception("Error in network connection"));
     }
   }
 }
