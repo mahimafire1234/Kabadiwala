@@ -194,7 +194,7 @@ class _HomeState extends State<Home> {
               child: GridView.count(
                 shrinkWrap: true,
                 childAspectRatio: 2.0,
-                crossAxisCount: 1,
+                crossAxisCount: 2,
                 children: [
                   Container(
                     padding: EdgeInsets.only(left: 10.0),
