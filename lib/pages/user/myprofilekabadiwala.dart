@@ -33,9 +33,9 @@ class _CompanyProfileState extends State<CompanyProfile> {
     String url;
     // print(token);
     if (usertype == "company") {
-      url = "http://10.0.2.2:5000/user/loggedin_company";
+      url = "$BASEURI/user/loggedin_company";
     } else {
-      url = "http://10.0.2.2:5000/user/loggedin_user";
+      url = "$BASEURI/user/loggedin_user";
     }
     var response = await http.get(Uri.parse(url), headers: {
       "Authorization": "Bearer $token",
