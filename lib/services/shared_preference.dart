@@ -43,5 +43,6 @@ class MySharedPreferences {
       await _preferences!.setString(_LoginId, LoginId);
 
   static String? get getLoginId => _preferences!.getString(_LoginId);
+
 }
 

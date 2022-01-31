@@ -5,6 +5,8 @@ import 'package:login_sprint1/pages/appointment/view_appointment.dart';
 import 'package:login_sprint1/pages/booking/booking_request.dart';
 import 'package:login_sprint1/pages/user/myprofilekabadiwala.dart';
 import 'package:login_sprint1/pages/booking/set_information.dart';
+import 'package:login_sprint1/services/shared_preference.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home.dart';
 
@@ -65,9 +67,12 @@ class _BaseState extends State<Base> {
                 color: Color(0xFF000000),
               ),
               title: const Text('Logout'),
-              onTap: () {
+              onTap: () async {
                 // Update the state of the app.
                 // ...
+                var preferences = await SharedPreferences.getInstance();
+                print("preferences ----> $preferences");
+                await preferences.clear();
                 Navigator.pushNamed(context, "/login");
               },
             ),
