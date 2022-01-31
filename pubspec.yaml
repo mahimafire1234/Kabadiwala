@@ -32,6 +32,7 @@ dependencies:
   awesome_dropdown: ^0.0.4
   awesome_notifications: ^0.0.6+10
   flutter_simple_rating_bar:
+  intro_slider:
 
 
   # The following adds the Cupertino Icons font to your application.
