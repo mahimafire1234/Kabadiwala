@@ -62,11 +62,6 @@ class _BaseState extends State<Base> {
               ),
               title: const Text('Logout'),
               onTap: () async {
-                // Update the state of the app.
-                // ...
-                var preferences = await SharedPreferences.getInstance();
-                print("preferences ----> $preferences");
-                await preferences.clear();
                 await MySharedPreferences.init();
                 await MySharedPreferences.removeSavedDetails();
                 Navigator.pushNamed(context, "/login");

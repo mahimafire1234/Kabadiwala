@@ -414,11 +414,9 @@ showAlertDialog(BuildContext context) {
   Widget continueButton = TextButton(
     child: Text("Continue"),
     onPressed: () async {
-      var token = MySharedPreferences.getToken();
       var id = MySharedPreferences.getLoginId!;
       print(id);
-      print(token);
-      var response = await UserServices.deleteAccount(token,id);
+      var response = await UserServices.deleteAccount(id);
       print("response -----> $response");
       var resBody = json.decode(response!);
       print("resBody -----> $resBody");
@@ -435,6 +433,8 @@ showAlertDialog(BuildContext context) {
         );
         ScaffoldMessenger.of(context).showSnackBar(snackB);
         print("true");
+        await MySharedPreferences.init();
+        await MySharedPreferences.removeSavedDetails();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => LoginPage()));
       } else {
