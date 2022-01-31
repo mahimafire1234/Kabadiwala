@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
 import "package:flutter_test/flutter_test.dart";
 import 'package:integration_test/integration_test.dart';
+import 'package:login_sprint1/main.dart';
 import 'package:login_sprint1/pages/user/login.dart';
+import 'package:flutter/widgets.dart';
+import 'dart:ui';
+import 'package:mockito/mockito.dart';
+
+class MockNavigatorObserver extends Mock implements NavigatorObserver {}
+
 // import "package:login_sprint1/main.dart" as app;
 void main(){
-  group("Login test", (){
+  group("Login tests ", (){
     IntegrationTestWidgetsFlutterBinding.ensureInitialized();
     
     testWidgets("Login test", (WidgetTester tester) async{
-      LoginPage loginpage = new LoginPage();
-      await tester.pumpWidget(MaterialApp(home: loginpage));
+      final mockObserver = MockNavigatorObserver();
 
-      final emailFormField = find.byKey(Key("myEmailKey"));
-      print("here");
-      final PasswordFormField = find.byKey(Key("myPasswordKey"));
+      await tester.pumpWidget(MyApp());
+
+      final emailFormField = find.byType(TextFormField).first;
+      final PasswordFormField =  find.byType(TextFormField).last;
       final loginButton = find.byType(ElevatedButton).first;
 
     //  enter input
@@ -23,6 +30,7 @@ void main(){
 
       await tester.tap(loginButton);
       await tester.pumpAndSettle();
+      
     });
   });
 }
