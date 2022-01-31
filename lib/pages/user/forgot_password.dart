@@ -26,50 +26,83 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(18.0),
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                      "Enter email address",
+            child: Column(
+              children: [
+                Center(
+                  child: const Text(
+                      "Forgot Password",
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  InputField(
-                      labelText: "Email address",
-                      emptyValidationText: "Enter email address",
-                      prefixIcon: CupertinoIcons.envelope,
-                      controller: _emailController,
-                      obscureText: false,
+                ),
+                const SizedBox(height: 20),
+                 Padding(
+                   padding: const EdgeInsets.only(left: 15.0),
+                   child: Row(
+                     mainAxisAlignment: MainAxisAlignment.start,
+                     children: [
+                       Text(
+                        "Enter the email address of the account \nWe will send a OTP code",
+                        style: TextStyle(
+                            fontSize: 14
+                        ),
+                ),
+                     ],
+                   ),
+                 ),
+                InputField(
+                    labelText: "Email address",
+                    emptyValidationText: "Enter email address",
+                    prefixIcon: CupertinoIcons.envelope,
+                    controller: _emailController,
+                    obscureText: false,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                          onPressed: () async {
+                            var body = {
+                              "email":  _emailController.text
+                            };
+                            var response = await UserServices.forgotPassword(body);
+                            var resBody = json.decode(response!);
+                            if(resBody["success"]){
+                              var email = _emailController.text;
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> OtpCode(email: email)));
+                            }
+                            final snackB = SnackBar(
+                              duration: Duration(seconds: 5),
+                              content: Text(resBody["message"]),
+                              action: SnackBarAction(
+                                label: 'Dismiss',
+                                onPressed: () {},
+                              ),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackB);
+                          },
+                          child: Text("Send code")
+                      ),
+                      SizedBox(width: 10.0),
+                      ElevatedButton(
+                          onPressed: ()  {
+                           Navigator.pop(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                              primary: Color(0xFFFFFFFF),
+                              onPrimary: Color(0xFF0077B6),
+                            )
+                          ,
+                          child: Text("Cancel")
+                      ),
+                    ],
                   ),
-                  ElevatedButton(
-                      onPressed: () async {
-                        var body = {
-                          "email":  _emailController.text
-                        };
-                        var response = await UserServices.forgotPassword(body);
-                        var resBody = json.decode(response!);
-                        if(resBody["success"]){
-                          var email = _emailController.text;
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> OtpCode(email: email)));
-                        }
-                        final snackB = SnackBar(
-                          duration: Duration(seconds: 5),
-                          content: Text(resBody["message"]),
-                          action: SnackBarAction(
-                            label: 'Dismiss',
-                            onPressed: () {},
-                          ),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackB);
-                      },
-                      child: Text("Send code")
-                  )
-                ]
-              ),
+                )
+              ]
             ),
           ),
         ),
@@ -97,65 +130,90 @@ class _OtpCodeState extends State<OtpCode> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-              Text("Enter OTP code sent to email"),
-              Text("Otp will expire in 5 minutes"),
-              const SizedBox(height: 20),
-              PinEntryTextField(
-                showFieldAsBox: true,
-                fields: 4,
-                onSubmit: (String pin) async {
-                  print("submitted");
-                  var body = {
-                    "email": email,
-                    "code": pin
-                  };
-                  var response = await UserServices.checkOtp(body);
-                  var res = json.decode(response!);
-                  if(res["success"]){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> ResetPassword(email: email)));
-                  }
-                  final snackB = SnackBar(
-                    duration: Duration(seconds: 5),
-                    content: Text(res["message"]),
-                    action: SnackBarAction(
-                      label: 'Dismiss',
-                      onPressed: () {},
+          child: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: const Text(
+                      "Forgot Password",
+                      style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold
+                      ),
                     ),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackB);
+                  ),
+                SizedBox(height: 40.0,),
+                Text("Enter OTP code sent to email"),
+                Text("Otp will expire in 5 minutes"),
+                const SizedBox(height: 50),
+                PinEntryTextField(
+                  showFieldAsBox: true,
+                  fields: 4,
+                  onSubmit: (String pin) async {
+                    print("submitted");
+                    var body = {
+                      "email": email,
+                      "code": pin
+                    };
+                    var response = await UserServices.checkOtp(body);
+                    var res = json.decode(response!);
+                    if(res["success"]){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> ResetPassword(email: email)));
+                    }
+                    final snackB = SnackBar(
+                      duration: Duration(seconds: 5),
+                      content: Text(res["message"]),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        onPressed: () {},
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackB);
 
-                },
-              ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Did not get the code? "),
-                    TextButton(
-                        onPressed: () async {
-                          var body = {
-                            "email":  email
-                          };
-                          var response = await UserServices.forgotPassword(body);
-                          var resBody = json.decode(response!);
-                          final snackB = SnackBar(
-                            duration: Duration(seconds: 5),
-                            content: Text(resBody["message"]),
-                            action: SnackBarAction(
-                              label: 'Dismiss',
-                              onPressed: () {},
-                            ),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackB);
-                        },
-                      child: Text("Resend code")
-                    )
+                  },
+                ),
+                  const SizedBox(height: 50),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Did not get the code? "),
+                      TextButton(
+                          onPressed: () async {
+                            var body = {
+                              "email":  email
+                            };
+                            var response = await UserServices.forgotPassword(body);
+                            var resBody = json.decode(response!);
+                            final snackB = SnackBar(
+                              duration: Duration(seconds: 5),
+                              content: Text(resBody["message"]),
+                              action: SnackBarAction(
+                                label: 'Dismiss',
+                                onPressed: () {},
+                              ),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackB);
+                          },
+                        child: Text("Resend code")
+                      )
 
-                  ]
-                )
-            ]
+                    ]
+                  ),
+                  ElevatedButton(
+                      onPressed: ()  {
+                        Navigator.popUntil(context, ModalRoute.withName("/login"));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFFFFFFFF),
+                        onPrimary: Color(0xFF0077B6),
+                      )
+                      ,
+                      child: Text("Cancel")
+                  ),
+              ]
+            ),
           )
         )
       ),
@@ -196,7 +254,16 @@ class _ResetPasswordState extends State<ResetPassword> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("Reset password"),
+                  Center(
+                    child: const Text(
+                      "Reset Password",
+                      style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30.0),
                   InputField(
                     labelText: "New Password",
                     emptyValidationText: "Enter new password",
@@ -238,6 +305,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     ),
                     obscureText: hideNewConfirmPassword,
                   ),
+              SizedBox(height: 20.0),
               ElevatedButton(onPressed: () async {
                 if (_key.currentState!.validate()){
                   var body = {

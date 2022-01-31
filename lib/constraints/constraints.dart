@@ -15,5 +15,4 @@ class UserType {
 }
 
 // const String BASEURI = "http://127.0.0.1:5000";
-
 const String BASEURI = "http://10.0.2.2:5000";
