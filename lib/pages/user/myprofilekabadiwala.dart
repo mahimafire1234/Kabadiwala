@@ -9,6 +9,9 @@ import 'package:login_sprint1/pages/rates/ratespage.dart';
 import 'package:login_sprint1/pages/user/profile_update.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 
+import '../../services/userservices.dart';
+import 'login.dart';
+
 class CompanyProfile extends StatefulWidget {
   const CompanyProfile({Key? key}) : super(key: key);
 
@@ -20,6 +23,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
   String id = "";
   String user_type = "";
   String image = "";
+
   Future<List<String>> getuserdata() async {
     await MySharedPreferences.init();
 
@@ -29,9 +33,9 @@ class _CompanyProfileState extends State<CompanyProfile> {
     String url;
     // print(token);
     if (usertype == "company") {
-      url = "http://10.0.2.2:5000/user/loggedin_company";
+      url = "$BASEURI/user/loggedin_company";
     } else {
-      url = "http://10.0.2.2:5000/user/loggedin_user";
+      url = "$BASEURI/user/loggedin_user";
     }
     var response = await http.get(Uri.parse(url), headers: {
       "Authorization": "Bearer $token",
@@ -66,16 +70,15 @@ class _CompanyProfileState extends State<CompanyProfile> {
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children:  [
-                      this.image == "" ? Image(
-                        image: AssetImage("assets/images/cycling.png"),
-                        width: 200,
-                        height: 200,
-                      ): Image.network(
-                          "$BASEURI/$image",
-                          width: 200,
-                          height: 200
-                      )
+                    children: [
+                      this.image == ""
+                          ? Image(
+                              image: AssetImage("assets/images/cycling.png"),
+                              width: 200,
+                              height: 200,
+                            )
+                          : Image.network("$BASEURI/$image",
+                              width: 200, height: 200)
                     ],
                   ),
                 ),
@@ -116,7 +119,10 @@ class _CompanyProfileState extends State<CompanyProfile> {
                         style: TextStyle(fontSize: 20),
                       ),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileUpdate()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProfileUpdate()));
                       },
                       style: ButtonStyle(
                         backgroundColor:
@@ -124,6 +130,16 @@ class _CompanyProfileState extends State<CompanyProfile> {
                         fixedSize: MaterialStateProperty.all(Size(240.0, 50.0)),
                       ),
                     )),
+                Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: ElevatedButton(
+                        child: Text(
+                          "Delete Account",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        onPressed: () {
+                          showAlertDialog(context);
+                        })),
                 SizedBox(
                   height: 400,
                   child: GridView(
@@ -220,16 +236,15 @@ class _CompanyProfileState extends State<CompanyProfile> {
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children:  [
-                      this.image == "" ? Image(
-                        image: AssetImage("assets/images/cycling.png"),
-                        width: 200,
-                        height: 200,
-                      ): Image.network(
-                          "$BASEURI/$image",
-                          width: 200,
-                          height: 200
-                      )
+                    children: [
+                      this.image == ""
+                          ? Image(
+                              image: AssetImage("assets/images/cycling.png"),
+                              width: 200,
+                              height: 200,
+                            )
+                          : Image.network("$BASEURI/$image",
+                              width: 200, height: 200)
                     ],
                   ),
                 ),
@@ -270,7 +285,26 @@ class _CompanyProfileState extends State<CompanyProfile> {
                         style: TextStyle(fontSize: 20),
                       ),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileUpdate()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProfileUpdate()));
+                      },
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Color(0xff0077B6)),
+                        fixedSize: MaterialStateProperty.all(Size(240.0, 50.0)),
+                      ),
+                    )),
+                Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: ElevatedButton(
+                      child: Text(
+                        "Delete Account",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () {
+                        showAlertDialog(context);
                       },
                       style: ButtonStyle(
                         backgroundColor:
@@ -328,24 +362,23 @@ class _CompanyProfileState extends State<CompanyProfile> {
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold)))),
                       ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, "/favorites");
-                    },
-                    child: Card(
-                          color: Color(0xff92CAE8),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              side: BorderSide(
-                                  color: Color(0xff0077B6), width: 4.0)),
-                          elevation: 5,
-                          child: Center(
-                              child: Text("My Favorites",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold))))
-                  ),
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, "/favorites");
+                          },
+                          child: Card(
+                              color: Color(0xff92CAE8),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  side: BorderSide(
+                                      color: Color(0xff0077B6), width: 4.0)),
+                              elevation: 5,
+                              child: Center(
+                                  child: Text("My Favorites",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold))))),
                       Card(
                           color: Color(0xff92CAE8),
                           shape: RoundedRectangleBorder(
@@ -369,4 +402,74 @@ class _CompanyProfileState extends State<CompanyProfile> {
       );
     }
   }
+}
+
+showAlertDialog(BuildContext context) {
+  // set up the buttons
+  Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () async {
+        Navigator.of(context).pop(true);
+      });
+  Widget continueButton = TextButton(
+    child: Text("Continue"),
+    onPressed: () async {
+      var id = MySharedPreferences.getLoginId!;
+      print(id);
+      var response = await UserServices.deleteAccount(id);
+      print("response -----> $response");
+      var resBody = json.decode(response!);
+      print("resBody -----> $resBody");
+
+      if (resBody["success"] == true) {
+        final snackB = SnackBar(
+          duration: Duration(seconds: 3),
+          content: Text(resBody["message"]),
+          action: SnackBarAction(
+            label: 'Dismiss',
+            onPressed: () {
+            },
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackB);
+        print("true");
+        await MySharedPreferences.init();
+        await MySharedPreferences.removeSavedDetails();
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => LoginPage()));
+      } else {
+        final snackB = SnackBar(
+          duration: Duration(seconds: 5),
+          content: Text(resBody["message"]),
+          action: SnackBarAction(
+            label: 'Dismiss',
+            onPressed: () {},
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackB);
+        Navigator.of(context).pop(true);
+      }
+    },
+  );
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20.0),
+    ),
+    elevation: 10,
+    title: Text("Alert"),
+    content: Text("Are your sure you want to delete account?"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+// show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

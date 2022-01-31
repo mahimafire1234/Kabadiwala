@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:login_sprint1/pages/appointment/view_appointment.dart';
-import 'package:login_sprint1/pages/booking/booking_request.dart';
 import 'package:login_sprint1/pages/user/myprofilekabadiwala.dart';
+
 import 'package:login_sprint1/pages/booking/set_information.dart';
+import 'package:login_sprint1/services/shared_preference.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home.dart';
 
@@ -21,17 +21,13 @@ class _BaseState extends State<Base> {
 
   _BaseState(this.currentIndex);
 
-  final screens = [
-    Home(),
-    CompanyProfile()
-  ];
+  final screens = [Home(), CompanyProfile()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text("Kabadiwala"),
-          backgroundColor: Color(0xff0077B6)),
+      appBar:
+          AppBar(title: Text("Kabadiwala"), backgroundColor: Color(0xff0077B6)),
       drawer: Drawer(
         child: ListView(
           // Important: Remove any padding from the ListView.
@@ -65,9 +61,9 @@ class _BaseState extends State<Base> {
                 color: Color(0xFF000000),
               ),
               title: const Text('Logout'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
+              onTap: () async {
+                await MySharedPreferences.init();
+                await MySharedPreferences.removeSavedDetails();
                 Navigator.pushNamed(context, "/login");
               },
             ),

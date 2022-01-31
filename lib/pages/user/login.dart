@@ -10,14 +10,21 @@ import 'package:login_sprint1/services/shared_preference.dart';
 import 'package:login_sprint1/services/userservices.dart';
 
 class LoginPage extends StatefulWidget {
+  LoginPage({Key? key}) : super(key: key);
+
+  // dynamic isLogin = true;
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   String email = "";
   String password = "";
   var token;
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
-  LoginPage({Key? key}) : super(key: key);
-
-  // dynamic isLogin = true;
+  dynamic usertype;
 
   dynamic login(
       {required String? loginEmail, required String? loginPassword}) async {
@@ -35,7 +42,10 @@ class LoginPage extends StatefulWidget {
       if (data["success"] == true) {
         token = (data["token"]);
         await MySharedPreferences.init();
+
         await MySharedPreferences.setTokenWithType(token, data["usertype"]);
+        await MySharedPreferences.setToken(token);
+        usertype = await MySharedPreferences.setUsertype(data["usertype"]);
         await MySharedPreferences.setUsertype(data["usertype"]);
         await MySharedPreferences.setLoginId(data["data"]["_id"]);
         print(token);
@@ -49,11 +59,6 @@ class LoginPage extends StatefulWidget {
     }
   }
 
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
   final myEmailKey = GlobalKey<FormState>();
   final myPasswordKey = GlobalKey<FormState>();
   final _formKey = GlobalKey<FormState>();
@@ -61,6 +66,14 @@ class _LoginPageState extends State<LoginPage> {
 
   bool hidePassword = true;
   bool checkValue = false;
+
+  // @override
+  @override
+  void initState() {
+    getUserDetails();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                         return null;
                       },
                       key: myEmailKey,
-                      controller: widget.emailController,
+                      controller: emailController,
                       decoration: const InputDecoration(
                           focusColor: Colors.black,
                           border: OutlineInputBorder(
@@ -142,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       },
                       key: myPasswordKey,
-                      controller: widget.passwordController,
+                      controller: passwordController,
                       obscureText: hidePassword,
                       decoration: InputDecoration(
                           border: const OutlineInputBorder(
@@ -183,6 +196,7 @@ class _LoginPageState extends State<LoginPage> {
                       checkColor: Colors.white,
                       value: checkValue,
                       onChanged: (bool? value) {
+                        print("check value is $checkValue");
                         setState(() {
                           checkValue = !checkValue;
                         });
@@ -191,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          checkValue = !checkValue;
+                          checkValue = checkValue;
                         });
                       },
                       child: Text(
@@ -218,26 +232,11 @@ class _LoginPageState extends State<LoginPage> {
                     )),
                   ),
                   onPressed: () async {
-                    //
-                    // var loginEmail = widget.emailController.text;
-                    // var loginPassword = widget.passwordController.text;
-                    // Map<dynamic, dynamic> body = {
-                    //   "email": loginEmail,
-                    //   "password": loginPassword
-                    // };
-                    //
-                    // var response = await UserServices.signin(
-                    //     body); // signin fuction returns response.body
-                    // var data = json.decode(response);
-                    //
-                    // print("user type for login ${data["data"]["usertype"]}");
-                    // var usertype = (data["data"]["usertype"]);
-
                     if (_formKey.currentState!.validate() &&
                         _formKey1.currentState!.validate()) {
-                      dynamic Data = await widget.login(
-                          loginEmail: widget.emailController.text,
-                          loginPassword: widget.passwordController.text);
+                      dynamic Data = await login(
+                          loginEmail: emailController.text,
+                          loginPassword: passwordController.text);
                       print("my Data is :$Data");
                       if (Data != true) {
                         //form valid xa ki xaina check garxa
@@ -246,6 +245,15 @@ class _LoginPageState extends State<LoginPage> {
                               const SnackBar(content: Text("Invalid login")));
                         }
                       } else {
+                        if (checkValue) {
+                          await MySharedPreferences.init();
+                          await MySharedPreferences.setEmail(
+                              emailController.text);
+                          await MySharedPreferences.setPassword(
+                              passwordController.text);
+                          print("Value saved --> ${emailController.text}");
+                          print("Value saved --> ${passwordController.text}");
+                        }
                         Navigator.pushNamed(context, "/home");
                       }
                     } else {
@@ -285,6 +293,43 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void getUserDetails() async {
+    try {
+      await MySharedPreferences.init();
+      var email = MySharedPreferences.getEmail;
+      var password = MySharedPreferences.getPassword;
+      if (email != "" && password != "") {
+        _loadUserEmailPassword(email, password);
+      } else {
+        Navigator.pushNamed(context, "/login");
+      }
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  void _loadUserEmailPassword(String? loginEmail, String? loginPassword) async {
+    Map<dynamic, dynamic> body = {
+      "email": loginEmail,
+      "password": loginPassword
+    };
+    try {
+      var response = await UserServices.signin(body);
+      var data = json.decode(response);
+      if (data["success"] == true) {
+        await MySharedPreferences.init();
+        await MySharedPreferences.setTokenWithType(
+            data["token"], data["usertype"]);
+        await MySharedPreferences.setToken(data["token"]);
+        await MySharedPreferences.setUsertype(data["usertype"]);
+        await MySharedPreferences.setLoginId(data["data"]["_id"]);
+        Navigator.pushNamed(context, "/home");
+      }
+    } on Exception {
+      print(Exception("Error in network connection"));
+    }
   }
 }
 

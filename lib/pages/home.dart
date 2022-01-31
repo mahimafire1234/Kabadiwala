@@ -223,7 +223,7 @@ class _HomeState extends State<Home> {
                         ),
                       )),
                       child: Option(
-                          image: "assets/icons/list.png", text: "Scoreboard")),
+                          image: "assets/images/help.png", text: "Help",link: "/help")),
                   Container(
                     padding: EdgeInsets.only(left: 10.0),
                     decoration: const BoxDecoration(

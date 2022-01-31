@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/constraints/constraints.dart';
+import 'package:login_sprint1/services/shared_preference.dart';
 
 class UserServices {
   static var baseUri = BASEURI + "/user";
+
   Future<dynamic> signup(body) async {
     try {
       var response =
@@ -89,8 +91,28 @@ class UserServices {
             "Accept": "application/json",
             "Authorization": "Bearer $token"
           },
-        body: json.encode(body)
+          body: json.encode(body));
+      return response.body;
+    } on Exception {
+      print("network connection problem");
+      return null;
+    }
+  }
+
+  //delete account function
+  static Future<String?> deleteAccount(id) async {
+    var token = MySharedPreferences.getToken();
+    print("token -----> $token");
+    try {
+      var response = await http.delete(
+        Uri.parse("$baseUri/deleteAccount/$id"),
+        headers: {
+          'Content-type': 'application/json',
+          "Accept": "application/json",
+          "Authorization": "Bearer $token"
+        },
       );
+      print("user id :$id");
       return response.body;
     } on Exception {
       print("network connection problem");
