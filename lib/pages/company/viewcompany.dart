@@ -23,7 +23,7 @@ class _ViewCompanyState extends State<ViewCompany> {
     var response = await http.get(
       Uri.parse("$BASEURI/user/get_company"),
       headers: {
-        'Content-type': 'application/json',
+        'Content-type' : 'application/json',
         "Accept": "application/json",
       },
     );
@@ -34,11 +34,11 @@ class _ViewCompanyState extends State<ViewCompany> {
         final nameLower = u["name"].toLowerCase();
         final searchLower = query.toLowerCase();
         if (nameLower.contains(searchLower)) {
-          User user = User(u["name"], u["email"], u["id"]);
+          User user = User(u["name"], u["email"],u["id"], u["phone"], u["image"], u["companyLocation"]);
           userData.add(user);
         }
       } else {
-        User user = User(u["name"], u["email"], u["id"]);
+        User user = User(u["name"], u["email"],u["id"], u["phone"], u["image"], u["companyLocation"]);
         userData.add(user);
       }
     }
@@ -222,8 +222,8 @@ class _ViewCompanyState extends State<ViewCompany> {
   }
 }
 
-class User {
-  final String name, email, id;
-
-  User(this.name, this.email, this.id);
+class User{
+  final String name, email,id;
+  final String? companyLocation, phone, image;
+  User(this.name, this.email,this.id, this.phone, this.companyLocation, this.image);
 }

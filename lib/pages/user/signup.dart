@@ -31,7 +31,7 @@ class _SignUpState extends State<SignUp> {
       var body = {
         "name": name,
         "email": email,
-        "number": number,
+        "phone": number,
         "usertype": usertype,
         "password": password
       };
@@ -197,7 +197,7 @@ class _SignUpState extends State<SignUp> {
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                           borderSide:
                               BorderSide(color: Colors.black, width: 2.0)),
-                      prefixIcon: Icon(
+                      prefixIcon: const Icon(
                         CupertinoIcons.lock,
                         color: Color(0xFF000000),
                       ),
