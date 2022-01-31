@@ -1,6 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
+import 'package:login_sprint1/app/Help.dart';
 import 'package:login_sprint1/pages/appointment/view_appointment.dart';
 import 'package:login_sprint1/pages/base.dart';
 import 'package:login_sprint1/pages/booking/booking_request.dart';
@@ -78,7 +79,8 @@ class MyApp extends StatelessWidget {
         "/favorites": (context) => Favorites(),
         "/rateCompany": (context) => RatingCompany(
               company_id: '',
-            )
+            ),
+        "/help" : (context) => Help(),
       },
     );
   }
