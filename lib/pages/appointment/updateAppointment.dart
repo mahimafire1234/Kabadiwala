@@ -283,14 +283,15 @@ class _UpdateAppointmentState extends State<UpdateAppointment> {
                                                     var response =
                                                         await updateData();
                                                     print('response $response');
+
                                                     var res =
-                                                        json.decode(response);
+                                                    json.decode(response);
                                                     print(res["success"]);
                                                     final snackB = SnackBar(
                                                       duration:
-                                                          Duration(seconds: 5),
+                                                      Duration(seconds: 5),
                                                       content:
-                                                          Text(res["message"]),
+                                                      Text(res["message"]),
                                                       action: SnackBarAction(
                                                         label: 'Dismiss',
                                                         onPressed: () {},
@@ -308,7 +309,7 @@ class _UpdateAppointmentState extends State<UpdateAppointment> {
                                                     if (res["success"] == false) {
                                                       final snackB = SnackBar(
                                                         duration:
-                                                            Duration(seconds: 5),
+                                                        Duration(seconds: 5),
                                                         content: Text(
                                                             "Failed to update"),
                                                         action: SnackBarAction(
@@ -317,11 +318,10 @@ class _UpdateAppointmentState extends State<UpdateAppointment> {
                                                         ),
                                                       );
                                                       ScaffoldMessenger.of(
-                                                              context)
+                                                          context)
                                                           .showSnackBar(snackB);
                                                       print("error");
-                                                    }
-                                                  },
+                                                    }                },
                                                   child: const Text(
                                                     "Update Appointment",
                                                     style: TextStyle(

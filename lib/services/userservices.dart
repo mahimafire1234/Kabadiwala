@@ -2,18 +2,19 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/constraints/constraints.dart';
+import 'package:login_sprint1/services/shared_preference.dart';
 
 class UserServices {
   static var baseUri = BASEURI + "/user";
+
   Future<dynamic> signup(body) async {
     try {
-      var response =
-      await http.post(Uri.parse("$baseUri/register"),
+      var response = await http.post(Uri.parse("$baseUri/register"),
           headers: {
-                'Content-type': 'application/json',
-                "Accept": "application/json",
-              },
-              body: json.encode(body));
+            'Content-type': 'application/json',
+            "Accept": "application/json",
+          },
+          body: json.encode(body));
       print(response);
       return response.body;
     } catch (e) {
@@ -23,7 +24,7 @@ class UserServices {
 
   static Future<dynamic> signin(body) async {
     try {
-          var response = await http.post(Uri.parse("$baseUri/login"),
+      var response = await http.post(Uri.parse("$baseUri/login"),
           headers: {
             'Content-type': 'application/json',
             "Accept": "application/json",
@@ -38,12 +39,11 @@ class UserServices {
 
   static Future<String?> getUserData(token) async {
     try {
-      var response = await http.get(Uri.parse("$baseUri/"),
-          headers: {
-            'Content-type': 'application/json',
-            "Accept": "application/json",
-            "Authorization": "Bearer $token"
-          });
+      var response = await http.get(Uri.parse("$baseUri/"), headers: {
+        'Content-type': 'application/json',
+        "Accept": "application/json",
+        "Authorization": "Bearer $token"
+      });
       return response.body;
     } on Exception {
       print("network connection problem");
@@ -53,25 +53,26 @@ class UserServices {
 
   static Future<String?> update(token, filePath, body, imageFrom) async {
     try {
-      http.MultipartRequest request = http.MultipartRequest("PATCH", Uri.parse("$baseUri/"));
+      http.MultipartRequest request =
+          http.MultipartRequest("PATCH", Uri.parse("$baseUri/"));
 
-      if(filePath != "" && imageFrom != "api"){
-        http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
-            'image', filePath);
+      if (filePath != "" && imageFrom != "api") {
+        http.MultipartFile multipartFile =
+            await http.MultipartFile.fromPath('image', filePath);
         request.files.add(multipartFile);
         print("entered");
-      }else if(imageFrom != "api" && filePath == ""){
+      } else if (imageFrom != "api" && filePath == "") {
         request.fields["image"] = "";
       }
 
-      body.forEach((key, value){
+      body.forEach((key, value) {
         request.fields[key] = value;
       });
       request.headers.addAll({
         'Content-type': 'application/json',
         "Accept": "application/json",
         "Authorization": "Bearer $token"
-      }) ;
+      });
       http.StreamedResponse response = await request.send();
       var res = await response.stream.bytesToString();
       return res;
@@ -89,8 +90,7 @@ class UserServices {
             "Accept": "application/json",
             "Authorization": "Bearer $token"
           },
-        body: json.encode(body)
-      );
+          body: json.encode(body));
       return response.body;
     } on Exception {
       print("network connection problem");
@@ -98,6 +98,24 @@ class UserServices {
     }
   }
 
-
-
+  //delete account function
+  static Future<String?> deleteAccount(id) async {
+    var token = MySharedPreferences.getToken();
+    print("token -----> $token");
+    try {
+      var response = await http.delete(
+        Uri.parse("$baseUri/deleteAccount/$id"),
+        headers: {
+          'Content-type': 'application/json',
+          "Accept": "application/json",
+          "Authorization": "Bearer $token"
+        },
+      );
+      print("user id :$id");
+      return response.body;
+    } on Exception {
+      print("network connection problem");
+      return null;
+    }
+  }
 }
