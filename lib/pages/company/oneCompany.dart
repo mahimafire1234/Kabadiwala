@@ -29,26 +29,20 @@ class _ShowOneState extends State<oneCompany> {
   String companyID;
   String name = "";
   String phone = "";
-  String review = "";
-
   _ShowOneState(this.companyID);
-
   //get wala for one company info
 
   Future<List<OneCompany>>? getOneCompany() async {
-    var response = await http.get(
-      Uri.parse("$BASEURI/user/showOne/${companyID}"),
+    var response = await http.get(Uri.parse("$BASEURI/user/showOne/${companyID}"),
       headers: {
-        'Content-type': 'application/json',
+        'Content-type' : 'application/json',
         "Accept": "application/json",
       },
     );
     var jsonData = await jsonDecode(response.body);
     var deriveData = jsonData["user"];
-    List<OneCompany> onecompanyList = [];
-    OneCompany onecompany = OneCompany(
-        deriveData["name"], deriveData["email"], deriveData["id"],
-        deriveData["phone"]);
+    List<OneCompany> onecompanyList =[];
+    OneCompany onecompany = OneCompany(deriveData["name"], deriveData["email"], deriveData["id"], deriveData["phone"]);
     onecompanyList.add(onecompany);
 
     name = deriveData["name"];
@@ -59,10 +53,9 @@ class _ShowOneState extends State<oneCompany> {
 
   //get rating for company
   Future<num>? getRate() async {
-    var response = await http.get(
-      Uri.parse("$BASEURI/rate/getRate/${companyID}"),
+    var response = await http.get(Uri.parse("http://192.168.100.252:5000/rate/getRate/${companyID}"),
       headers: {
-        'Content-type': 'application/json',
+        'Content-type' : 'application/json',
         "Accept": "application/json",
       },
     );
@@ -73,71 +66,22 @@ class _ShowOneState extends State<oneCompany> {
   }
 
   //post function for favorites
-  Future<dynamic>? addToFavorites() async {
-    String id = await MySharedPreferences.getLoginId!;
+  Future<dynamic>? addToFavorites() async{
+    String id = await  MySharedPreferences.getLoginId!;
     print(id);
 
-    try {
-      var response = await http.post(
-        Uri.parse("$BASEURI/favorites/addfavorites/$id/$companyID"),
+    try{
+      var response = await http.post(Uri.parse("http://10.0.2.2:5000/favorites/addfavorites/$id/$companyID"),
         headers: {
-          'Content-type': 'application/json',
+          'Content-type' : 'application/json',
           "Accept": "application/json",
         },
       );
       return response.body;
-    } catch (error) {
+    }catch(error){
       print(error);
     }
-  }
 
-  //post function for review
-  Future<dynamic>? insertReview() async {
-    String id = await MySharedPreferences.getLoginId!;
-    print(id);
-
-    try {
-      var body = {
-        "review": review
-      };
-      var response = await http.post(
-          Uri.parse("$BASEURI/review/insertReview/${id}/${companyID}"),
-          headers: {
-            'Content-type': 'application/json',
-            "Accept": "application/json",
-          },
-          body: json.encode(body)
-      );
-      return response.body;
-    } catch (error) {
-      print(error);
-    }
-  }
-
-  //get function for review
-  Future<List<dynamic>?> getReview() async {
-    List<dynamic> reviewList = [];
-    try {
-      var response = await http.get(
-        Uri.parse("$BASEURI/review/getReview/${companyID}"),
-        headers: {
-          'Content-type': 'application/json',
-          "Accept": "application/json",
-        },
-      );
-      var data = jsonDecode(response.body);
-      if (data["success"] == true) {
-        var items = data["data"];
-        for (dynamic i in items!) {
-          reviewList.add(i);
-        }
-      }else {
-        print("error");
-      }
-    } on Exception {
-      Exception("Error");
-    }
-    return reviewList;
   }
 
 
@@ -148,43 +92,41 @@ class _ShowOneState extends State<oneCompany> {
             title: Text("Kabadiwala"),
             backgroundColor: Color(0xff0077B6)),
         body: SafeArea(
-            child: SingleChildScrollView(
+            child:SingleChildScrollView(
               child: Column(children: [
                 SizedBox(
                   height: 35,
                 ),
                 Center(
                   child: Image(
-                    image: AssetImage("assets/images/logo.png"),
+                    image: AssetImage("assets/images/cycling.png"),
                     width: 200,
                     height: 200,
                   ),
                 ),
                 FutureBuilder<List<OneCompany>>(
-                  future: getOneCompany(),
-                  builder: (context, snapshot) {
+                  future: getOneCompany() ,
+                  builder:  (context,  snapshot) {
                     if (snapshot.data == null) {
                       return Container(
                         child: Center(
                           child: Text("empty"),
                         ),
                       );
-                    } else {
+                    }else {
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(10.0, 0, 10, 10),
-                        child: Column(
+                        padding: const EdgeInsets.all(10.0),
+                        child:Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Container(
-                              child: Text(
-                                  snapshot.data![0].name, style: TextStyle(
+                              child: Text(snapshot.data![0].name,style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 25)),
                             ),
                             Container(
-                              child: Text(
-                                  snapshot.data![0].email, style: TextStyle(
+                              child: Text(snapshot.data![0].email,style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.normal,
                                   fontSize: 20)),
@@ -197,21 +139,19 @@ class _ShowOneState extends State<oneCompany> {
                   },
                 ),
                 FutureBuilder<num>(
-                  future: getRate(),
-                  builder: (context, snapshot) {
+                  future: getRate() ,
+                  builder:  (context,  snapshot) {
                     if (snapshot.data == null) {
                       return RatingBar.builder(
                           initialRating: 0.0,
-                          itemBuilder: (context, _) =>
-                              Icon(Icons.star, color: Colors.amber,),
+                          itemBuilder: (context,_) => Icon(Icons.star,color: Colors.amber,),
                           onRatingUpdate: (rating) {}
                       );
-                    } else {
+                    }else {
                       return RatingBar.builder(
                           allowHalfRating: true,
                           initialRating: snapshot.data!.toDouble(),
-                          itemBuilder: (context, _) =>
-                              Icon(Icons.star, color: Colors.amber,),
+                          itemBuilder: (context,_) => Icon(Icons.star,color: Colors.amber,),
                           onRatingUpdate: (rating) {}
                       );
                     }
@@ -219,38 +159,28 @@ class _ShowOneState extends State<oneCompany> {
                 ),
 
                 InkWell(
-                  child: Text(
-                    "Rate Now", style: TextStyle(color: Colors.blue),),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) =>
-                          RatingCompany(company_id: this.companyID,),
-                    ));
-                  },
+                  child: Text("Rate Now",style: TextStyle(color: Colors.blue),),
+                  onTap:(){ Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => RatingCompany(company_id: this.companyID,),
+                  ));},
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center, children: [
+                  child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     ElevatedButton(
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                                 Color.fromARGB(255, 0, 119, 182)),
-                            padding: MaterialStateProperty.all<
-                                EdgeInsetsGeometry>(
-                                EdgeInsets.symmetric(
-                                    horizontal: 60.0, vertical: 19.0)),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
+                            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                EdgeInsets.symmetric(horizontal: 60.0, vertical: 19.0)),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     side: BorderSide(
-                                        color: Color.fromARGB(
-                                            255, 0, 119, 182))))),
+                                        color: Color.fromARGB(255, 0, 119, 182))))),
                         onPressed: () {
                           Navigator.push(context, MaterialPageRoute(
-                            builder: (context) =>
-                                ItemsHire(id: this.companyID, name: this.name),
+                            builder: (context) => ItemsHire(id: this.companyID, name: this.name ),
 
                           ));
                         },
@@ -263,17 +193,13 @@ class _ShowOneState extends State<oneCompany> {
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                                 Color.fromARGB(255, 0, 119, 182)),
-                            padding: MaterialStateProperty.all<
-                                EdgeInsetsGeometry>(
-                                EdgeInsets.symmetric(
-                                    horizontal: 60.0, vertical: 15.0)),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
+                            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                EdgeInsets.symmetric(horizontal: 60.0, vertical: 15.0)),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     side: BorderSide(
-                                        color: Color.fromARGB(
-                                            255, 0, 119, 182))))),
+                                        color: Color.fromARGB(255, 0, 119, 182))))),
                         onPressed: () async {
                           var response = await addToFavorites();
                           var res = json.decode(response);
@@ -306,24 +232,16 @@ class _ShowOneState extends State<oneCompany> {
                       child: ElevatedButton(
                         style: ButtonStyle(
                             backgroundColor:
-                            MaterialStateProperty.all(
-                                Color.fromARGB(255, 0, 119, 182)),
-                            padding: MaterialStateProperty.all<
-                                EdgeInsetsGeometry>(
-                                EdgeInsets.symmetric(
-                                    horizontal: 90.0, vertical: 19.0)),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
+                            MaterialStateProperty.all(Color.fromARGB(255, 0, 119, 182)),
+                            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                EdgeInsets.symmetric(horizontal: 90.0, vertical: 19.0)),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     side: BorderSide(
-                                        color: Color.fromARGB(
-                                            255, 0, 119, 182))))),
+                                        color: Color.fromARGB(255, 0, 119, 182))))),
                         onPressed: () {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) =>
-                                  PriceView(company_id: companyID,)));
-                        },
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => PriceView(company_id: companyID,)));              },
                         child: Text(
                           "See Pricings",
                         ),
@@ -335,19 +253,14 @@ class _ShowOneState extends State<oneCompany> {
                       child: ElevatedButton(
                           style: ButtonStyle(
                               backgroundColor:
-                              MaterialStateProperty.all(
-                                  Color.fromARGB(255, 50, 205, 50)),
-                              padding: MaterialStateProperty.all<
-                                  EdgeInsetsGeometry>(
-                                  EdgeInsets.symmetric(
-                                      horizontal: 20.0, vertical: 17.0)),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
+                              MaterialStateProperty.all(Color.fromARGB(255,50,205,50)),
+                              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                  EdgeInsets.symmetric(horizontal: 20.0, vertical: 17.0)),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       side: BorderSide(
-                                          color: Color.fromARGB(
-                                              255, 0, 119, 182))))),
+                                          color: Color.fromARGB(255, 0, 119, 182))))),
                           onPressed: () async {
                             //indirect phone call
                             launch('tel://$phone');
@@ -358,7 +271,7 @@ class _ShowOneState extends State<oneCompany> {
                           Icon(
                             CupertinoIcons.phone_solid,
                             color: Colors.white,
-                          )
+                      )
                       ),
                     )
                   ],
@@ -368,134 +281,34 @@ class _ShowOneState extends State<oneCompany> {
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 20),
                   child: Center(
                     child: TextFormField(
-                      onChanged: (val) {
-                        setState(() {
-                          review = val;
-                        });
-                      },
-                      controller: widget.reviewController,
                       decoration: InputDecoration(
                           focusColor: Colors.black,
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(
-                                  10)),
-                              borderSide: BorderSide(color: Colors.orange,
-                                  width: 2.0)),
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              borderSide: BorderSide(color: Colors.orange, width: 2.0)),
                           prefixIcon: Icon(
                             CupertinoIcons.square_pencil,
                           ),
-                          suffixIcon: IconButton(
-                              icon: Icon(Icons.check, size: 25.0, color: Colors
-                                  .green),
-                              onPressed: () async {
-
-                                widget.reviewController.clear();
-                                var response = await insertReview();
-                                var res = json.decode(response);
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                        super.widget));
-                                final snackB = SnackBar(
-                                  duration:
-                                  Duration(seconds: 4),
-                                  content:
-                                  Text(res["message"]),
-                                  action: SnackBarAction(
-                                    label: 'Dismiss',
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                              super.widget));
-                                    },
-                                  ),
-                                );
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackB);
-                              }),
+                          suffixIcon: Icon(
+                            CupertinoIcons.checkmark_alt,
+                            color: Colors.green,
+                            size: 35.0,
+                          ),
                           labelText: "Write a Review...",
                           contentPadding: EdgeInsets.only(left: 80.0)),
                     ),
                   ),
                 ),
-                FutureBuilder<List<dynamic>?>(
-                    future: getReview(),
-                    builder: (context, snapshot) {
-                      if (snapshot.data == null) {
-                        return Container(
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text("No Reviews yet"),
-                          ),
-                        );
-                      }else {
-                        return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: snapshot.data?.length,
-                            itemBuilder: (context, i) {
-                              return Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: PhysicalModel(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.white,
-                                    elevation: 10.0,
-                                    shadowColor: Color(0xff000f61),
-                                    child: ListTile(
-                                        tileColor: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(15.0),
-                                        ),
-                                        title: Row(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.all(
-                                                  10.0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    snapshot
-                                                        .data![i]["user"]["name"],
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                        FontWeight.bold,
-                                                        fontSize: 18),
-                                                  ),
-                                                  const SizedBox(height: 10.0),
-                                                  Row(children: [
-                                                    Text(snapshot
-                                                        .data![i]["review"]),
-                                                    const SizedBox(width: 10.0),
-                                                  ]),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-
-                                        ))),
-                              );
-                            });
-                      };
-                    })
               ]),
             )));
   }
 }
-
-class OneCompany {
-  final String name, email, id, phone;
-
-  OneCompany(this.name, this.email, this.id, this.phone);
+class OneCompany{
+  final String name, email,id, phone;
+  OneCompany(this.name, this.email,this.id, this.phone);
 }
-
-class Ratings {
+class Ratings{
   final double ratings;
   final String id;
-
   Ratings(this.ratings, this.id);
 }
