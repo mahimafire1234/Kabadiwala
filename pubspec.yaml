@@ -54,6 +54,14 @@ dev_dependencies:
     sdk: flutter
   mockito:
   integration_test:
+  flutter_native_splash:
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/SplashScreen.png
+  android: true
+  ios: true
+  android_gravity: fill
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

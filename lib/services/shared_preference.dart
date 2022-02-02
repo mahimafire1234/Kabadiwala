@@ -10,6 +10,7 @@ class MySharedPreferences {
   static const String _email = "email";
   static const String _password = "password";
   static const String _usertype = "usertype";
+  static const String _checkvalue = "checkValue";
   static const String _token = "token";
 
   static Future init() async =>
@@ -61,6 +62,11 @@ class MySharedPreferences {
       await _preferences!.setString(_LoginId, loginId);
 
   static String? get getLoginId => _preferences!.getString(_LoginId);
+
+  static Future setCheckValue(bool checkValue) async =>
+      await _preferences!.setBool(_checkvalue, checkValue);
+
+  static String? get getCheckValue => _preferences!.getString(_checkvalue);
 
   static Future removeSavedDetails() async => await _preferences!.clear();
 }

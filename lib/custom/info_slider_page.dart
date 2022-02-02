@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intro_slider/dot_animation_enum.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'my_router.dart';
 
@@ -13,51 +14,75 @@ class IntroSliderPage extends StatefulWidget {
 
 class _IntroSliderPageState extends State<IntroSliderPage> {
   List<Slide> slides = [];
+  bool checkValue = false;
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
-    // slides.add(
-    //   new Slide(
-    //     title: "Hello Food!",
-    //     description:
-    //         "The easiest way to order food from your favorite restaurant!",
-    //     pathImage: "assets/images/hamburger.png",
-    //   ),
-    // );
-    slides.add(
-      new Slide(
-        title: "Sell Your Bottles",
-        description: "We all have left over bottles from dashain and tihar."
-            " Sell all your bottles plastic and glass to our Kabadi misters in a tap of your screen",
-        pathImage: "assets/images/img.png",
-      ),
-    );
-    slides.add(
-      new Slide(
-        title: "Sell Your Papers",
-        description:
-            "We all have our school books .Sell all your books in a tap of your screen",
-        pathImage: "assets/images/img_1.png",
-      ),
-    );
-    slides.add(
-      new Slide(
-        title: "Find Kawadiwalas",
-        description:
-            "Find hundreds of kabadi walas with different selling rates."
-            " Negotiate with them and sell all your unwanted good in one tap",
-        pathImage: "assets/images/img_2.png",
-      ),
-    );
-    slides.add(
-      new Slide(
-        title: "Recycle Reuse Reduce",
-        description:
-            " Learn about the three R’s from our blogs written by users. You can also share your ideas and experiences through our blogs",
-        pathImage: "assets/images/img_1.png",
-      ),
-    );
+    getAdded();
+    if (checkValue == false) {
+      print("fist ko init parttt");
+      slides.add(
+        new Slide(
+          title: "Sell Your Bottles",
+          description: "We all have left over bottles from dashain and tihar."
+              " Sell all your bottles plastic and glass to our Kabadi misters in a tap of your screen",
+          pathImage: "assets/images/img.png",
+        ),
+      );
+      slides.add(
+        new Slide(
+          title: "Sell Your Papers",
+          description:
+              "We all have our school books .Sell all your books in a tap of your screen",
+          pathImage: "assets/images/img_1.png",
+        ),
+      );
+      slides.add(
+        new Slide(
+          title: "Find Kawadiwalas",
+          description:
+              "Find hundreds of kabadi walas with different selling rates."
+              " Negotiate with them and sell all your unwanted good in one tap",
+          pathImage: "assets/images/img_2.png",
+        ),
+      );
+      slides.add(
+        new Slide(
+          title: "Recycle Reuse Reduce",
+          description:
+              " Learn about the three R’s from our blogs written by users. You can also share your ideas and experiences through our blogs",
+          pathImage: "assets/images/img_1.png",
+        ),
+      );
+    }
+  }
+
+  void getAdded() async {
+    try {
+      // await MySharedPreferences.init();
+      //
+      // var checkvalueis = MySharedPreferences.getCheckValue ?? false;
+
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      var checkvalueis = _prefs.getBool("remember_me") ?? false;
+
+      print(checkvalueis);
+      if (checkvalueis == true) {
+        setState(() {
+          checkValue == true;
+        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => MyRoute(),
+          ),
+        );
+      }
+    } catch (err) {
+      print(err);
+    }
   }
 
   List<Widget> renderListCustomTabs() {
@@ -339,38 +364,54 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
   @override
   Widget build(BuildContext context) {
     return IntroSlider(
-      backgroundColorAllSlides: const Color(0xff0077B6),
-      renderSkipBtn: Text(
-        "Skip",
-        style: TextStyle(color: Colors.white, fontSize: 25.0),
-      ),
-      renderNextBtn: Text(
-        "Next",
-        style: TextStyle(color: Colors.white, fontSize: 16.0),
-      ),
-      // renderNextBtn: Visibility(
-      //   child: Text("next"),
-      //   visible: false,
-      // ),
-      // showNextBtn: false,
-
-      renderDoneBtn: Text(
-        "Done",
-        style: TextStyle(color: Colors.white, fontSize: 16.0),
-      ),
-      colorActiveDot: Colors.white,
-      sizeDot: 8.0,
-      slides: this.slides,
-      typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
-      colorDot: Colors.white,
-      listCustomTabs: this.renderListCustomTabs(),
-      scrollPhysics: BouncingScrollPhysics(),
-      onDonePress: () => Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => MyRoute(),
+        backgroundColorAllSlides: const Color(0xff0077B6),
+        renderSkipBtn: Text(
+          "Skip",
+          style: TextStyle(color: Colors.white, fontSize: 25.0),
         ),
-      ),
-    );
+        renderNextBtn: Text(
+          "Next",
+          style: TextStyle(color: Colors.white, fontSize: 16.0),
+        ),
+        // renderNextBtn: Visibility(
+        //   child: Text("next"),
+        //   visible: false,
+        // ),
+        // showNextBtn: false,
+
+        renderDoneBtn: Text(
+          "Done",
+          style: TextStyle(color: Colors.white, fontSize: 16.0),
+        ),
+        colorActiveDot: Colors.white,
+        sizeDot: 8.0,
+        slides: this.slides,
+        typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
+        colorDot: Colors.white,
+        listCustomTabs: this.renderListCustomTabs(),
+        scrollPhysics: BouncingScrollPhysics(),
+        onDonePress: () async {
+          print(checkValue);
+
+          setState(() {
+            checkValue = !checkValue;
+          });
+
+          print(checkValue);
+          // MySharedPreferences.init();
+          // MySharedPreferences.setCheckValue(checkValue);
+          SharedPreferences.getInstance().then(
+            (prefs) {
+              prefs.setBool("remember_me", checkValue);
+            },
+          );
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => MyRoute(),
+            ),
+          );
+        });
   }
 }
