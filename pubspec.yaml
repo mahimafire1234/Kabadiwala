@@ -32,6 +32,7 @@ dependencies:
   awesome_dropdown: ^0.0.4
   awesome_notifications: ^0.0.6+10
   flutter_simple_rating_bar:
+  intro_slider:
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -55,6 +56,14 @@ dev_dependencies:
     sdk: flutter
   mockito:
   integration_test:
+  flutter_native_splash:
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/SplashScreen.png
+  android: true
+  ios: true
+  android_gravity: fill
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
