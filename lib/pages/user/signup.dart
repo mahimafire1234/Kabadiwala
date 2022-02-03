@@ -59,8 +59,8 @@ class _SignUpState extends State<SignUp> {
                 const Center(
                   child: Image(
                     image: AssetImage("assets/images/logo.png"),
-                    width: 180,
-                    height: 180,),
+                    width: 50,
+                    height: 50,),
                 ),
             Text('SIGN UP',
                 textAlign: TextAlign.center,
@@ -300,7 +300,8 @@ class _SignUpState extends State<SignUp> {
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25.0))))),
-            )
+            ),
+
           ]),
         ),
       ),

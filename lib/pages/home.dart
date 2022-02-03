@@ -91,7 +91,8 @@ class _HomeState extends State<Home> {
                 TextButton(
                   onPressed: () => AwesomeNotifications()
                       .requestPermissionToSendNotifications() //shows settings ko permission
-                      .then((_) => Navigator.pop(context)), // close popup
+                      .then((_) => Navigator.pop(context)),
+                  // close popup
                   child: const Text(
                     'Allow',
                     style: TextStyle(
@@ -125,57 +126,22 @@ class _HomeState extends State<Home> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text("Scoreboard",
-              style: TextStyle(
-                  color: Colors.blueAccent,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 32,
-                  fontFamily: 'Rubik')),
-          Text("This week",
-              style: TextStyle(
-                  color: Color.fromARGB(255, 0, 182, 18),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  fontFamily: 'Rubik')),
-          SizedBox(height: 20.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                Text("41",
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 255, 214, 0),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15)),
-                SizedBox(height: 5.0),
-                Text("Highest",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15))
-              ]),
-              Column(children: [
-                Text("29",
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 255, 172, 47),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30)),
-                Text("Your points",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15))
-              ]),
-              Column(children: const [
-                Text("10",
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 235, 11, 255),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15)),
-                Text("Average",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15))
-              ]),
-            ],
+          Image.asset(
+              "assets/images/logo.png",
+            width: 150,
+            height: 150,
           ),
-          SizedBox(height: 20.0),
+          Text(
+            "Home",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0
+            ),
+          ),
+          const SizedBox(height: 10.0),
           Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.all(25.0),
+              margin: EdgeInsets.only(left: 25.0, right: 25.0, top: 5.0, bottom: 25.0),
               padding: EdgeInsets.all(10.0),
               decoration: const BoxDecoration(
                   color: Color.fromARGB(100, 240, 240, 240),
@@ -223,7 +189,9 @@ class _HomeState extends State<Home> {
                         ),
                       )),
                       child: Option(
-                          image: "assets/images/help.png", text: "Help",link: "/help")),
+                          image: "assets/images/help.png",
+                          text: "Help",
+                          link: "/help")),
                   Container(
                     padding: EdgeInsets.only(left: 10.0),
                     decoration: const BoxDecoration(
@@ -259,7 +227,69 @@ class _HomeState extends State<Home> {
                         Option(image: "assets/icons/group.png", text: "Forum"),
                   )
                 ],
-              )),
+              )
+          ),
+          Container(
+              margin: EdgeInsets.only(left: 25.0, right: 25.0, top: 5.0, bottom: 0.0),
+              padding: EdgeInsets.all(14.0),
+              decoration: const BoxDecoration(
+                color: Color(0x1216BA37),
+                  border: Border(
+                    left: BorderSide(
+                      color:Color(0x6616BA37),
+                      width: 5,
+                    ),
+                  )),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("About Us"),
+                Text(
+                    " > ",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold
+                  ),
+                )
+              ]
+            )
+          ),
+          SizedBox(height: 20.0),
+          Container(
+              margin: EdgeInsets.only(left: 25.0, right: 25.0, top: 0.0, bottom: 0.0),
+              padding: EdgeInsets.all(14.0),
+              decoration: const BoxDecoration(
+                color: Color(0x31BCEBFD),
+                  border: Border(
+                    left: BorderSide(
+                      color:Color(0x5150D6FF),
+                      width: 5,
+                    ),
+                  )),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset(
+                          "assets/images/help.png",
+                          width: 20,
+                          fit: BoxFit.fitHeight,
+                        ),
+                        SizedBox(width: 10.0),
+                        Text("Help"),
+                      ]
+                    ),
+                    Text(
+                      " > ",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
+                      ),
+                    )
+                  ]
+              )
+          )
         ],
       ),
     ))));
@@ -270,16 +300,17 @@ class MyDesign extends StatelessWidget {
   const MyDesign({
     Key? key,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MySharedPreferences.getUsertype == UserType.COMPANY
         ? Option(
             image: "assets/images/view_request.jpg",
-            text: "view all \n request",
+            text: "View all \n request",
             link: "/getAllBooking")
         : Option(
             image: "assets/icons/garbage-truck.png",
-            text: " user",
+            text: "Order a \n pickup",
             link: "/orderpickup");
   }
 }

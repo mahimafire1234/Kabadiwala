@@ -79,216 +79,221 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Center(
-                child: Image(
-                  image: AssetImage("assets/images/logo.png"),
-                  width: 180,
-                  height: 180,
-                ),
-              ),
-              const Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 5.0),
-                  child: Text(
-                    "Login",
-                    style: TextStyle(
-                        fontSize: 30,
-                        color: Color(0xff0077B6),
-                        fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
+          child: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Center(
+                  child: Image(
+                    image: AssetImage("assets/images/logo.png"),
+                    width: 180,
+                    height: 180,
                   ),
                 ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
-                child: Center(
-                  child: Form(
-                    key:
-                        _formKey, // yo form lai unique sanga chinna lai form key rakyeko ho
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "enter email address ";
-                        }
-                        return null;
-                      },
-                      key: myEmailKey,
-                      controller: emailController,
-                      decoration: const InputDecoration(
-                          focusColor: Colors.black,
-                          border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                              borderSide:
-                                  BorderSide(color: Colors.orange, width: 2.0)),
-                          prefixIcon: Icon(
-                            CupertinoIcons.envelope,
-                            color: Color(0xFF000000),
-                          ),
-                          labelText: "Email Address",
-                          contentPadding: EdgeInsets.only(left: 80.0)),
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 5.0),
+                    child: Text(
+                      "Login",
+                      style: TextStyle(
+                          fontSize: 30,
+                          color: Color(0xff0077B6),
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 25),
-                child: Center(
-                  child: Form(
-                    key: _formKey1,
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "enter password";
-                        }
-                        if (value.length <= 3) {
-                          return "password cannot be less than 3 character";
-                        } else {
-                          () {
-                            return null;
-                          };
-                        }
-                      },
-                      key: myPasswordKey,
-                      controller: passwordController,
-                      obscureText: hidePassword,
-                      decoration: InputDecoration(
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 2.0)),
-                          prefixIcon: Icon(
-                            CupertinoIcons.lock,
-                            color: Color(0xFF000000),
-                          ),
-                          suffixIcon: InkWell(
-                            onTap: () {
-                              setState(() {
-                                hidePassword = !hidePassword;
-
-                                // hidePassword == true
-                                //     ? hidePassword = false
-                                //     : hidePassword = true;
-                              });
-                            },
-                            child: hidePassword == true
-                                ? Icon(Icons.visibility_off)
-                                : Icon(Icons.visibility),
-                          ),
-                          labelText: "Enter Password",
-                          contentPadding: EdgeInsets.only(left: 80.0)),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Checkbox(
-                      checkColor: Colors.white,
-                      value: checkValue,
-                      onChanged: (bool? value) {
-                        print("check value is $checkValue");
-                        setState(() {
-                          checkValue = !checkValue;
-                        });
-                      },
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          checkValue = checkValue;
-                        });
-                      },
-                      child: Text(
-                        "Remember Me",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 18.0),
+                SizedBox(height: 20.0),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  child: Center(
+                    child: Form(
+                      key:
+                          _formKey, // yo form lai unique sanga chinna lai form key rakyeko ho
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "enter email address ";
+                          }
+                          return null;
+                        },
+                        key: myEmailKey,
+                        controller: emailController,
+                        decoration: const InputDecoration(
+                            focusColor: Colors.black,
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                                borderSide:
+                                    BorderSide(color: Colors.orange, width: 2.0)),
+                            prefixIcon: Icon(
+                              CupertinoIcons.envelope,
+                              color: Color(0xFF000000),
+                            ),
+                            labelText: "Email Address",
+                            contentPadding: EdgeInsets.only(left: 80.0)),
                       ),
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 50,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        EdgeInsets.symmetric(
-                            horizontal: 120.0, vertical: 12.0)),
-                    backgroundColor: MaterialStateProperty.all(
-                        Color.fromARGB(255, 0, 119, 182)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.0),
-                    )),
                   ),
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate() &&
-                        _formKey1.currentState!.validate()) {
-                      dynamic Data = await login(
-                          loginEmail: emailController.text,
-                          loginPassword: passwordController.text);
-                      print("my Data is :$Data");
-                      if (Data != true) {
-                        //form valid xa ki xaina check garxa
-                        {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Invalid login")));
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  child: Center(
+                    child: Form(
+                      key: _formKey1,
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "enter password";
+                          }
+                          if (value.length <= 3) {
+                            return "password cannot be less than 3 character";
+                          } else {
+                            () {
+                              return null;
+                            };
+                          }
+                        },
+                        key: myPasswordKey,
+                        controller: passwordController,
+                        obscureText: hidePassword,
+                        decoration: InputDecoration(
+                            border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: 2.0)),
+                            prefixIcon: Icon(
+                              CupertinoIcons.lock,
+                              color: Color(0xFF000000),
+                            ),
+                            suffixIcon: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  hidePassword = !hidePassword;
+
+                                  // hidePassword == true
+                                  //     ? hidePassword = false
+                                  //     : hidePassword = true;
+                                });
+                              },
+                              child: hidePassword == true
+                                  ? Icon(Icons.visibility_off)
+                                  : Icon(Icons.visibility),
+                            ),
+                            labelText: "Enter Password",
+                            contentPadding: EdgeInsets.only(left: 80.0)),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0, bottom: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Checkbox(
+                        checkColor: Colors.white,
+                        value: checkValue,
+                        onChanged: (bool? value) {
+                          print("check value is $checkValue");
+                          setState(() {
+                            checkValue = !checkValue;
+                          });
+                        },
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            checkValue = checkValue;
+                          });
+                        },
+                        child: Text(
+                          "Remember Me",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 18.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                          EdgeInsets.symmetric(
+                              horizontal: 120.0, vertical: 12.0)),
+                      backgroundColor: MaterialStateProperty.all(
+                          Color.fromARGB(255, 0, 119, 182)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                      )),
+                    ),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate() &&
+                          _formKey1.currentState!.validate()) {
+                        dynamic Data = await login(
+                            loginEmail: emailController.text,
+                            loginPassword: passwordController.text);
+                        print("my Data is :$Data");
+                        if (Data != true) {
+                          //form valid xa ki xaina check garxa
+                          {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("Invalid login")));
+                          }
+                        } else {
+                          if (checkValue) {
+                            await MySharedPreferences.init();
+                            await MySharedPreferences.setEmail(
+                                emailController.text);
+                            await MySharedPreferences.setPassword(
+                                passwordController.text);
+                            print("Value saved --> ${emailController.text}");
+                            print("Value saved --> ${passwordController.text}");
+                          }
+                          Navigator.pushNamed(context, "/home");
                         }
                       } else {
-                        if (checkValue) {
-                          await MySharedPreferences.init();
-                          await MySharedPreferences.setEmail(
-                              emailController.text);
-                          await MySharedPreferences.setPassword(
-                              passwordController.text);
-                          print("Value saved --> ${emailController.text}");
-                          print("Value saved --> ${passwordController.text}");
-                        }
-                        Navigator.pushNamed(context, "/home");
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text("please validate form first login")));
                       }
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text("please validate form first login")));
-                    }
-                  },
-                  child: Text(
-                    "Login",
-                    style: TextStyle(fontSize: 20),
+                    },
+                    child: Text(
+                      "Login",
+                      style: TextStyle(fontSize: 20),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 14,
-              ),
-              Center(
-                child: TextButton(
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPassword())),
-                  child: Text(
-                    "Forgot Password?",
-                    style: TextStyle(fontSize: 18, color: Color(0xff0077B6)),
+                SizedBox(
+                  height: 14,
+                ),
+                Center(
+                  child: TextButton(
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPassword())),
+                    child: Text(
+                      "Forgot Password?",
+                      style: TextStyle(fontSize: 18, color: Color(0xff0077B6)),
+                    ),
                   ),
                 ),
-              ),
-              Center(
-                child: TextButton(
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp())),
-                  child: Text(
-                    "Sign Up",
-                    style: TextStyle(fontSize: 18, color: Color(0xff0077B6)),
+                Center(
+                  child: TextButton(
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp())),
+                    child: Text(
+                      "Sign Up",
+                      style: TextStyle(fontSize: 18, color: Color(0xff0077B6)),
+                    ),
                   ),
-                ),
-              )
-          ]
+                )
+            ]
+            ),
           ),
         ),
       ),
