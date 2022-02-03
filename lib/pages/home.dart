@@ -224,7 +224,7 @@ class _HomeState extends State<Home> {
                       ),
                     )),
                     child:
-                        Option(image: "assets/icons/group.png", text: "Forum"),
+                        Option(image: "assets/icons/information.png", text: "About", link: "/about"),
                   )
                 ],
               )
