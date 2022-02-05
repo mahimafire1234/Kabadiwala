@@ -364,6 +364,7 @@ class _ShowOneState extends State<oneCompany> {
                   ],
 
                 ),
+                //review part
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 20),
                   child: Center(
@@ -388,7 +389,7 @@ class _ShowOneState extends State<oneCompany> {
                               icon: Icon(Icons.check, size: 25.0, color: Colors
                                   .green),
                               onPressed: () async {
-
+                                //insert review
                                 widget.reviewController.clear();
                                 var response = await insertReview();
                                 var res = json.decode(response);
@@ -421,6 +422,7 @@ class _ShowOneState extends State<oneCompany> {
                     ),
                   ),
                 ),
+                //get review
                 FutureBuilder<List<dynamic>?>(
                     future: getReview(),
                     builder: (context, snapshot) {
