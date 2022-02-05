@@ -30,6 +30,7 @@ class _ShowOneState extends State<oneCompany> {
   String name = "";
   String phone = "";
   String image = "";
+  String review = "";
   _ShowOneState(this.companyID);
   //get wala for one company info
 
@@ -95,6 +96,55 @@ class _ShowOneState extends State<oneCompany> {
     }
 
   }
+  //post function for review
+  Future<dynamic>? insertReview() async {
+    String id = await MySharedPreferences.getLoginId!;
+    print(id);
+
+    try {
+      var body = {
+        "review": review
+      };
+      var response = await http.post(
+          Uri.parse("$BASEURI/review/insertReview/${id}/${companyID}"),
+          headers: {
+            'Content-type': 'application/json',
+            "Accept": "application/json",
+          },
+          body: json.encode(body)
+      );
+      return response.body;
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  //get function for review
+  Future<List<dynamic>?> getReview() async {
+    List<dynamic> reviewList = [];
+    try {
+      var response = await http.get(
+        Uri.parse("$BASEURI/review/getReview/${companyID}"),
+        headers: {
+          'Content-type': 'application/json',
+          "Accept": "application/json",
+        },
+      );
+      var data = jsonDecode(response.body);
+      if (data["success"] == true) {
+        var items = data["data"];
+        for (dynamic i in items!) {
+          reviewList.add(i);
+        }
+      }else {
+        print("error");
+      }
+    } on Exception {
+      Exception("Error");
+    }
+    return reviewList;
+  }
+
 
 
   @override
@@ -318,6 +368,7 @@ class _ShowOneState extends State<oneCompany> {
                   ],
 
                 ),
+                //review part
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 20),
                   child: Center(
@@ -330,16 +381,105 @@ class _ShowOneState extends State<oneCompany> {
                           prefixIcon: Icon(
                             CupertinoIcons.square_pencil,
                           ),
-                          suffixIcon: Icon(
-                            CupertinoIcons.checkmark_alt,
-                            color: Colors.green,
-                            size: 35.0,
-                          ),
+                          suffixIcon: IconButton(
+                              icon: Icon(Icons.check, size: 25.0, color: Colors
+                                  .green),
+                              onPressed: () async {
+                                //insert review
+                                widget.reviewController.clear();
+                                var response = await insertReview();
+                                var res = json.decode(response);
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                        super.widget));
+                                final snackB = SnackBar(
+                                  duration:
+                                  Duration(seconds: 4),
+                                  content:
+                                  Text(res["message"]),
+                                  action: SnackBarAction(
+                                    label: 'Dismiss',
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                              super.widget));
+                                    },
+                                  ),
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackB);
+                              }),
                           labelText: "Write a Review...",
                           contentPadding: EdgeInsets.only(left: 80.0)),
                     ),
                   ),
                 ),
+                //get review
+                FutureBuilder<List<dynamic>?>(
+                    future: getReview(),
+                    builder: (context, snapshot) {
+                      if (snapshot.data == null) {
+                        return Container(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text("No Reviews yet"),
+                          ),
+                        );
+                      }else {
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: snapshot.data?.length,
+                            itemBuilder: (context, i) {
+                              return Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: PhysicalModel(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.white,
+                                    elevation: 10.0,
+                                    shadowColor: Color(0xff000f61),
+                                    child: ListTile(
+                                        tileColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(15.0),
+                                        ),
+                                        title: Row(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(
+                                                  10.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    snapshot
+                                                        .data![i]["user"]["name"],
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        fontSize: 18),
+                                                  ),
+                                                  const SizedBox(height: 10.0),
+                                                  Row(children: [
+                                                    Text(snapshot
+                                                        .data![i]["review"]),
+                                                    const SizedBox(width: 10.0),
+                                                  ]),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+
+                                        ))),
+                              );
+                            });
+                      };
+                    })
               ]),
             )));
   }
