@@ -103,7 +103,7 @@ class _ShowOneState extends State<oneCompany> {
 
     try {
       var body = {
-        "review": review
+        "review": widget.reviewController.text
       };
       var response = await http.post(
           Uri.parse("$BASEURI/review/insertReview/${id}/${companyID}"),
@@ -373,6 +373,7 @@ class _ShowOneState extends State<oneCompany> {
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 20),
                   child: Center(
                     child: TextFormField(
+                      controller: widget.reviewController,
                       decoration: InputDecoration(
                           focusColor: Colors.black,
                           border: OutlineInputBorder(
@@ -386,8 +387,8 @@ class _ShowOneState extends State<oneCompany> {
                                   .green),
                               onPressed: () async {
                                 //insert review
-                                widget.reviewController.clear();
                                 var response = await insertReview();
+                                widget.reviewController.clear();
                                 var res = json.decode(response);
                                 Navigator.pushReplacement(
                                     context,
