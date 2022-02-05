@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/constraints/constraints.dart';
@@ -23,6 +24,16 @@ class _CompanyProfileState extends State<CompanyProfile> {
   String id = "";
   String user_type = "";
   String image = "";
+  String email = "";
+  String phone = "";
+  String location = "";
+
+  @override
+  void initState() {
+    super.initState();
+
+    getuserdata();
+  }
 
   Future<List<String>> getuserdata() async {
     await MySharedPreferences.init();
@@ -54,6 +65,9 @@ class _CompanyProfileState extends State<CompanyProfile> {
       id = user_id;
       user_type = usertype;
       this.image = image;
+      email = data["data"]["email"];
+      phone = data["data"]["phone"];
+      location = data["data"]["companyLocation"];
     });
     return companyInfo;
   }
@@ -71,7 +85,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      this.image == ""
+                      this.image == "" || this.image == null
                           ? Image(
                               image: AssetImage("assets/images/cycling.png"),
                               width: 200,
@@ -105,122 +119,101 @@ class _CompanyProfileState extends State<CompanyProfile> {
                     )),
                 Padding(
                     padding: EdgeInsets.all(10),
-                    child: Text("Address name",
+                    child: Text(this.email,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 15,
                         ))),
                 Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: ElevatedButton(
-                      child: Text(
-                        "Edit profile",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ProfileUpdate()));
-                      },
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Color(0xff0077B6)),
-                        fixedSize: MaterialStateProperty.all(Size(240.0, 50.0)),
-                      ),
-                    )),
+                    padding: EdgeInsets.all(10),
+                    child: Text(this.phone != null || this.phone != "" ? this.phone : "",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                        ))),
                 Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: ElevatedButton(
-                        child: Text(
-                          "Delete Account",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        onPressed: () {
-                          showAlertDialog(context);
-                        })),
-                SizedBox(
-                  height: 400,
-                  child: GridView(
-                    padding: EdgeInsets.all(20.0),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 5,
-                    ),
-                    scrollDirection: Axis.vertical,
-                    children: [
-                      Card(
-                        semanticContainer: true,
-                        color: Color(0xff92CAE8),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            side: BorderSide(
-                                color: Color(0xff0077B6), width: 4.0)),
-                        elevation: 5,
-                        child: new InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => Rates(company_id: id)));
-                            print("id" + id);
+                    padding: EdgeInsets.all(10),
+                    child: Text(this.location == null || this.location == "" ? "" : this.location,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                        ))),
+                Padding(
+                  padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+                  child: Divider(color: Colors.black),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProfileUpdate()));
                           },
-                          child: Center(
-                              // onPressed:(){print("clicked");},
-                              child: Text("My pricings",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold))),
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                  "assets/icons/setting.png",
+                                width: 20,
+                                height: 20
+                              ),
+                              SizedBox(width: 5.0),
+                              Text(
+                                "Edit profile",
+
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Card(
-                          color: Color(0xff92CAE8),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              side: BorderSide(
-                                  color: Color(0xff0077B6), width: 4.0)),
-                          elevation: 5,
-                          child: Center(
-                              child: Text("Transactions History",
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, "/paymentRequest");
+                          },
+                          child: Row(
+                            children: [
+                              Icon(CupertinoIcons.book),
+                              SizedBox(width: 5.0),
+                              Text("Transactions History",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)))),
-                      Card(
-                        color: Color(0xff92CAE8),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            side: BorderSide(
-                                color: Color(0xff0077B6), width: 4.0)),
-                        elevation: 5,
-                        child: new InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => BookingRequest()));
-                            },
-                            child: Center(
-                                child: Text("Booking requests",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold)))),
-                      ),
-                      Card(
-                          color: Color(0xff92CAE8),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              side: BorderSide(
-                                  color: Color(0xff0077B6), width: 4.0)),
-                          elevation: 5,
-                          child: const Center(
-                              child: Text("My Schedule",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)))),
-                    ],
-                  ),
-                )
+                              ),
+                            ],
+                          ),
+                        ),
+                        TextButton(
+                          child: Row(
+                            children: [
+                              Icon(
+                                  CupertinoIcons.square_arrow_left,
+                                color: Colors.red,
+                              ),
+                              SizedBox(width: 5.0),
+                              Text(
+                                "Logout",
+                                style: TextStyle(
+                                  color: Colors.red
+                                ),
+                              ),
+                            ],
+                          ),
+                          onPressed: () async {
+                            await MySharedPreferences.init();
+                            await MySharedPreferences.removeSavedDetails();
+                            Navigator.pushNamed(context, "/login");
+                          },
+                        )
+                      ]
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -237,7 +230,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      this.image == ""
+                      this.image == "" || this.image == null
                           ? Image(
                               image: AssetImage("assets/images/cycling.png"),
                               width: 200,
@@ -271,130 +264,103 @@ class _CompanyProfileState extends State<CompanyProfile> {
                     )),
                 Padding(
                     padding: EdgeInsets.all(10),
-                    child: Text("Address name",
+                    child: Text(this.email,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 15,
                         ))),
                 Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: ElevatedButton(
-                      child: Text(
-                        "Edit profile",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ProfileUpdate()));
-                      },
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Color(0xff0077B6)),
-                        fixedSize: MaterialStateProperty.all(Size(240.0, 50.0)),
-                      ),
-                    )),
+                    padding: EdgeInsets.all(10),
+                    child: Text(this.phone != null || this.phone != "" ? this.phone : "",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                        ))),
                 Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: ElevatedButton(
-                      child: Text(
-                        "Delete Account",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      onPressed: () {
-                        showAlertDialog(context);
-                      },
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Color(0xff0077B6)),
-                        fixedSize: MaterialStateProperty.all(Size(240.0, 50.0)),
-                      ),
-                    )),
-                SizedBox(
-                  height: 400,
-                  child: GridView(
-                    padding: EdgeInsets.all(20.0),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 5,
+                    padding: EdgeInsets.all(10),
+                    child: Text(this.location == null || this.location == "" ? "" : this.location,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                        ))),
+                Padding(
+                  padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+                  child: Divider(color: Colors.black),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProfileUpdate()));
+                            },
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                    "assets/icons/setting.png",
+                                    width: 20,
+                                    height: 20
+                                ),
+                                SizedBox(width: 5.0),
+                                Text(
+                                  "Edit profile",
+
+                                ),
+                              ],
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, "/paymentRequest");
+                            },
+                            child: Row(
+                              children: [
+                                Icon(CupertinoIcons.book),
+                                SizedBox(width: 5.0),
+                                Text("Transactions History",
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          TextButton(
+                            child: Row(
+                              children: [
+                                Icon(
+                                    CupertinoIcons.square_arrow_left,
+                                  color: Colors.red,
+                                ),
+                                SizedBox(width: 5.0),
+                                Text(
+                                  "Logout",
+                                  style: TextStyle(
+                                      color: Colors.red
+                                  ),
+                                ),
+                              ],
+                            ),
+                            onPressed: () async {
+                              await MySharedPreferences.init();
+                              await MySharedPreferences.removeSavedDetails();
+                              Navigator.pushNamed(context, "/login");
+                            },
+                          )
+                        ]
                     ),
-                    scrollDirection: Axis.vertical,
-                    children: [
-                      Card(
-                        semanticContainer: true,
-                        color: Color(0xff92CAE8),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            side: BorderSide(
-                                color: Color(0xff0077B6), width: 4.0)),
-                        elevation: 5,
-                        child: new InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ViewAppointment()));
-                          },
-                          child: Center(
-                              // onPressed:(){print("clicked");},
-                              child: Text("My appointments",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold))),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, "/paymentRequest");
-                        },
-                        child: Card(
-                            color: Color(0xff92CAE8),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                                side: BorderSide(
-                                    color: Color(0xff0077B6), width: 4.0)),
-                            elevation: 5,
-                            child: Center(
-                                child: Text("Transactions History",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold)))),
-                      ),
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, "/favorites");
-                          },
-                          child: Card(
-                              color: Color(0xff92CAE8),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  side: BorderSide(
-                                      color: Color(0xff0077B6), width: 4.0)),
-                              elevation: 5,
-                              child: Center(
-                                  child: Text("My Favorites",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold))))),
-                      Card(
-                          color: Color(0xff92CAE8),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              side: BorderSide(
-                                  color: Color(0xff0077B6), width: 4.0)),
-                          elevation: 5,
-                          child: const Center(
-                              child: Text("My Schedule",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)))),
-                    ],
-                  ),
-                )
+                  ],
+                ),
+
+
               ],
             ),
           ),
@@ -404,72 +370,4 @@ class _CompanyProfileState extends State<CompanyProfile> {
   }
 }
 
-showAlertDialog(BuildContext context) {
-  // set up the buttons
-  Widget cancelButton = TextButton(
-      child: Text("Cancel"),
-      onPressed: () async {
-        Navigator.of(context).pop(true);
-      });
-  Widget continueButton = TextButton(
-    child: Text("Continue"),
-    onPressed: () async {
-      var id = MySharedPreferences.getLoginId!;
-      print(id);
-      var response = await UserServices.deleteAccount(id);
-      print("response -----> $response");
-      var resBody = json.decode(response!);
-      print("resBody -----> $resBody");
 
-      if (resBody["success"] == true) {
-        final snackB = SnackBar(
-          duration: Duration(seconds: 3),
-          content: Text(resBody["message"]),
-          action: SnackBarAction(
-            label: 'Dismiss',
-            onPressed: () {
-            },
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackB);
-        print("true");
-        await MySharedPreferences.init();
-        await MySharedPreferences.removeSavedDetails();
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginPage()));
-      } else {
-        final snackB = SnackBar(
-          duration: Duration(seconds: 5),
-          content: Text(resBody["message"]),
-          action: SnackBarAction(
-            label: 'Dismiss',
-            onPressed: () {},
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackB);
-        Navigator.of(context).pop(true);
-      }
-    },
-  );
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20.0),
-    ),
-    elevation: 10,
-    title: Text("Alert"),
-    content: Text("Are your sure you want to delete account?"),
-    actions: [
-      cancelButton,
-      continueButton,
-    ],
-  );
-
-// show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}

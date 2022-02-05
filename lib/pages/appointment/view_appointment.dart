@@ -112,6 +112,15 @@ class _ViewAppointmentState extends State<ViewAppointment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+        title: Text("Home"),
+            leading: TextButton(
+              onPressed: () {
+                Navigator.popUntil(context, ModalRoute.withName("/home"));
+              },
+              child: Icon(CupertinoIcons.arrow_left, color: Colors.white),
+            ),
+    backgroundColor: Color(0xff0077B6)),
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Container(
@@ -625,12 +634,15 @@ class PendingWidget extends StatelessWidget {
                                                               "status": "cancelled"
                                                             },
                                                             context);
-                                                        return false;
+                                                        Navigator.pop(context);
+                                                        return true;
                                                       } else {
                                                         return true;
                                                       }
                                                     },
                                                   );
+                                                  // Navigator.of(context, rootNavigator: true).pop();
+
                                                 },
                                                 child: Row(children: <Widget>[
                                                   Text(
@@ -865,24 +877,6 @@ class AcceptedWidget extends StatelessWidget {
                                         padding: const EdgeInsets.all(4.0),
                                         child: Row(children: [
                                           Text(
-                                            "User : ",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18,
-                                                color: Colors.black),
-                                          ),
-                                          Text(
-                                            snapshot.data![i]["user"],
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.black),
-                                          )
-                                        ]),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: Row(children: [
-                                          Text(
                                             "Date : ",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
@@ -965,11 +959,13 @@ class AcceptedWidget extends StatelessWidget {
                                           height: 35,
                                           child: ElevatedButton(
                                               onPressed: () {},
-                                              child: Row(children: <Widget>[
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: <Widget>[
                                                 Text(
                                                   "Cancel Appointment",
                                                   style: TextStyle(
-                                                      fontSize: 15,
+                                                      fontSize: 12,
                                                       fontFamily: 'Rubik',
                                                       fontWeight:
                                                       FontWeight.bold,

@@ -29,8 +29,16 @@ class _ShowOneState extends State<oneCompany> {
   String companyID;
   String name = "";
   String phone = "";
+  String image = "";
   _ShowOneState(this.companyID);
   //get wala for one company info
+
+  @override
+  void initState() {
+    super.initState();
+
+    getOneCompany();
+  }
 
   Future<List<OneCompany>>? getOneCompany() async {
     var response = await http.get(Uri.parse("$BASEURI/user/showOne/${companyID}"),
@@ -47,13 +55,17 @@ class _ShowOneState extends State<oneCompany> {
 
     name = deriveData["name"];
     phone = deriveData["phone"];
+
+    setState(() {
+      image = deriveData["image"];
+    });
     // // adding data to empty list
     return onecompanyList;
   }
 
   //get rating for company
   Future<num>? getRate() async {
-    var response = await http.get(Uri.parse("http://192.168.100.252:5000/rate/getRate/${companyID}"),
+    var response = await http.get(Uri.parse("$BASEURI/rate/getRate/${companyID}"),
       headers: {
         'Content-type' : 'application/json',
         "Accept": "application/json",
@@ -71,7 +83,7 @@ class _ShowOneState extends State<oneCompany> {
     print(id);
 
     try{
-      var response = await http.post(Uri.parse("http://10.0.2.2:5000/favorites/addfavorites/$id/$companyID"),
+      var response = await http.post(Uri.parse("$BASEURI/favorites/addfavorites/$id/$companyID"),
         headers: {
           'Content-type' : 'application/json',
           "Accept": "application/json",
@@ -89,7 +101,16 @@ class _ShowOneState extends State<oneCompany> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text("Kabadiwala"),
+            title: Text("View Companies"),
+            leading: TextButton(
+              onPressed: () {
+                Navigator.popUntil(context, ModalRoute.withName("/viewcompany"));
+              },
+              child: Icon(
+                  CupertinoIcons.arrow_left,
+                color: Colors.white
+              ),
+            ),
             backgroundColor: Color(0xff0077B6)),
         body: SafeArea(
             child:SingleChildScrollView(
@@ -98,8 +119,12 @@ class _ShowOneState extends State<oneCompany> {
                   height: 35,
                 ),
                 Center(
-                  child: Image(
+                  child: this.image == null || this.image == "" ? Image(
                     image: AssetImage("assets/images/cycling.png"),
+                    width: 200,
+                    height: 200,
+                  ) : Image.network(
+                      "$BASEURI/${this.image}",
                     width: 200,
                     height: 200,
                   ),
@@ -184,8 +209,14 @@ class _ShowOneState extends State<oneCompany> {
 
                           ));
                         },
-                        child: Text(
-                          "Book Now",
+                        child: Row(
+                          children: [
+                            Icon(CupertinoIcons.book),
+                            SizedBox(width: 5),
+                            Text(
+                              "Book Now",
+                            ),
+                          ],
                         )),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -242,8 +273,18 @@ class _ShowOneState extends State<oneCompany> {
                                         color: Color.fromARGB(255, 0, 119, 182))))),
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => PriceView(company_id: companyID,)));              },
-                        child: Text(
-                          "See Pricings",
+                        child: Row(
+                          children: [
+                            Image.asset(
+                                "assets/icons/hand.png",
+                              width: 20,
+                              height: 20,
+                            ),
+                            SizedBox(width: 5.0,),
+                            Text(
+                              "See Pricings",
+                            ),
+                          ],
                         ),
                       ),
                     ),

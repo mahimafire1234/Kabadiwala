@@ -34,11 +34,11 @@ class _ViewCompanyState extends State<ViewCompany> {
         final nameLower = u["name"].toLowerCase();
         final searchLower = query.toLowerCase();
         if (nameLower.contains(searchLower)) {
-          User user = User(u["name"], u["email"],u["id"], u["phone"], u["image"], u["companyLocation"]);
+          User user = User(u["name"], u["email"],u["id"], u["phone"], u["companyLocation"], u["image"]);
           userData.add(user);
         }
       } else {
-        User user = User(u["name"], u["email"],u["id"], u["phone"], u["image"], u["companyLocation"]);
+        User user = User(u["name"], u["email"],u["id"], u["phone"], u["companyLocation"], u["image"]);
         userData.add(user);
       }
     }
@@ -88,6 +88,9 @@ class _ViewCompanyState extends State<ViewCompany> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          title: Text("Home"),
+          backgroundColor: Color(0xff0077B6)),
         backgroundColor: const Color(0xFF0077B6),
         body: SafeArea(
             child: SingleChildScrollView(
@@ -177,7 +180,13 @@ class _ViewCompanyState extends State<ViewCompany> {
                                       },
                                       title: Row(
                                         children: [
-                                          const Text("image"),
+                                          users![i].image == null || users![i].image == ""
+                                              ? Text("image")
+                                              : Image.network(
+                                              "$BASEURI/${users![i].image}",
+                                            width: 50,
+                                            height: 50,
+                                          ),
                                           Padding(
                                             padding: const EdgeInsets.all(10.0),
                                             child: Column(

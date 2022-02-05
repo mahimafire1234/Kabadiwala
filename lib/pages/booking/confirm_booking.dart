@@ -24,7 +24,7 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
 
   _ConfirmBookingState({required this.data, required this.name, id});
 
-  book() async {
+  book(context) async {
     try {
       await MySharedPreferences.init();
       final token = await MySharedPreferences.getToken();
@@ -238,7 +238,7 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
                           children: [
                             ElevatedButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context, "/viewcompany");
+                                  Navigator.pushNamed(context, "/home");
                                 },
                                 child: Text("Cancel"),
                                 style: ElevatedButton.styleFrom(
@@ -248,7 +248,8 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
                             SizedBox(width: 10.0),
                             ElevatedButton(
                               onPressed: () async {
-                                var res = await book();
+                                var res = await book(context);
+
                               },
                               child: Text("Confirm Booking"),
                             )

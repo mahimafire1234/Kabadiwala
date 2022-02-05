@@ -405,7 +405,6 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
               prefs.setBool("remember_me", checkValue);
             },
           );
-
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(

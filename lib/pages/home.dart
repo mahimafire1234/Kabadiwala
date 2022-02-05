@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/constraints/constraints.dart';
+import 'package:login_sprint1/pages/rates/ratespage.dart';
 import 'package:login_sprint1/services/shared_preference.dart';
 
 import 'notifications/reminder.dart';
@@ -122,7 +123,7 @@ class _HomeState extends State<Home> {
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -176,7 +177,7 @@ class _HomeState extends State<Home> {
                     child: MyDesign(),
                   ),
                   Container(
-                      padding: EdgeInsets.only(left: 20.0),
+                      padding: EdgeInsets.only(left: 12.0),
                       decoration: const BoxDecoration(
                           border: Border(
                         bottom: BorderSide(
@@ -188,10 +189,18 @@ class _HomeState extends State<Home> {
                           width: 0.5,
                         ),
                       )),
-                      child: Option(
-                          image: "assets/images/help.png",
-                          text: "Help",
-                          link: "/help")),
+                      child:
+                      MySharedPreferences.getUsertype == UserType.COMPANY ?
+                      Option(
+                          image: "assets/icons/plus.png",
+                          text: "My Requests",
+                          link: "/bookingRequest"
+                      )
+                          :
+                      Option(
+                          image: "assets/icons/appointment.png",
+                          text: "My \nAppointmnets",
+                          link: "/viewappointment")),
                   Container(
                     padding: EdgeInsets.only(left: 10.0),
                     decoration: const BoxDecoration(
@@ -205,13 +214,13 @@ class _HomeState extends State<Home> {
                         width: 0.5,
                       ),
                     )),
-                    child: Option(
+                    child:Option(
                         image: "assets/icons/delivery.png",
                         text: "Vendors",
                         link: "/viewcompany"),
                   ),
                   Container(
-                    padding: EdgeInsets.only(left: 20.0),
+                    padding: EdgeInsets.only(left: 12.0),
                     decoration: const BoxDecoration(
                         border: Border(
                       top: BorderSide(
@@ -224,7 +233,27 @@ class _HomeState extends State<Home> {
                       ),
                     )),
                     child:
-                        Option(image: "assets/icons/information.png", text: "About", link: "/about"),
+                      MySharedPreferences.getUsertype == UserType.COMPANY ?
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => Rates(company_id: MySharedPreferences.getLoginId!)));
+                        },
+                        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                          Image.asset(
+                            "assets/icons/hand.png",
+                            width: 54,
+                            fit: BoxFit.fitHeight,
+                          ),
+                          SizedBox(width: 14.0),
+                          Center(
+                            child: Text("My Pricings", style: TextStyle(
+                              fontSize: 12,
+                            ), overflow: TextOverflow.fade),
+                          )
+                        ]),
+                      )
+                          : Option(image: "assets/icons/star.png", text: "Favourites", link: "/favorites")
                   )
                 ],
               )
@@ -240,18 +269,31 @@ class _HomeState extends State<Home> {
                       width: 5,
                     ),
                   )),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("About Us"),
-                Text(
-                    " > ",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold
+            child: InkWell(
+              onTap: () {Navigator.pushNamed(context, "/about");},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                      children: [
+                        Image.asset(
+                          "assets/icons/information.png",
+                          width: 20,
+                          fit: BoxFit.fitHeight,
+                        ),
+                        SizedBox(width: 10.0),
+                        Text("About Us"),
+                      ]
                   ),
-                )
-              ]
+                  Text(
+                      " > ",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold
+                    ),
+                  )
+                ]
+              ),
             )
           ),
           SizedBox(height: 20.0),
@@ -266,28 +308,31 @@ class _HomeState extends State<Home> {
                       width: 5,
                     ),
                   )),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Image.asset(
-                          "assets/images/help.png",
-                          width: 20,
-                          fit: BoxFit.fitHeight,
-                        ),
-                        SizedBox(width: 10.0),
-                        Text("Help"),
-                      ]
-                    ),
-                    Text(
-                      " > ",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold
+              child: InkWell(
+                onTap: () {Navigator.pushNamed(context, "/help");},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset(
+                            "assets/images/help.png",
+                            width: 20,
+                            fit: BoxFit.fitHeight,
+                          ),
+                          SizedBox(width: 10.0),
+                          Text("Help"),
+                        ]
                       ),
-                    )
-                  ]
+                      Text(
+                        " > ",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold
+                        ),
+                      )
+                    ]
+                ),
               )
           )
         ],
@@ -347,7 +392,11 @@ class _OptionState extends State<Option> {
           fit: BoxFit.fitHeight,
         ),
         SizedBox(width: 14.0),
-        Text("${text}", overflow: TextOverflow.fade)
+        Center(
+          child: Text("${text}", style: TextStyle(
+            fontSize: 12,
+          ), overflow: TextOverflow.fade),
+        )
       ]),
     );
   }

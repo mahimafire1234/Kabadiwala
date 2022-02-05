@@ -113,9 +113,10 @@ class _LoginPageState extends State<LoginPage> {
                       key:
                           _formKey, // yo form lai unique sanga chinna lai form key rakyeko ho
                       child: TextFormField(
+                        keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "enter email address ";
+                            return "Enter email address ";
                           }
                           return null;
                         },
@@ -147,10 +148,10 @@ class _LoginPageState extends State<LoginPage> {
                       child: TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "enter password";
+                            return "Enter password";
                           }
                           if (value.length <= 3) {
-                            return "password cannot be less than 3 character";
+                            return "Password cannot be less than 3 character";
                           } else {
                             () {
                               return null;

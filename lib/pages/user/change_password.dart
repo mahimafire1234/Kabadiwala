@@ -24,6 +24,12 @@ class _ChangePasswordState extends State<ChangePassword> {
   var _newPasswordController = TextEditingController();
   var _newPasswordConfirmController = TextEditingController();
 
+  bool validateStructure(String value){
+    String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regExp = new RegExp(pattern);
+    return regExp.hasMatch(value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,6 +93,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                     validator: (String? value) {
                       if (value != _newPasswordController.value.text) {
                         return "Passwords do not match";
+                      }else if(!validateStructure(value!)){
+                        return "Must contain: lower and upper case, digit, special character, \nand be 8 in length";
                       }
                       return null;
                     },

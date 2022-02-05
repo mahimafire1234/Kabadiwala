@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 typedef OnDelete();
 
@@ -36,7 +37,10 @@ class _ItemFormState extends State<ItemForm> {
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: TextFormField(
-
+                    keyboardType: TextInputType.text,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp("[a-zA-Z -]")),
+                    ],
                     initialValue: widget.item.category,
                     onSaved: (val) => widget.item.category = val!,
                     validator: (val) =>
@@ -52,10 +56,12 @@ class _ItemFormState extends State<ItemForm> {
               Expanded(
                 flex: 1,
                   child: TextFormField(
-                  initialValue: widget.item.amount,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    initialValue: widget.item.amount,
                   onSaved: (val) => widget.item.amount = val!,
                   validator: (val) =>
-                  val!.isNotEmpty ? null : 'Amount is empty',
+                  val!.isNotEmpty ? null : 'Amount is \nempty',
                   decoration: const InputDecoration(
                     hintText: 'Amount',
                     isDense: true,

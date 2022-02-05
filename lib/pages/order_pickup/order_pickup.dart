@@ -14,7 +14,15 @@ class _OrderPickupState extends State<OrderPickup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF0077B6),
+      appBar: AppBar(
+          title: Text("Home"),
+          leading: TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Icon(CupertinoIcons.arrow_left, color: Colors.white),
+          ),
+          backgroundColor: Color(0xff0077B6)),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -29,7 +37,6 @@ class _OrderPickupState extends State<OrderPickup> {
                   padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-
                     children: [
                       const Padding(
                         padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
@@ -89,7 +96,6 @@ class _OrderPickupState extends State<OrderPickup> {
                       ),
                       SizedBox(height: 10.0),
                       Flexible(child: MultiForm()),
-
                     ],
                   ),
                 ),
@@ -112,44 +118,41 @@ class _MultiFormState extends State<MultiForm> {
 
   @override
   Widget build(BuildContext context) {
-    return  Column(
+    return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFFEEEEEE),
-                  Color(0xFFEAEAEA),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-            child: items.length <= 0
-                ? Center(
-              child: Text("Tap + icon to add items"),
-
-            ) : ListView.builder(
-              shrinkWrap: true,
-              addAutomaticKeepAlives: true,
-              itemCount: items.length,
-              itemBuilder: (_, i) => items[i]!,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFFEEEEEE),
+                Color(0xFFEAEAEA),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
           ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ElevatedButton(
-
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF31B400),
-                    shape: CircleBorder(),
-                    padding: EdgeInsets.all(10),
-                  ),
-                  onPressed: onAddForm,
-                  child: Text("+"))
-            ]),
+          child: items.length <= 0
+              ? Center(
+                  child: Text("Tap + icon to add items"),
+                )
+              : ListView.builder(
+                  shrinkWrap: true,
+                  addAutomaticKeepAlives: true,
+                  itemCount: items.length,
+                  itemBuilder: (_, i) => items[i]!,
+                ),
+        ),
+        Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFF31B400),
+                shape: CircleBorder(),
+                padding: EdgeInsets.all(10),
+              ),
+              onPressed: onAddForm,
+              child: Text("+"))
+        ]),
         const Padding(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
           child: Divider(color: Colors.black),
@@ -175,14 +178,11 @@ class _MultiFormState extends State<MultiForm> {
                         const Color.fromARGB(255, 2, 7, 153)),
                     backgroundColor: MaterialStateProperty.all(
                         Color.fromARGB(255, 0, 119, 182)),
-                    shape: MaterialStateProperty.all<
-                        RoundedRectangleBorder>(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(10.0))))),
+                            borderRadius: BorderRadius.circular(10.0))))),
           ),
         ),
-
       ],
     );
   }
@@ -191,7 +191,7 @@ class _MultiFormState extends State<MultiForm> {
   void onDelete(Item _item) {
     setState(() {
       var find = items.firstWhere(
-            (it) => it!.item == _item,
+        (it) => it!.item == _item,
         orElse: () => null,
       );
       if (find != null) items.removeAt(items.indexOf(find));
@@ -217,7 +217,7 @@ class _MultiFormState extends State<MultiForm> {
       if (allValid) {
         var data = items.map((it) => it!.item).toList();
         var body = List<dynamic>.filled(data.length, {}, growable: true);
-        for(int i = 0; i < data.length; i++) {
+        for (int i = 0; i < data.length; i++) {
           var category_amount = {
             "category": data[i].category,
             "amount": data[i].amount,
@@ -225,9 +225,12 @@ class _MultiFormState extends State<MultiForm> {
           body[i] = category_amount;
         }
 
-        Navigator.push(context, MaterialPageRoute(builder: (builder) => SetInformationOrder(data: body,)));
-
-
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (builder) => SetInformationOrder(
+                      data: body,
+                    )));
       }
     }
   }

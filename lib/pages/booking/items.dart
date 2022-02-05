@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_sprint1/pages/company/oneCompany.dart';
 import 'package:login_sprint1/pages/booking/set_information.dart';
@@ -60,6 +61,10 @@ class _ItemsHireState extends State<ItemsHire> {
 
 
     return Scaffold(
+      appBar: AppBar(
+          title: Text("Company"),
+          backgroundColor: Color(0xff0077B6)
+      ),
       backgroundColor: Color(0xFF0077B6),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -219,6 +224,8 @@ class _ItemsHireState extends State<ItemsHire> {
                                           minHeight: 18.0
                                         ),
                                         child: TextFormField(
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                           initialValue: '0',
                                           onChanged: (input) {
                                             var last = previous[i];

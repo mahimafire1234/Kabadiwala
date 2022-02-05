@@ -178,7 +178,7 @@ class _RenderMyCustomWidgetState extends State<RenderMyCustomWidget> {
                                           snapshot.data!.removeAt(index);
                                         });
                                       },
-                                      child: Text("Approved"),
+                                      child: Text("Accept"),
                                       style: ButtonStyle(
                                           fixedSize: MaterialStateProperty.all(
                                               Size(150.0, 20.0)),

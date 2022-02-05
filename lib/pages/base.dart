@@ -27,49 +27,10 @@ class _BaseState extends State<Base> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:
-          AppBar(title: Text("Kabadiwala"), backgroundColor: Color(0xff0077B6)),
-      drawer: Drawer(
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Column(children: [
-                Icon(CupertinoIcons.profile_circled, size: 100.0),
-                SizedBox(height: 10.0),
-                Text(
-                  "User name",
-                  style: TextStyle(color: Colors.white),
-                )
-              ]),
-            ),
-            ListTile(
-              leading:
-                  Icon(CupertinoIcons.creditcard, color: Color(0xFF000000)),
-              title: const Text('Payment History'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                CupertinoIcons.square_arrow_right,
-                color: Color(0xFF000000),
-              ),
-              title: const Text('Logout'),
-              onTap: () async {
-                await MySharedPreferences.init();
-                await MySharedPreferences.removeSavedDetails();
-                Navigator.pushNamed(context, "/login");
-              },
-            ),
-          ],
-        ),
-      ),
+          AppBar(
+              title: Text("Kabadiwala"),
+              automaticallyImplyLeading: false,
+              backgroundColor: Color(0xff0077B6)),
       body: IndexedStack(index: currentIndex, children: screens),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,

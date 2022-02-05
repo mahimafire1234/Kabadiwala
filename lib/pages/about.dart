@@ -13,6 +13,15 @@ class _AboutState extends State<About> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          title: Text("Home"),
+          leading: TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Icon(CupertinoIcons.arrow_left, color: Colors.white),
+          ),
+          backgroundColor: Color(0xff0077B6)),
         body: Container(
             child: Stack(
           children: <Widget>[
@@ -24,7 +33,7 @@ class _AboutState extends State<About> {
                 clipper: WaveClipper(), //set our custom wave clipper
                 child: Container(
                   color: Color(0xFF96D3F3),
-                  height: 200,
+                  height: 120,
                 ),
               ),
             ),
@@ -33,16 +42,16 @@ class _AboutState extends State<About> {
               //upper clippath with less height
               clipper: WaveClipper(), //set our custom wave clipper.
               child: Container(
-                  padding: EdgeInsets.only(bottom: 50),
+                  padding: EdgeInsets.only(bottom: 20),
                   color: Color(0xFF0077B6),
-                  height: 180,
+                  height: 90,
                   alignment: Alignment.center,
                   ),
             ),
              Column(
                children:  [
                  const Padding(
-                   padding: EdgeInsets.fromLTRB(0, 180, 0, 10),
+                   padding: EdgeInsets.fromLTRB(0, 120, 0, 10),
                    child: Text("About",
                        style: TextStyle(
                           fontWeight: FontWeight.bold,

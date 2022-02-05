@@ -44,6 +44,12 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
+  bool validateStructure(String value){
+    String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regExp = new RegExp(pattern);
+    return regExp.hasMatch(value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -158,8 +164,10 @@ class _SignUpState extends State<SignUp> {
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               child: Center(
                 child: TextFormField(
+                  keyboardType: TextInputType.phone,
                   validator: (value) {
                     if (value!.isEmpty) return "Please enter number";
+                    else if(value.length != 10 || value.contains(".")) return "Enter a valid number";
                     return null;
                   },
                   onChanged: (val) {
@@ -186,6 +194,7 @@ class _SignUpState extends State<SignUp> {
                   controller: _passwordController,
                   validator: (value) {
                     if (value!.isEmpty) return "Please enter password";
+                    else if(!validateStructure(value)) return "Must contain: lower and upper case, digit, special character, \nand be 8 in length";
                     return null;
                   },
                   obscureText: hidePassword,
@@ -258,6 +267,7 @@ class _SignUpState extends State<SignUp> {
               child: ElevatedButton(
                   onPressed: () async {
                     if (_key.currentState!.validate()) {
+
                       var response = await postData();
                       var res = json.decode(response);
                       print(res);

@@ -169,7 +169,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                           children: [
                             ElevatedButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context, "/home");
+                                  Navigator.popUntil(context, ModalRoute.withName("/viewcompany") );
                                 },
                                 child: Text("Cancel"),
                                 style: ElevatedButton.styleFrom(

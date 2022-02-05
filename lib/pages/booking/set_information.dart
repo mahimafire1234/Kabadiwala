@@ -11,6 +11,7 @@ class SetInformation extends StatefulWidget {
   final String name;
   final String id;
   final Object body;
+
   const SetInformation(
       {Key? key, required this.name, required this.id, required this.body})
       : super(key: key);
@@ -31,6 +32,15 @@ class _SetInformationState extends State<SetInformation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          title: Text("Change Items"),
+          leading: TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Icon(CupertinoIcons.arrow_left, color: Colors.white),
+          ),
+          backgroundColor: Color(0xff0077B6)),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -83,6 +93,7 @@ class ColumnStart extends StatefulWidget {
   final String id;
   final Object data;
   final Object name;
+
   const ColumnStart(
       {Key? key, required this.id, required this.data, required this.name})
       : super(key: key);
@@ -106,16 +117,18 @@ class _ColumnStartState extends State<ColumnStart> {
   int hour = 0;
   int minute = 0;
 
-
   var body = {};
+  GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   TextEditingController dateinput = TextEditingController();
   TextEditingController timeinput = TextEditingController();
+
   void initState() {
     dateinput.text = "";
   }
 
   TextEditingController locationinput = TextEditingController();
+
   // void initState() {
   //   dateinput.text = "";
   // }
@@ -125,171 +138,169 @@ class _ColumnStartState extends State<ColumnStart> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 30),
-            child: PhysicalModel(
-              color: Colors.white,
-              elevation: 5.0,
-              shadowColor: const Color(0xff2a2a2a),
-              borderRadius: BorderRadius.circular(25),
-              child: TextFormField(
-                controller: dateinput,
-                textAlign: TextAlign.center,
-                decoration: const InputDecoration(
+      child: Form(
+        key: _key,
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 30),
+              child: PhysicalModel(
+                color: Colors.white,
+                elevation: 5.0,
+                shadowColor: const Color(0xff2a2a2a),
+                borderRadius: BorderRadius.circular(25),
+                child: TextFormField(
+                  controller: dateinput,
+                  textAlign: TextAlign.center,
+                  validator: (value) {
+                    if (value!.isEmpty) return "Please select a date";
+                    return null;
+                  },
+                  decoration: const InputDecoration(
 
-                  // contentPadding: EdgeInsets.only(left: 80.0),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide.none),
-                    hintText: "DD/MM/YYY",
-                    prefixIcon:
-                    Icon(Icons.calendar_today, color: Colors.black)),
-                readOnly:
-                true, //set it true, so that user will not able to edit text
+                      // contentPadding: EdgeInsets.only(left: 80.0),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide.none),
+                      hintText: "DD/MM/YYY",
+                      prefixIcon:
+                          Icon(Icons.calendar_today, color: Colors.black)),
+                  readOnly: true,
+                  //set it true, so that user will not able to edit text
 
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2030));
-                  if (pickedDate != null) {
-                    print(pickedDate);
-                    String formateDate =
-                    DateFormat("yyyy-MM-dd").format(pickedDate);
-                    SaveLocalData.savedData(formateDate);
-                    print(formateDate);
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now().subtract(Duration(days: 0)),
+                        lastDate: DateTime(2030));
+                    if (pickedDate != null) {
+                      String formateDate =
+                          DateFormat("yyyy-MM-dd").format(pickedDate);
+                      SaveLocalData.savedData(formateDate);
 
-                    this.year = pickedDate.year;
-                    this.month = pickedDate.month;
-                    this.day = pickedDate.day;
+                      this.year = pickedDate.year;
+                      this.month = pickedDate.month;
+                      this.day = pickedDate.day;
 
-                    setState(() {
-                      dateinput.text = formateDate;
-                    });
-                  } else {
-                    print("date is not selected");
-                  }
-                },
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 30),
-            child: PhysicalModel(
-              color: Colors.white,
-              elevation: 5.0,
-              shadowColor: const Color(0xff2a2a2a),
-              borderRadius: BorderRadius.circular(25),
-              child: TextFormField(
-                onChanged: (value) {
-                  setState(() => location = value);
-                },
-                controller: locationinput,
-                textAlign: TextAlign.center,
-                decoration: const InputDecoration(
-
-                  // contentPadding: EdgeInsets.only(left: 80.0),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide.none),
-                    hintText: "Location",
-                    prefixIcon:
-                    Icon(CupertinoIcons.location, color: Colors.black)),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 30),
-            child: PhysicalModel(
-              color: Colors.white,
-              elevation: 5.0,
-              shadowColor: const Color(0xff2a2a2a),
-              borderRadius: BorderRadius.circular(25),
-              child: TextFormField(
-                controller: timeinput,
-                textAlign: TextAlign.center,
-                decoration: const InputDecoration(
-
-                  // contentPadding: EdgeInsets.only(left: 80.0),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide.none),
-                    hintText: "Time",
-                    prefixIcon: Icon(
-                      CupertinoIcons.time,
-                      color: Colors.black,
-                    )),
-                readOnly: true,
-                onTap: () async {
-                  TimeOfDay? timepicker = await showTimePicker(
-                      context: context, initialTime: TimeOfDay.now());
-                  if (timepicker != null) {
-                    this.hour = timepicker.hour;
-                    this.minute = timepicker.minute;
-
-                    print(timepicker.format(context));
-                    String parseTime = timepicker.format(context);
-                    SaveLocalData.savedData(parseTime);
-                    setState(() {
-                      timeinput.text = parseTime.toString();
-                    });
-                  }
-                },
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          ButtonAsWidget(
-            buttonColor: Color(0xff0077B6),
-            onClick: () {
-              SweetAlert.show(context,
-                  title: "Are u sure u wanna book",
-                  style: SweetAlertStyle.confirm,
-                  showCancelButton: true, onPress: (bool isConfirm) {
-
-                    if (isConfirm) {
-                      var datetime = DateTime.utc(
-                          year,
-                          month,
-                          day,
-                          hour,
-                          minute
-                      ).toLocal();
-                      var dt = datetime.toString();
-
-                      body = {
-                        "company" : id,
-                        "datetime" : dt,
-                        "location" : location,
-                        "items": data["items"],
-                        "total_price": data["total_price"]
-                      };
-                      print(body);
-
-                      Navigator.push(context, MaterialPageRoute(builder: (builder) => ConfirmBooking(data: body, name: name)));
-
-
-                      // SweetAlert.show(context,
-                      //     style: SweetAlertStyle.success, title: "Success");
-                      List<String> myAllSavedData = SaveLocalData.getSavedData;
-                      print(myAllSavedData[0]);
-                      // for (var i in myAllSavedData) {
-                      //   print("Your saved data is --> $i");
-                      // }
-                      // return false to keep dialog
-                      return false;
+                      setState(() {
+                        dateinput.text = formateDate;
+                      });
+                    } else {
+                      print("date is not selected");
                     }
-                    return true;
-                  });
-            },
-            buttonText: "Confirm Booking",
-          ),
-        ],
+                  },
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 30),
+              child: PhysicalModel(
+                color: Colors.white,
+                elevation: 5.0,
+                shadowColor: const Color(0xff2a2a2a),
+                borderRadius: BorderRadius.circular(25),
+                child: TextFormField(
+                  onChanged: (value) {
+                    setState(() => location = value);
+                  },
+                  validator: (value) {
+                    if (value!.isEmpty)
+                      return "Please enter a location";
+                    else if (value.length < 5)
+                      return "Please enter a detailed location";
+                    return null;
+                  },
+                  controller: locationinput,
+                  textAlign: TextAlign.center,
+                  decoration: const InputDecoration(
+
+                      // contentPadding: EdgeInsets.only(left: 80.0),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide.none),
+                      hintText: "Location",
+                      prefixIcon:
+                          Icon(CupertinoIcons.location, color: Colors.black)),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 30),
+              child: PhysicalModel(
+                color: Colors.white,
+                elevation: 5.0,
+                shadowColor: const Color(0xff2a2a2a),
+                borderRadius: BorderRadius.circular(25),
+                child: TextFormField(
+                  controller: timeinput,
+                  textAlign: TextAlign.center,
+                  validator: (value) {
+                    if (value!.isEmpty) return "Please select a time";
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+
+                      // contentPadding: EdgeInsets.only(left: 80.0),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide.none),
+                      hintText: "Time",
+                      prefixIcon: Icon(
+                        CupertinoIcons.time,
+                        color: Colors.black,
+                      )),
+                  readOnly: true,
+                  onTap: () async {
+                    TimeOfDay? timepicker = await showTimePicker(
+                        context: context, initialTime: TimeOfDay.now());
+                    if (timepicker != null) {
+                      this.hour = timepicker.hour;
+                      this.minute = timepicker.minute;
+
+                      print(timepicker.format(context));
+                      String parseTime = timepicker.format(context);
+                      SaveLocalData.savedData(parseTime);
+                      setState(() {
+                        timeinput.text = parseTime.toString();
+                      });
+                    }
+                  },
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  if (_key.currentState!.validate()) {
+                    var datetime =
+                        DateTime(year, month, day, hour, minute).toLocal();
+                    var dt = datetime.toString();
+
+                    body = {
+                      "company": id,
+                      "datetime": dt,
+                      "location": location,
+                      "items": data["items"],
+                      "total_price": data["total_price"]
+                    };
+                    print(body);
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (builder) =>
+                                ConfirmBooking(data: body, name: name)));
+
+                    List<String> myAllSavedData = SaveLocalData.getSavedData;
+                    print(myAllSavedData[0]);
+                  }
+                },
+                child: Text("Confirm Booking")),
+          ],
+        ),
       ),
     );
   }

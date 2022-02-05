@@ -38,8 +38,6 @@ class _MyRouteState extends State<MyRoute> {
         '/home': (context) => const Base(index: 0),
         '/viewcompany': (context) => ViewCompany(),
         '/viewappointment': (context) => ViewAppointment(),
-        '/viewcompany': (context) => ViewCompany(),
-        '/viewappointment': (context) => ViewAppointment(),
         '/onecompany': (context) => oneCompany(
               companyID: '',
             ),

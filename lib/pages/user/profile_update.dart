@@ -12,6 +12,7 @@ import 'package:login_sprint1/services/userservices.dart';
 import 'dart:io';
 
 import 'change_password.dart';
+import 'login.dart';
 
 class ProfileUpdate extends StatefulWidget {
   const ProfileUpdate({Key? key}) : super(key: key);
@@ -222,6 +223,19 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                                },
                                child: Text("Change Password"))
                          ]
+                     ),
+                     Row(
+                         mainAxisAlignment: MainAxisAlignment.end,
+                         children: [
+                           TextButton(
+                               onPressed: () {
+                                 showAlertDialog(context);
+                                 },
+                               child: Text(
+                                   "Delete Account",
+                                 style: TextStyle(color: Colors.red),
+                               ))
+                         ]
                      )
                    ]
                  )),
@@ -313,7 +327,7 @@ class ProfileWidget extends StatelessWidget {
     return ClipOval(
       child: Material(
         color: Colors.transparent,
-        child: imagePath == "" ? Image.asset("assets/images/cycling.png", width: 128, height: 128) : (
+        child: imagePath == "" || imagePath == null ? Image.asset("assets/images/cycling.png", width: 128, height: 128) : (
             imageFrom == "phone"? Image.file(File(imagePath), width: 128, height: 128) :
             Image.network("$BASEURI/$imagePath", width: 128, height: 128,
               loadingBuilder: (context, child, loadingProgress){
@@ -364,4 +378,74 @@ class ProfileWidget extends StatelessWidget {
           child: child,
         ),
       );
+}
+
+showAlertDialog(BuildContext context) {
+  // set up the buttons
+  Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () async {
+        Navigator.of(context).pop(true);
+      });
+  Widget continueButton = TextButton(
+    child: Text("Continue"),
+    onPressed: () async {
+      var id = MySharedPreferences.getLoginId!;
+      print(id);
+      var response = await UserServices.deleteAccount(id);
+      print("response -----> $response");
+      var resBody = json.decode(response!);
+      print("resBody -----> $resBody");
+
+      if (resBody["success"] == true) {
+        final snackB = SnackBar(
+          duration: Duration(seconds: 3),
+          content: Text(resBody["message"]),
+          action: SnackBarAction(
+            label: 'Dismiss',
+            onPressed: () {
+            },
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackB);
+        print("true");
+        await MySharedPreferences.init();
+        await MySharedPreferences.removeSavedDetails();
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => LoginPage()));
+      } else {
+        final snackB = SnackBar(
+          duration: Duration(seconds: 5),
+          content: Text(resBody["message"]),
+          action: SnackBarAction(
+            label: 'Dismiss',
+            onPressed: () {},
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackB);
+        Navigator.of(context).pop(true);
+      }
+    },
+  );
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20.0),
+    ),
+    elevation: 10,
+    title: Text("Alert"),
+    content: Text("Are your sure you want to delete account?"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+// show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
