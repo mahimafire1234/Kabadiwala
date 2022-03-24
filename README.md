@@ -1,8 +1,7 @@
 
 # Kabadiwala
 
-A new Flutter project.
-
+A flutter application for Kabadiwalas done by team "Flying Piranhas" using Scrum.
 ## Getting Started
 
 This project is a starting point for a Flutter application.
